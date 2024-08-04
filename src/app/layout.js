@@ -17,8 +17,8 @@ const inter = Inter({ subsets: ['latin'] })
 //const myfont = localFont({ src: "../static-fonts/AldotheApache.ttf" })
 
 const APP_NAME = "Makima";
-const APP_DEFAULT_TITLE = "Makima - Watch Anime Online";
-const APP_DESCRIPTION = "Discover a world of anime without interruptions on Makima! Watch your favorite series for free, with no ads to disrupt your viewing experience. Join now and immerse yourself in the captivating stories and vibrant characters that Makima has to offer!";
+const APP_DEFAULT_TITLE = "Makima.xyz - Watch Anime Online";
+const APP_DESCRIPTION = "Discover a world of anime without interruptions on Makima.xyz! Watch your favorite series for free, with no ads to disrupt your viewing experience. Join now and immerse yourself in the captivating stories and vibrant characters that Makima.xyz has to offer!";
 
 export const metadata = {
   metadataBase: new URL('https://makima.xyz'),
@@ -79,7 +79,7 @@ export default async function RootLayout({ children }) {
   return (
     <html lang="en" className='dark text-foreground bg-background' suppressHydrationWarning={true}>
       <Script
-        src="https://www.googletagmanager.com/gtag/js?id=G-W661D2QCV3"
+        src="https://www.googletagmanager.com/gtag/js?id=G-DXKRYT44CQ"
         strategy="afterInteractive"
       />
       <Script id="google-analytics" strategy="afterInteractive">
@@ -88,7 +88,7 @@ export default async function RootLayout({ children }) {
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
-  gtag('config', 'G-W661D2QCV3');`}
+  gtag('config', 'G-DXKRYT44CQ');`}
       </Script>
       <head>
         <meta name="google-site-verification" content="9Cj5Gd0-OuGDtGb4HpRqNfBXy3FuFCcFNWSvTPOlTzE" />
@@ -112,4 +112,4 @@ export default async function RootLayout({ children }) {
       </body>
     </html>
   )
-}
+    }
