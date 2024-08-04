@@ -33,7 +33,7 @@ export default async function sitemap() {
         priority: 1,
       },
       ...trending,
-      ...top10,
+      ...top100,
       ...seasonal
     ]
   }
