@@ -110,7 +110,7 @@ function Navbarcomponent({ home = false }) {
             <div className={styles.navleft}>
                 <div className={styles.logoContainer}>
                     <Link href="/" className={styles.logoLink}>
-                        Airin
+                        Makima
                     </Link>
                 </div>
                 <div className={styles.navItemsContainer}>
@@ -288,7 +288,7 @@ function Navbarcomponent({ home = false }) {
                             color="secondary"
                             name={data?.user?.name}
                             size="sm"
-                            src={data?.user?.image?.large || data?.user?.image?.medium || "https://i.pravatar.cc/150?u=a042581f4e29026704d"}
+                            src={data?.user?.image?.large || data?.user?.image?.medium || "https://raw.githubusercontent.com/InstaTechHD/airin/master/public/avatar-(ProfilePictureMaker.com).png"}
                         />
                     </DropdownTrigger>
                     {isLoggedIn ? (
