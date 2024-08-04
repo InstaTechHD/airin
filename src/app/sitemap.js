@@ -6,34 +6,34 @@ export default async function sitemap() {
 
   const trending = data.map((anime)=>{
     return {
-      url: `https://aniplaynow.live/anime/info/${anime.id}`,
+      url: `https://makima.xyz/anime/info/${anime.id}`,
       lastModified: new Date(),
     }
   })
 
   const top100 = data2.map((anime)=>{
     return {
-      url: `https://aniplaynow.live/anime/info/${anime.id}`,
+      url: `https://makima.xyz/anime/info/${anime.id}`,
       lastModified: new Date(),
     }
   })
 
   const seasonal = data3.map((anime)=>{
     return {
-      url: `https://aniplaynow.live/anime/info/${anime.id}`,
+      url: `https://makima.xyz/anime/info/${anime.id}`,
       lastModified: new Date(),
     }
   })
 
     return [
       {
-        url: 'https://aniplaynow.live',
+        url: 'https://makima.xyz',
         lastModified: new Date(),
         changeFrequency: 'yearly',
         priority: 1,
       },
       ...trending,
-      ...top100,
+      ...top10,
       ...seasonal
     ]
   }
