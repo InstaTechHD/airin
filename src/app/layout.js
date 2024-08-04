@@ -21,7 +21,7 @@ const APP_DEFAULT_TITLE = "Makima - Watch Anime Online";
 const APP_DESCRIPTION = "Discover a world of anime without interruptions on Makima! Watch your favorite series for free, with no ads to disrupt your viewing experience. Join now and immerse yourself in the captivating stories and vibrant characters that Makima has to offer!";
 
 export const metadata = {
-  metadataBase: new URL('https://aniplaynow.live'),
+  metadataBase: new URL('https://makima.xyz'),
   applicationName: APP_NAME,
   title: APP_DEFAULT_TITLE,
   description: APP_DESCRIPTION,
