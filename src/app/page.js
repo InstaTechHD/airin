@@ -52,7 +52,7 @@ async function Home() {
   const { herodata = [], populardata = [], top100data = [], seasonaldata = [] } = await getHomePage();
   // const history = await getWatchHistory();
   // console.log(history)
-
+  
   return (
     <div>
       <Navbarcomponent home={true} />
@@ -64,10 +64,16 @@ async function Home() {
         </div>
         <div
         >
+    
           <RecentEpisodes cardid="Recent Episodes" />
         </div>
         <div
         >
+
+        <a href="https://pawllyhost.com/aff.php?aff=3" target="_blank">
+      <img src="https://hypeweb.net/data/siropu/am/user/166968867c6387.png" />
+    </a>
+    
           <Animecard data={herodata} cardid="Trending Now" />
         </div>
         <div
@@ -77,7 +83,7 @@ async function Home() {
         <div
         >
           <div className='lg:flex lg:flex-row justify-between lg:gap-20'>
-            <VerticalList data={top100data} mobiledata={seasonaldata} id="Top 100 Anime" />
+            <VerticalList data={top100data} mobiledata={seasonaldata} id="Top 10 Anime" />
             <VerticalList data={seasonaldata} id="Seasonal Anime" />
           </div>
         </div>
