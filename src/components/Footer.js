@@ -88,6 +88,10 @@ function Footer() {
                 <div className="mx-auto w-full lg:max-w-[83%] lg:flex lg:items-center lg:justify-between lg:text-[0.8rem] text-[0.7rem] text-[#ffffffb2] py-3">
                     <span className="sm:text-center ms-5 lg:ms-0">© {year} <Link href="/" className="hover:text-white">Makima™</Link> | Made by <span className="font-bold" >Makima Team</span>
                     </span>
+<iframe src="https://discord.com/widget?id=1152987586202181734&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
+
+    
+    
                     <div className="flex mt-4 lg:justify-center lg:mt-0">
                         <Link href="/" target="_blank" className=" hover:text-gray-900 dark:hover:text-white ms-5 lg:ms-0">
                             <svg className="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
