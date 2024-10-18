@@ -69,10 +69,9 @@ async function Home() {
         </div>
         <div
         >
-
-        <a href="https://pawllyhost.com/aff.php?aff=3" target="_blank">
-      <img src="https://hypeweb.net/data/siropu/am/user/166968867c6387.png" />
-    </a>
+/*Linkvertise Ad Banner*/
+        <div style="position: relative;"><iframe src="https://publisher.linkvertise.com/cdn/ads/LV-468x60/index.html" frameborder="0" height="60" width="468"></iframe><a href="https://publisher.linkvertise.com/ac/101337" target="_blank" style="position: absolute; top: 0; bottom: 0; left: 0; right: 0;"></a></div>
+    /*Linkvertise Ad Banner End*/
     
           <Animecard data={herodata} cardid="Trending Now" />
         </div>
