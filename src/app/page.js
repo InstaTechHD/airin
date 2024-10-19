@@ -69,8 +69,6 @@ async function Home() {
         </div>
         <div
         >
-/*Linkvertise Ad Banner*/
- /*Linkvertise Ad Banner End*/
     
           <Animecard data={herodata} cardid="Trending Now" />
         </div>
