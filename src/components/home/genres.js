@@ -1,5 +1,5 @@
 import Image from "next/image";
-//import { ChevronRightIcon } from "@heroicons/react/24/outline";
+import { ChevronRightIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import styles from '../../styles/Animecard.module.css';
 import { useDraggable } from 'react-use-draggable-scroll';
