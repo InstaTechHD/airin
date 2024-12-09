@@ -1,9 +1,9 @@
 <div align="center">
-  <a href="https://Aniplaynow.live" target="_blank">
-    <img src="https://github.com/Noname968/airin/blob/c39875dc6e1bc2db9d8371574a9ab3ed95ff3b93/public/icon-512x512.png" alt="Logo" width="140" height="140">
+  <a href="https://makima.xyz" target="_blank">
+    <img src="https://raw.githubusercontent.com/InstaTechHD/airin/refs/heads/master/public/avatar-(ProfilePictureMaker.com).png" alt="Logo" width="140" height="140">
   </a>
 
-  <h2 align="center">Airin</h3>
+  <h2 align="center">Makima</h3>
 
   <p align="center">
     An open-source Anime streaming site built with Nextjs 14
