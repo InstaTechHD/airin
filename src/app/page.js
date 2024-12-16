@@ -62,12 +62,10 @@ async function Home() {
         <div
         >
           <ContinueWatching session={session} />
+          <RandomTextComponent />
         </div>
         <div
         >
-    // Random text components
-    <RandomTextComponent />
-    
           <RecentEpisodes cardid="Recent Episodes" />
         </div>
         <div
