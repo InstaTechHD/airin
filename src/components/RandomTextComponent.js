@@ -10,7 +10,7 @@ const RandomTextComponent = () => {
       link: "https://ko-fi.com/makimadon",
     },
     {
-      text: "Have you tried customizing the app to your liking?? Try Themes if you haven't!",
+      text: "Have you tried customizing the app to your liking? Try it if you haven't!",
       link: "/settings",
     },
     {
