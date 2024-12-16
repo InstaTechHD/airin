@@ -6,20 +6,20 @@ const RandomTextComponent = () => {
   // Array of random texts with associated links
   const randomTexts = [
     {
-      text: "Enjoying 1Anime? Help us keep our site alive by donating or sharing the app!",
-      link: "https://1anime.co/donate",
+      text: "Enjoying Makima? Help us keep our site alive by donating or sharing the app!",
+      link: "https://ko-fi.com/makimadon",
     },
     {
-      text: "Have you tried customizing the app with Themes? Try Themes if you haven't!",
+      text: "Have you tried customizing the app to your liking?? Try Themes if you haven't!",
       link: "/settings",
     },
     {
-      text: "Did you know? 1Anime secures your AniList account when you sync?",
+      text: "Did you know? Makima secures your AniList account when you sync?",
       link: "/user/profile",
     },
     {
       text: "Join our Discord for some exciting events, giveaways and more!",
-      link: "https://dsc.gg/1Anime",
+      link: "https://discord.gg/zvD8xDhqzu",
     },
   ];
 
