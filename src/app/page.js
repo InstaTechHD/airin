@@ -64,7 +64,7 @@ async function Home() {
         </div>
         <div
         >
-    //Random text components
+    // Random text components
     <RandomTextComponent />
     
           <RecentEpisodes cardid="Recent Episodes" />
