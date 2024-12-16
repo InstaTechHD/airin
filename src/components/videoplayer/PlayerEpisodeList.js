@@ -155,11 +155,6 @@ function PlayerEpisodeList({ id, data, onprovider, setwatchepdata, epnum }) {
             <span className="font-bold text-sm md:text-white">Episode {epnum}</span>
             <span className="!leading-tight !text-[0.8rem] flex flex-col items-center justify-center text-center">If current server doesn't work please try other servers beside.</span>
           </div>
-
-
-        //Random Text Components
-        <RandomTextComponent />
-        
           <div className={styles.episodetopright}>
             {suboptions?.includes('sub') && (
               <div className={styles.episodesub}>
