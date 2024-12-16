@@ -10,8 +10,9 @@ import ContinueWatching from '@/components/home/ContinueWatching'
 import RecentEpisodes from '@/components/home/RecentEpisodes'
 import { getAuthSession } from './api/auth/[...nextauth]/route'
 import { redis } from '@/lib/rediscache'
+import RandomTextComponent from '@/components/RandomTextComponent';
 // import { getWatchHistory } from '@/lib/EpHistoryfunctions'
-import RandomTextComponent from '@/components/RandomTextComponent'; /// put the component somewhere
+
 async function getHomePage() {
   try {
     let cachedData;
