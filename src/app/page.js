@@ -11,7 +11,7 @@ import RecentEpisodes from '@/components/home/RecentEpisodes'
 import { getAuthSession } from './api/auth/[...nextauth]/route'
 import { redis } from '@/lib/rediscache'
 // import { getWatchHistory } from '@/lib/EpHistoryfunctions'
-
+import RandomTextComponent from '@/components/RandomTextComponent'; /// put the component somewhere
 async function getHomePage() {
   try {
     let cachedData;
@@ -64,6 +64,9 @@ async function Home() {
         </div>
         <div
         >
+    //Random text components
+    <RandomTextComponent />
+    
           <RecentEpisodes cardid="Recent Episodes" />
         </div>
         <div
