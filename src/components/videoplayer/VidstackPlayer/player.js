@@ -241,9 +241,9 @@ function Player({ dataInfo, id, groupedEp, src, session, savedep, subtitles, thu
       onEnded={onEnded}
       onCanPlay={onCanPlay}
       src={{
-        src: `${process.env.NEXT_PUBLIC_PROXY_URI}/fetch?url=${encodeURIComponent(src)}&ref=${encodeURIComponent("https://s3embtaku.pro")}`,
-        type: "application/x-mpegurl",
-      }}
+  src: `${process.env.NEXT_PUBLIC_PROXY_URI}/fetch?url=${encodeURIComponent(src)}`,
+  type: "application/x-mpegurl",
+}}
       onPlay={onPlay}
       onPause={onPause}
       onLoadedMetadata={onLoadedMetadata}
