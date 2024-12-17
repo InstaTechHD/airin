@@ -77,7 +77,7 @@ function Footer() {
                                         <Link href="https://ko-fi.com/makimadon" target='_blank' className="hover:text-white !font-semibold !text-[0.8rem]">Donate</Link>
                                     </li>
                                     <li>
-                                        <Link href="https://github.com/InstaTechHD/airin/raw/master/Makima.apk" target='_blank' className="hover:text-white !font-semibold !text-[0.8rem]">Download</Link>
+                                        <Link href="https://github.com/InstaTechHD/airin/raw/refs/heads/master/Makima.apk" target='_blank' className="hover:text-white !font-semibold !text-[0.8rem]">Download</Link>
                                     </li>
                                 </ul>
                             </div>
