@@ -108,10 +108,17 @@ function Episodesection({ data, id, progress, setUrl }) {
     setFilteredEpisodes(initialEpisodes || null);
   }, [currentEpisodes, totalEpisodes]);
 
+
+  // Other imports...
+import RandomTextComponent from './RandomTextComponent';
+  
   const reverseOrder = () => {
     setReversed(!reversed)
   }
-
+    
+// Add the RandomTextComponent here    
+<RandomTextComponent />
+    
   const refreshEpisodes = async () => {
     setloading(true);
     try {
