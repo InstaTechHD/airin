@@ -10,6 +10,8 @@ import EpImgContent from "./Episodelists/EpImgContent";
 import { toast } from "sonner";
 import { useSubtype } from '@/lib/store';
 import { useStore } from 'zustand';
+// Other imports...
+import RandomTextComponent from './RandomTextComponent';
 
 function Episodesection({ data, id, progress, setUrl }) {
   const subtype = useStore(useSubtype, (state) => state.subtype);
@@ -108,10 +110,6 @@ function Episodesection({ data, id, progress, setUrl }) {
     setFilteredEpisodes(initialEpisodes || null);
   }, [currentEpisodes, totalEpisodes]);
 
-
-  // Other imports...
-import RandomTextComponent from './RandomTextComponent';
-  
   const reverseOrder = () => {
     setReversed(!reversed)
   }
