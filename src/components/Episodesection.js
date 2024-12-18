@@ -150,6 +150,7 @@ function Episodesection({ data, id, progress, setUrl }) {
 
   return (
     <div className={styles.episodesection}>
+    <RandomTextComponent />
       <div className={styles.eptopsection}>
         <div className={styles.epleft}>
           <div className={styles.cardhead}>
