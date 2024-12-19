@@ -70,18 +70,30 @@ async function Home() {
         </div>
         <div>
           <Link href="https://makima.xyz/anime/catalog?sortby=TRENDING_DESC">
-            <Animecard data={herodata} cardid="Trending Now" />
+            <div className="flex items-center justify-between">
+              <Animecard data={herodata} cardid="Trending Now" />
+              <span className="ml-2">→</span> {/* Right arrow added */}
+            </div>
           </Link>
         </div>
         <div>
           <Link href="https://makima.xyz/anime/catalog?sortby=">
-            <Animecard data={populardata} cardid="All Time Popular" />
+            <div className="flex items-center justify-between">
+              <Animecard data={populardata} cardid="All Time Popular" />
+              <span className="ml-2">→</span> {/* Right arrow added */}
+            </div>
           </Link>
         </div>
         <div>
           <div className="lg:flex lg:flex-row justify-between lg:gap-20">
-            <VerticalList data={top100data} mobiledata={seasonaldata} id="Top 100 Anime" />
-            <VerticalList data={seasonaldata} id="Seasonal Anime" />
+            <div className="flex items-center justify-between">
+              <VerticalList data={top100data} mobiledata={seasonaldata} id="Top 100 Anime" />
+              <span className="ml-2">→</span> {/* Right arrow added */}
+            </div>
+            <div className="flex items-center justify-between">
+              <VerticalList data={seasonaldata} id="Seasonal Anime" />
+              <span className="ml-2">→</span> {/* Right arrow added */}
+            </div>
           </div>
         </div>
       </div>
