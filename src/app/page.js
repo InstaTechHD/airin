@@ -74,7 +74,7 @@ async function Home() {
           </Link>
         </div>
         <div>
-          <Link href="/popular">
+          <Link href="https://makima.xyz/anime/catalog?sortby=">
             <Animecard data={populardata} cardid="All Time Popular" />
           </Link>
         </div>
