@@ -8,6 +8,7 @@ import React from 'react';
 import { MotionDiv } from '@/utils/MotionDiv';
 import VerticalList from '@/components/home/VerticalList';
 import ContinueWatching from '@/components/home/ContinueWatching';
+import FeaturedCard from '@/components/FeaturedCard'; // Import FeaturedCard component
 import RecentEpisodes from '@/components/home/RecentEpisodes';
 import { getAuthSession } from './api/auth/[...nextauth]/route';
 import { redis } from '@/lib/rediscache';
@@ -66,16 +67,25 @@ async function Home() {
           <RandomTextComponent />
         </div>
         <div>
+          <FeaturedCard /> {/* Added FeaturedCard component */}
+        </div>
+        <div>
           <RecentEpisodes cardid="Recent Episodes" />
         </div>
         <div>
           <Link href="https://makima.xyz/anime/catalog?sortby=TRENDING_DESC">
-            <Animecard data={herodata} cardid="Trending Now" />
+            <div className="flex items-center justify-between">
+              <Animecard data={herodata} cardid="Trending Now" />
+              <span className="ml-2">→</span> {/* Right arrow added */}
+            </div>
           </Link>
         </div>
         <div>
           <Link href="https://makima.xyz/anime/catalog?sortby=">
-            <Animecard data={populardata} cardid="All Time Popular" />
+            <div className="flex items-center justify-between">
+              <Animecard data={populardata} cardid="All Time Popular" />
+              <span className="ml-2">→</span> {/* Right arrow added */}
+            </div>
           </Link>
         </div>
         <div>
