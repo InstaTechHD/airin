@@ -8,6 +8,7 @@ import React from 'react';
 import { MotionDiv } from '@/utils/MotionDiv';
 import VerticalList from '@/components/home/VerticalList';
 import ContinueWatching from '@/components/home/ContinueWatching';
+import FeaturedCard from '@/components/home/FeaturedCard'; // Import FeaturedCard component
 import RecentEpisodes from '@/components/home/RecentEpisodes';
 import { getAuthSession } from './api/auth/[...nextauth]/route';
 import { redis } from '@/lib/rediscache';
@@ -64,6 +65,9 @@ async function Home() {
         <div>
           <ContinueWatching session={session} />
           <RandomTextComponent />
+        </div>
+        <div>
+          <FeaturedCard /> {/* Added FeaturedCard component */}
         </div>
         <div>
           <RecentEpisodes cardid="Recent Episodes" />
