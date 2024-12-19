@@ -1,7 +1,8 @@
+// src/components/FeaturedCard.js
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import styles from './FeaturedCard.module.css'; // Assuming you have the styles here
+import styles from './FeaturedCard.module.css'; // Ensure the CSS module is also correct
 
 function FeaturedCard({ item }) {
   return (
