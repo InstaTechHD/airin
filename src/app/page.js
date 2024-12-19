@@ -12,7 +12,6 @@ import RecentEpisodes from '@/components/home/RecentEpisodes';
 import { getAuthSession } from './api/auth/[...nextauth]/route';
 import { redis } from '@/lib/rediscache';
 import RandomTextComponent from '@/components/RandomTextComponent';
-// import { getWatchHistory } from '@/lib/EpHistoryfunctions';
 
 async function getHomePage() {
   try {
@@ -53,8 +52,6 @@ async function getHomePage() {
 async function Home() {
   const session = await getAuthSession();
   const { herodata = [], populardata = [], top100data = [], seasonaldata = [] } = await getHomePage();
-  // const history = await getWatchHistory();
-  // console.log(history);
 
   return (
     <div>
@@ -70,19 +67,73 @@ async function Home() {
         </div>
         <div>
           <Link href="/trending">
-            <Animecard data={herodata} cardid="Trending Now" />
+            <a className="flex items-center group">
+              <Animecard data={herodata} cardid="Trending Now" />
+              <span className="ml-2 text-lg group-hover:translate-x-1 transition-transform">→</span>
+            </a>
           </Link>
         </div>
         <div>
           <Link href="/popular">
-            <Animecard data={populardata} cardid="All Time Popular" />
+            <a className="flex items-center group">
+              <Animecard data={populardata} cardid="All Time Popular" />
+              <span className="ml-2 text-lg group-hover:translate-x-1 transition-transform">→</span>
+            </a>
           </Link>
         </div>
         <div>
           <div className="lg:flex lg:flex-row justify-between lg:gap-20">
-            <VerticalList data={top100data} mobiledata={seasonaldata} id="Top 100 Anime" />
-            <VerticalList data={seasonaldata} id="Seasonal Anime" />
+            <div className="flex items-center group">
+              <VerticalList data={top100data} mobiledata={seasonaldata} id="Top 100 Anime" />
+              <span className="ml-2 text-lg group-hover:translate-x-1 transition-transform">→</span>
+            </div>
+            <div className="flex items-center group">
+              <VerticalList data={seasonaldata} id="Seasonal Anime" />
+              <span className="ml-2 text-lg group-hover:translate-x-1 transition-transform">→</span>
+            </div>
           </div>
+        </div>
+        {/* Added the links provided to the buttons */}
+        <div>
+          <Link href="https://makima.xyz/anime/catalog?sortby=TRENDING_DESC">
+            <a className="flex items-center group">
+              <span className="text-lg font-semibold">Trending Now</span>
+              <span className="ml-2 text-lg group-hover:translate-x-1 transition-transform">→</span>
+            </a>
+          </Link>
+        </div>
+        <div>
+          <Link href="/popular">
+            <a className="flex items-center group">
+              <span className="text-lg font-semibold">All Time Popular</span>
+              <span className="ml-2 text-lg group-hover:translate-x-1 transition-transform">→</span>
+            </a>
+          </Link>
+        </div>
+        <div>
+          <Link href="https://makima.xyz/anime/catalog?season=SPRING&year=2024">
+            <a className="flex items-center group">
+              <span className="text-lg font-semibold">Top Upcoming</span>
+              <span className="ml-2 text-lg group-hover:translate-x-1 transition-transform">→</span>
+            </a>
+          </Link>
+        </div>
+        {/* Added the "This Season" and "Upcoming Season" buttons */}
+        <div>
+          <Link href="https://makima.xyz/anime/catalog?season=WINTER&year=2024">
+            <a className="flex items-center group">
+              <span className="text-lg font-semibold">This Season</span>
+              <span className="ml-2 text-lg group-hover:translate-x-1 transition-transform">→</span>
+            </a>
+          </Link>
+        </div>
+        <div>
+          <Link href="https://makima.xyz/anime/catalog?season=SPRING&year=2024">
+            <a className="flex items-center group">
+              <span className="text-lg font-semibold">Upcoming Season</span>
+              <span className="ml-2 text-lg group-hover:translate-x-1 transition-transform">→</span>
+            </a>
+          </Link>
         </div>
       </div>
     </div>
