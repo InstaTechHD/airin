@@ -91,4 +91,4 @@ return (
     </div>
   </div>
 );
-export default Home
+export { Home };
