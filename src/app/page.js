@@ -62,7 +62,6 @@ function getRandomAnime(data) {
 async function Home() {
   const session = await getAuthSession();
   const { herodata = [], populardata = [], top100data = [], seasonaldata = [] } = await getHomePage();
-  const randomAnime = getRandomAnime(herodata);
 
   return (
     <div>
@@ -74,45 +73,49 @@ async function Home() {
           <RandomTextComponent />
         </div>
         <div>
-          <RecentEpisodes cardid="Recent Episodes" />
-        </div>
-        <div className="featured-anime-card my-6">
-          <Link href={`https://makima.xyz/anime/info/${randomAnime?.id}`}>
+          <Link href="/recent-episodes">
             <a>
-              <img 
-                src={randomAnime?.coverImage?.large || randomAnime?.coverImage?.medium} 
-                alt={randomAnime?.title?.romaji || 'Featured Anime'} 
-                className="w-full h-auto" 
-              />
+              <RecentEpisodes cardid="Recent Episodes" />
             </a>
           </Link>
         </div>
+        {/* Removed the Featured Card section */}
+
         <div>
           <Link href="https://makima.xyz/anime/catalog?sortby=TRENDING_DESC">
             <a className="flex items-center group">
-              <Animecard data={herodata} cardid="Trending Now" />
+              <span className="text-lg font-semibold">Trending Now</span>
               <span className="ml-2 text-lg group-hover:translate-x-1 transition-transform">→</span>
             </a>
           </Link>
         </div>
+
         <div>
           <Link href="/popular">
             <a className="flex items-center group">
-              <Animecard data={populardata} cardid="All Time Popular" />
+              <span className="text-lg font-semibold">All Time Popular</span>
               <span className="ml-2 text-lg group-hover:translate-x-1 transition-transform">→</span>
             </a>
           </Link>
         </div>
+
         <div>
           <div className="lg:flex lg:flex-row justify-between lg:gap-20">
-            <VerticalList data={top100data} mobiledata={seasonaldata} id="Top 100 Anime" />
-            <VerticalList data={seasonaldata} id="Seasonal Anime" />
+            <div className="flex items-center">
+              <span className="text-lg font-semibold">Top 100 Anime</span>
+              <span className="ml-2 text-lg group-hover:translate-x-1 transition-transform">→</span>
+            </div>
+            <div className="flex items-center">
+              <span className="text-lg font-semibold">Seasonal Anime</span>
+              <span className="ml-2 text-lg group-hover:translate-x-1 transition-transform">→</span>
+            </div>
           </div>
         </div>
+
         <div>
           <Link href="https://makima.xyz/anime/catalog?season=SPRING&year=2024">
             <a className="flex items-center group">
-              <Animecard data={seasonaldata} cardid="Top Upcoming" />
+              <span className="text-lg font-semibold">Top Upcoming</span>
               <span className="ml-2 text-lg group-hover:translate-x-1 transition-transform">→</span>
             </a>
           </Link>
