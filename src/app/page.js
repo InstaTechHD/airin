@@ -1,4 +1,5 @@
 "use server"
+import Link from 'next/link';
 import Animecard from '@/components/CardComponent/Animecards'
 import Herosection from '@/components/home/Herosection'
 import Navbarcomponent from '@/components/navbar/Navbar'
@@ -11,7 +12,6 @@ import RecentEpisodes from '@/components/home/RecentEpisodes'
 import { getAuthSession } from './api/auth/[...nextauth]/route'
 import { redis } from '@/lib/rediscache'
 import RandomTextComponent from '@/components/RandomTextComponent';
-import Link from 'next/link';
 // import { getWatchHistory } from '@/lib/EpHistoryfunctions'
 
 async function getHomePage() {
