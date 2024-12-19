@@ -68,14 +68,14 @@ async function Home() {
         <div>
           <div className="flex items-center justify-between">
             <RecentEpisodes cardid="Recent Episodes" />
-            <span className="ml-2">→</span> {/* Right arrow added */}
+            <span className="ml-2">→</span> {/* Right arrow added beside Recent Episodes */}
           </div>
         </div>
         <div>
           <Link href="https://makima.xyz/anime/catalog?sortby=TRENDING_DESC">
             <div className="flex items-center justify-between">
               <Animecard data={herodata} cardid="Trending Now" />
-              <span className="ml-2">→</span> {/* Right arrow added */}
+              <span className="ml-2">→</span> {/* Right arrow added beside Trending Now */}
             </div>
           </Link>
         </div>
@@ -83,7 +83,7 @@ async function Home() {
           <Link href="https://makima.xyz/anime/catalog?sortby=">
             <div className="flex items-center justify-between">
               <Animecard data={populardata} cardid="All Time Popular" />
-              <span className="ml-2">→</span> {/* Right arrow added */}
+              <span className="ml-2">→</span> {/* Right arrow added beside All Time Popular */}
             </div>
           </Link>
         </div>
