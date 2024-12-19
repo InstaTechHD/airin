@@ -78,7 +78,7 @@ async function Home() {
         </div>
         <div className="featured-anime-card my-6">
           <h2 className="text-xl font-bold mb-3">Featured Anime</h2>
-          <Link href={`https://makima.xyz/anime/${randomAnime?.id}`}>
+          <Link href={`https://makima.xyz/anime/info/${randomAnime?.id}`}>
             <a className="block border rounded-lg p-4 shadow-lg bg-gray-100 hover:bg-gray-200">
               <h3 className="text-lg font-semibold">{randomAnime?.title?.romaji}</h3>
               <p className="text-sm mt-2">{randomAnime?.description?.slice(0, 100)}...</p>
