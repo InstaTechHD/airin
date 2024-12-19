@@ -66,7 +66,10 @@ async function Home() {
           <RandomTextComponent />
         </div>
         <div>
-          <RecentEpisodes cardid="Recent Episodes" />
+          <div className="flex items-center justify-between">
+            <RecentEpisodes cardid="Recent Episodes" />
+            <span className="ml-2">→</span> {/* Right arrow added */}
+          </div>
         </div>
         <div>
           <Link href="https://makima.xyz/anime/catalog?sortby=TRENDING_DESC">
@@ -86,14 +89,8 @@ async function Home() {
         </div>
         <div>
           <div className="lg:flex lg:flex-row justify-between lg:gap-20">
-            <div className="flex items-center justify-between">
-              <VerticalList data={top100data} mobiledata={seasonaldata} id="Top 100 Anime" />
-              <span className="ml-2">→</span> {/* Right arrow added */}
-            </div>
-            <div className="flex items-center justify-between">
-              <VerticalList data={seasonaldata} id="Seasonal Anime" />
-              <span className="ml-2">→</span> {/* Right arrow added */}
-            </div>
+            <VerticalList data={top100data} mobiledata={seasonaldata} id="Top 100 Anime" />
+            <VerticalList data={seasonaldata} id="Seasonal Anime" />
           </div>
         </div>
       </div>
