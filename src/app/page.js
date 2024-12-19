@@ -11,6 +11,7 @@ import RecentEpisodes from '@/components/home/RecentEpisodes'
 import { getAuthSession } from './api/auth/[...nextauth]/route'
 import { redis } from '@/lib/rediscache'
 import RandomTextComponent from '@/components/RandomTextComponent';
+import Link from 'next/link';
 // import { getWatchHistory } from '@/lib/EpHistoryfunctions'
 
 async function getHomePage() {
@@ -53,8 +54,6 @@ async function Home() {
   const { herodata = [], populardata = [], top100data = [], seasonaldata = [] } = await getHomePage();
   // const history = await getWatchHistory();
   // console.log(history)
-
-  import Link from 'next/link';
 
 // Inside the Home function, replace the existing divs for the categories
 return (
