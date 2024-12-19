@@ -65,7 +65,7 @@ async function Home() {
         <div>
           <ContinueWatching session={session} />
           <RandomTextComponent />
-    <FeaturedCard /> {/* Added FeaturedCard component */}
+          <FeaturedCard />
         </div>
         <div>
           <RecentEpisodes cardid="Recent Episodes" />
