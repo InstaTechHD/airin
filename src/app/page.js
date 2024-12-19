@@ -69,7 +69,7 @@ async function Home() {
           <RecentEpisodes cardid="Recent Episodes" />
         </div>
         <div>
-          <Link href="/trending">
+          <Link href="https://makima.xyz/anime/catalog?sortby=TRENDING_DESC">
             <Animecard data={herodata} cardid="Trending Now" />
           </Link>
         </div>
