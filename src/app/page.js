@@ -40,7 +40,12 @@ async function getHomePage() {
       ]);
       const cacheTime = 60 * 60 * 2;
       if (redis) {
-        await redis.set('homepage', JSON.stringify({ herodata, populardata, top100data, seasonaldata }), 'EX', cacheTime);
+        await redis.set(
+          'homepage',
+          JSON.stringify({ herodata, populardata, top100data, seasonaldata }),
+          'EX',
+          cacheTime
+        );
       }
       return { herodata, populardata, top100data, seasonaldata };
     }
@@ -50,11 +55,14 @@ async function getHomePage() {
   }
 }
 
+function getRandomAnime(data) {
+  return data[Math.floor(Math.random() * data.length)];
+}
+
 async function Home() {
   const session = await getAuthSession();
   const { herodata = [], populardata = [], top100data = [], seasonaldata = [] } = await getHomePage();
-  // const history = await getWatchHistory();
-  // console.log(history);
+  const randomAnime = getRandomAnime(herodata);
 
   return (
     <div>
@@ -68,14 +76,29 @@ async function Home() {
         <div>
           <RecentEpisodes cardid="Recent Episodes" />
         </div>
+        <div className="featured-anime-card my-6">
+          <h2 className="text-xl font-bold mb-3">Featured Anime</h2>
+          <Link href={`https://makima.xyz/anime/${randomAnime?.id}`}>
+            <a className="block border rounded-lg p-4 shadow-lg bg-gray-100 hover:bg-gray-200">
+              <h3 className="text-lg font-semibold">{randomAnime?.title?.romaji}</h3>
+              <p className="text-sm mt-2">{randomAnime?.description?.slice(0, 100)}...</p>
+            </a>
+          </Link>
+        </div>
         <div>
           <Link href="https://makima.xyz/anime/catalog?sortby=TRENDING_DESC">
-            <Animecard data={herodata} cardid="Trending Now" />
+            <a className="flex items-center group">
+              <Animecard data={herodata} cardid="Trending Now" />
+              <span className="ml-2 text-lg group-hover:translate-x-1 transition-transform">→</span>
+            </a>
           </Link>
         </div>
         <div>
           <Link href="/popular">
-            <Animecard data={populardata} cardid="All Time Popular" />
+            <a className="flex items-center group">
+              <Animecard data={populardata} cardid="All Time Popular" />
+              <span className="ml-2 text-lg group-hover:translate-x-1 transition-transform">→</span>
+            </a>
           </Link>
         </div>
         <div>
@@ -83,6 +106,14 @@ async function Home() {
             <VerticalList data={top100data} mobiledata={seasonaldata} id="Top 100 Anime" />
             <VerticalList data={seasonaldata} id="Seasonal Anime" />
           </div>
+        </div>
+        <div>
+          <Link href="https://makima.xyz/anime/catalog?season=SPRING&year=2024">
+            <a className="flex items-center group">
+              <Animecard data={seasonaldata} cardid="Top Upcoming" />
+              <span className="ml-2 text-lg group-hover:translate-x-1 transition-transform">→</span>
+            </a>
+          </Link>
         </div>
       </div>
     </div>
