@@ -2,7 +2,7 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import styles from '@/styles/FeaturedCard.module.css'; // Ensure the CSS module is also correct
+import styles from '../styles/FeaturedCard.module.css'; // Relative path
 
 function FeaturedCard({ item }) {
   return (
