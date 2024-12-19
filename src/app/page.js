@@ -54,38 +54,42 @@ async function Home() {
   // const history = await getWatchHistory();
   // console.log(history)
 
-  return (
-    <div>
-      <Navbarcomponent home={true} />
-      <Herosection data={herodata} />
-      <div className='sm:max-w-[97%] md:max-w-[95%] lg:max-w-[90%] xl:max-w-[85%] mx-auto flex flex-col md:gap-11 sm:gap-7 gap-5 mt-8'>
-        <div
-        >
-          <ContinueWatching session={session} />
-          <RandomTextComponent />
-        </div>
-        <div
-        >
-          <RecentEpisodes cardid="Recent Episodes" />
-        </div>
-        <div
-        >
-          <Animecard data={herodata} cardid="Trending Now" />
-        </div>
-        <div
-        >
-          <Animecard data={populardata} cardid="All Time Popular" />
-        </div>
-        <div
-        >
-          <div className='lg:flex lg:flex-row justify-between lg:gap-20'>
-            <VerticalList data={top100data} mobiledata={seasonaldata} id="Top 100 Anime" />
-            <VerticalList data={seasonaldata} id="Seasonal Anime" />
-          </div>
+  import Link from 'next/link';
+
+// Inside the Home function, replace the existing divs for the categories
+return (
+  <div>
+    <Navbarcomponent home={true} />
+    <Herosection data={herodata} />
+    <div className='sm:max-w-[97%] md:max-w-[95%] lg:max-w-[90%] xl:max-w-[85%] mx-auto flex flex-col md:gap-11 sm:gap-7 gap-5 mt-8'>
+      <div>
+        <ContinueWatching session={session} />
+        <RandomTextComponent />
+      </div>
+      <div>
+        <RecentEpisodes cardid="Recent Episodes" />
+      </div>
+      <div>
+        <Link href="/trending">
+          <a>
+            <Animecard data={herodata} cardid="Trending Now" />
+          </a>
+        </Link>
+      </div>
+      <div>
+        <Link href="/popular">
+          <a>
+            <Animecard data={populardata} cardid="All Time Popular" />
+          </a>
+        </Link>
+      </div>
+      <div>
+        <div className='lg:flex lg:flex-row justify-between lg:gap-20'>
+          <VerticalList data={top100data} mobiledata={seasonaldata} id="Top 100 Anime" />
+          <VerticalList data={seasonaldata} id="Seasonal Anime" />
         </div>
       </div>
     </div>
-  )
-}
-
+  </div>
+);
 export default Home
