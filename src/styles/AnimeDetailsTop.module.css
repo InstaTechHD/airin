@@ -215,3 +215,30 @@
     display: none;
   }
 }
+
+/*Trailer Button*/
+
+.detailsContainer {
+  text-align: center;
+}
+
+.buttonsContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.playNowButton, .addToListButton, .trailerButton {
+  margin: 10px 0;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.trailerButton {
+  background-color: #dc3545;
+}
