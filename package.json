@@ -35,7 +35,7 @@
     "string-similarity": "^4.0.4",
     "tailwindcss-animate": "^1.0.7",
     "zustand": "^4.5.2",
-    "react-icons": "^4.3.1"  // Added missing comma here
+    "react-icons": "^4.3.1"
   },
   "devDependencies": {
     "@types/node": "^20.11.16",
