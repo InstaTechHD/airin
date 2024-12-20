@@ -20,27 +20,20 @@ function DetailsContainer({data, id, session}) {
 
     const progress = list!==null ? list?.status==='COMPLETED' ? 0 : list?.progress : 0
 
-    const trailerUrl = data?.trailer?.site === 'youtube' ? `https://www.youtube.com/watch?v=${data.trailer.id}` : null;
-
-    return (
-        <>
-            <div className='h-[500px] '>
-                <AnimeDetailsTop data={data} list={list} session={session} setList={setList} url={url}/>
-                {trailerUrl && (
-                    <button className="trailerButton" onClick={() => window.open(trailerUrl, '_blank')}>
-                        Watch Trailer
-                    </button>
-                )}
-            </div>
-            <AnimeDetailsBottom data={data} />
-            <Episodesection data={data} id={id} setUrl={setUrl} progress={progress}/>
-            {data?.recommendations?.nodes?.length > 0 && (
-                <div className="recommendationglobal">
-                    <Animecards data={data.recommendations.nodes} cardid={"Recommendations"} />
-                </div>
-            )}
-        </>
-    )
+  return (
+    <>
+      <div className='h-[500px] '>
+        <AnimeDetailsTop data={data} list={list} session={session} setList={setList} url={url}/>
+      </div>
+      <AnimeDetailsBottom data={data} />
+      <Episodesection data={data} id={id} setUrl={setUrl} progress={progress}/>
+      {data?.recommendations?.nodes?.length > 0 && (
+        <div className="recommendationglobal">
+          <Animecards data={data.recommendations.nodes} cardid={"Recommendations"} />
+        </div>
+      )} 
+    </>
+  )
 }
 
 export default DetailsContainer
