@@ -171,7 +171,8 @@
     right: 50%;
     transform: translateX(50%);
     bottom: -70%;
-    display: none;
+    display: block; /* Ensure the button is displayed in mobile view */
+    margin-top: 10px; /* Add margin to separate it from other buttons */
   }
   .detailswatch {
     font-weight: 500;
