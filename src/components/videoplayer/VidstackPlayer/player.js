@@ -22,7 +22,7 @@ import { useSettings, useTitle, useNowPlaying } from '@/lib/store';
 import { useStore } from "zustand";
 import { toast } from 'sonner';
 
-import { CastIcon, LibraryIcon } from './icons'; // Import your icons here
+import { FaChromecast as CastIcon, FaBook as LibraryIcon } from 'react-icons/fa'; // Import icons from react-icons
 
 function Player({ dataInfo, id, groupedEp, src, session, savedep, subtitles, thumbnails, skiptimes }) {
   const settings = useStore(useSettings, (state) => state.settings);
