@@ -20,7 +20,6 @@ async function getInfo(id) {
       }
     }
     if (cachedData) {
-      // console.log("using cached info")
       return JSON.parse(cachedData);
     } else {
       const data = await AnimeInfoAnilist(id);
@@ -38,8 +37,6 @@ async function getInfo(id) {
 export async function generateMetadata({ params }) {
   const id = params.infoid[0];
   const data = await getInfo(id);
-  // const data = await AnimeInfoAnilist(id);
-
   return {
     title: data?.title?.english || data?.title?.romaji || 'Loading...',
     description: data?.description.slice(0, 180),
@@ -59,13 +56,12 @@ export async function generateMetadata({ params }) {
 async function AnimeDetails({ params }) {
   const session = await getAuthSession();
   const id = params.infoid[0];
-  // const data = await getInfo(id);
   const data = await AnimeInfoAnilist(id);
 
   return (
     <div className="">
       <Navbarcomponent />
-     <DetailsContainer data={data} id={id} session={session}/>
+      <DetailsContainer data={data} id={id} session={session}/>
     </div>
   )
 }
