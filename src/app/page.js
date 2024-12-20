@@ -67,36 +67,37 @@ async function Home() {
         </div>
         <div>
           <div className="flex justify-between items-center">
-            <h2>Recent Episodes</h2>
+            <RecentEpisodes cardid="Recent Episodes" />
             <Link href="/recent-episodes">
               <button className="px-2 py-1 text-sm font-medium bg-purple-600 text-white rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
                 View All
               </button>
             </Link>
           </div>
-          <RecentEpisodes cardid="Recent Episodes" />
         </div>
         <div>
           <div className="flex justify-between items-center">
-            <h2>Trending Now</h2>
+            <Link href="https://makima.xyz/anime/catalog?sortby=TRENDING_DESC">
+              <Animecard data={herodata} cardid="Trending Now" />
+            </Link>
             <Link href="https://makima.xyz/anime/catalog?sortby=TRENDING_DESC">
               <button className="px-2 py-1 text-sm font-medium bg-purple-600 text-white rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
                 View All
               </button>
             </Link>
           </div>
-          <Animecard data={herodata} cardid="Trending Now" />
         </div>
         <div>
           <div className="flex justify-between items-center">
-            <h2>All Time Popular</h2>
+            <Link href="https://makima.xyz/anime/catalog?sortby=">
+              <Animecard data={populardata} cardid="All Time Popular" />
+            </Link>
             <Link href="https://makima.xyz/anime/catalog?sortby=">
               <button className="px-2 py-1 text-sm font-medium bg-purple-600 text-white rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
                 View All
               </button>
             </Link>
           </div>
-          <Animecard data={populardata} cardid="All Time Popular" />
         </div>
         <div>
           <div className="lg:flex lg:flex-row justify-between lg:gap-20">
