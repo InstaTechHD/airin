@@ -22,7 +22,7 @@ import { useSettings, useTitle, useNowPlaying } from '@/lib/store';
 import { useStore } from "zustand";
 import { toast } from 'sonner';
 
-import { FaChromecast as CastIcon, FaBook as LibraryIcon } from 'react-icons/fa'; // Import icons from react-icons
+import { FaChromecast as CastIcon, FaBook as LibraryIcon, FaVolumeUp as VolumeUpIcon, FaVolumeDown as VolumeDownIcon, FaCog as SettingsIcon } from 'react-icons/fa'; // Import icons from react-icons
 
 function Player({ dataInfo, id, groupedEp, src, session, savedep, subtitles, thumbnails, skiptimes }) {
   const settings = useStore(useSettings, (state) => state.settings);
@@ -266,8 +266,8 @@ function Player({ dataInfo, id, groupedEp, src, session, savedep, subtitles, thu
             Play: null,
             Pause: null,
             Mute: null,
-            VolumeUp: null,
-            VolumeDown: null,
+            VolumeUp: VolumeUpIcon, // Add Volume Up icon
+            VolumeDown: VolumeDownIcon, // Add Volume Down icon
             EnterFullscreen: null,
             ExitFullscreen: null,
             EnterPiP: null,
@@ -277,7 +277,8 @@ function Player({ dataInfo, id, groupedEp, src, session, savedep, subtitles, thu
             SeekForward: FastForwardIcon,
             SeekBackward: FastBackwardIcon,
             Cast: CastIcon, // Add Cast icon
-            Library: LibraryIcon // Add Library icon
+            Library: LibraryIcon, // Add Library icon
+            Settings: SettingsIcon // Add Settings icon
           }}
         />
       </MediaPlayer>
