@@ -29,7 +29,6 @@ function AnimeDetailsTop({ data, list, session, setList, url }) {
       ></div>
       <div className={styles.gradientOverlay}></div>
       <>
-        <Button className={styles.detailstrailer} onPress={onOpen}>Watch Trailer</Button>
         <Modal backdrop='blur' isOpen={isOpen} onOpenChange={onOpenChange} size={"2xl"} placement="center">
           <ModalContent>
             {(onClose) => (
@@ -68,7 +67,7 @@ function AnimeDetailsTop({ data, list, session, setList, url }) {
             </svg>
             {data?.averageScore / 10} | <span className={`${data?.status === 'RELEASING' ? styles.activestatus : styles.notactive}`}> {data?.status}</span>
           </p>
-          <div className='flex'>
+          <div className='flex flex-col items-center'>
             {isAnime ? (
               <Link className={`${styles.detailswatch} ${!url && 'opacity-50 bg-black pointer-events-none'} hover:opacity-80 transition-all`} href={url ?? ''}>
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className="w-5 h-5 mr-1"><path fillRule="evenodd" d="M4.5 5.653c0-1.426 1.529-2.33 2.5-2.33h10c.971 0 2.5.904 2.5 2.33v12.694c0 1.426-1.529 2.33-2.5 2.33h-10c-.971 0-2.5-.904-2.5-2.33V5.653z" clipRule="evenodd"/><path d="M9.553 10.598a.75.75 0 011.04-.145l3.5 2.625a.75.75 0 010 1.19l-3.5 2.625a.75.75 0 01-1.193-.598v-5.25a.75.75 0 01.153-.447z"/></svg>
