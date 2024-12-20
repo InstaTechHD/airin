@@ -15,7 +15,8 @@ async function getInfo(id) {
     let cachedData;
     if (redis) {
       cachedData = await redis.get(`info:${id}`);
-      if (!JSON.parse(cachedData)) {
+      console.log("Cached data:", cachedData);
+      if (cachedData && !JSON.parse(cachedData)) {
         await redis.del(`info:${id}`);
         cachedData = null;
       }
@@ -24,14 +25,16 @@ async function getInfo(id) {
       return JSON.parse(cachedData);
     } else {
       const data = await AnimeInfoAnilist(id);
+      console.log("Fetched data:", data);
       const cacheTime = data?.nextAiringEpisode?.episode ? 60 * 60 * 2 : 60 * 60 * 24 * 45;
-      if (redis && data !== null && data) {
+      if (redis && data) {
         await redis.set(`info:${id}`, JSON.stringify(data), "EX", cacheTime);
       }
       return data;
     }
   } catch (error) {
-    console.error("Error fetching info: ", error);
+    console.error("Error fetching info:", error);
+    return null;
   }
 }
 
@@ -41,19 +44,19 @@ export async function generateMetadata({ params, searchParams }) {
   const epnum = searchParams?.ep;
 
   return {
-    title: "Episode " + epnum + ' - ' + data?.title?.english || data?.title?.romaji || 'Loading...',
+    title: "Episode " + epnum + ' - ' + (data?.title?.english || data?.title?.romaji || 'Loading...'),
     description: data?.description?.slice(0, 180),
     openGraph: {
-      title: "Episode " + epnum + ' - ' + data?.title?.english || data?.title?.romaji,
+      title: "Episode " + epnum + ' - ' + (data?.title?.english || data?.title?.romaji),
       images: [data?.coverImage?.extraLarge],
       description: data?.description,
     },
     twitter: {
       card: "summary",
-      title: "Episode " + epnum + ' - ' + data?.title?.english || data?.title?.romaji,
+      title: "Episode " + epnum + ' - ' + (data?.title?.english || data?.title?.romaji),
       description: data?.description?.slice(0, 180),
     },
-  }
+  };
 }
 
 export async function Ephistory(session, aniId, epNum) {
@@ -68,7 +71,7 @@ export async function Ephistory(session, aniId, epNum) {
     console.error(error);
     return null;
   }
-};
+}
 
 async function AnimeWatch({ params, searchParams }) {
   const session = await getAuthSession();
@@ -78,6 +81,8 @@ async function AnimeWatch({ params, searchParams }) {
   const epId = searchParams.epid;
   const subdub = searchParams.type;
   const data = await getInfo(id);
+  console.log("Anime data:", data);
+
   const savedep = await Ephistory(session, id, epNum);
 
   return (
@@ -86,9 +91,9 @@ async function AnimeWatch({ params, searchParams }) {
       <div className="w-full flex flex-col lg:flex-row lg:max-w-[98%] mx-auto xl:max-w-[94%] lg:gap-[6px] mt-[70px]">
         <div className="flex-grow w-full h-full">
           <PlayerComponent id={id} epId={epId} provider={provider} epNum={epNum} data={data} subdub={subdub} session={session} savedep={savedep} />
-          {data?.status === 'RELEASING' &&
-            <NextAiringDate nextAiringEpisode={data?.nextAiringEpisode} />
-          }
+          {data?.status === 'RELEASING' && data?.nextAiringEpisode && (
+            <NextAiringDate nextAiringEpisode={data.nextAiringEpisode} />
+          )}
         </div>
         <div className="h-full lg:flex lg:flex-col md:max-lg:w-full gap-10">
           <div className="rounded-lg hidden lg:block lg:max-w-[280px] xl:max-w-[380px] w-[100%] xl:overflow-y-scroll xl:overflow-x-hidden overflow-hidden scrollbar-hide overflow-y-hidden">
