@@ -22,6 +22,8 @@ import { useSettings, useTitle, useNowPlaying } from '@/lib/store';
 import { useStore } from "zustand";
 import { toast } from 'sonner';
 
+import { CastIcon, LibraryIcon } from './icons'; // Import your icons here
+
 function Player({ dataInfo, id, groupedEp, src, session, savedep, subtitles, thumbnails, skiptimes }) {
   const settings = useStore(useSettings, (state) => state.settings);
   const animetitle = useStore(useTitle, (state) => state.animetitle);
@@ -227,10 +229,6 @@ function Player({ dataInfo, id, groupedEp, src, session, savedep, subtitles, thu
 
   return (
     <div>
-      <div className={styles.topButtons}>
-        <button className={styles.libraryButton} onClick={() => router.push('/library')}>Library</button>
-        <button className={styles.castButton}>Cast</button>
-      </div>
       <MediaPlayer key={src} ref={playerRef} playsInline aspectRatio={16 / 9} load={settings?.load || 'idle'} muted={settings?.audio || false}
         autoPlay={settings?.autoplay || false}
         title={currentep?.title || `EP ${epNum}` || 'Loading...'}
@@ -278,6 +276,8 @@ function Player({ dataInfo, id, groupedEp, src, session, savedep, subtitles, thu
             CaptionsOff: null,
             SeekForward: FastForwardIcon,
             SeekBackward: FastBackwardIcon,
+            Cast: CastIcon, // Add Cast icon
+            Library: LibraryIcon // Add Library icon
           }}
         />
       </MediaPlayer>
