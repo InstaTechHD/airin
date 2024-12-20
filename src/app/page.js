@@ -67,40 +67,34 @@ async function Home() {
         </div>
         <div>
           <div className="flex justify-between items-center">
-            <h2 className="text-lg font-semibold">Recent Episodes</h2>
-            <div>
-              <Link href="/recent-episodes">
-                <button className="px-2 py-1 text-sm font-medium bg-purple-600 text-white rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
-                  View All
-                </button>
-              </Link>
-            </div>
+            <h2>Recent Episodes</h2>
+            <Link href="/recent-episodes">
+              <button className="px-2 py-1 text-sm font-medium bg-purple-600 text-white rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
+                View All
+              </button>
+            </Link>
           </div>
           <RecentEpisodes cardid="Recent Episodes" />
         </div>
         <div>
           <div className="flex justify-between items-center">
-            <h2 className="text-lg font-semibold">Trending Now</h2>
-            <div>
-              <Link href="https://makima.xyz/anime/catalog?sortby=TRENDING_DESC">
-                <button className="px-2 py-1 text-sm font-medium bg-purple-600 text-white rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
-                  View All
-                </button>
-              </Link>
-            </div>
+            <h2>Trending Now</h2>
+            <Link href="https://makima.xyz/anime/catalog?sortby=TRENDING_DESC">
+              <button className="px-2 py-1 text-sm font-medium bg-purple-600 text-white rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
+                View All
+              </button>
+            </Link>
           </div>
           <Animecard data={herodata} cardid="Trending Now" />
         </div>
         <div>
           <div className="flex justify-between items-center">
-            <h2 className="text-lg font-semibold">All Time Popular</h2>
-            <div>
-              <Link href="https://makima.xyz/anime/catalog?sortby=">
-                <button className="px-2 py-1 text-sm font-medium bg-purple-600 text-white rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
-                  View All
-                </button>
-              </Link>
-            </div>
+            <h2>All Time Popular</h2>
+            <Link href="https://makima.xyz/anime/catalog?sortby=">
+              <button className="px-2 py-1 text-sm font-medium bg-purple-600 text-white rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
+                View All
+              </button>
+            </Link>
           </div>
           <Animecard data={populardata} cardid="All Time Popular" />
         </div>
