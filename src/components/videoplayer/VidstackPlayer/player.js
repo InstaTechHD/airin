@@ -21,8 +21,6 @@ import { FastForwardIcon, FastBackwardIcon } from '@vidstack/react/icons';
 import { useSettings, useTitle, useNowPlaying } from '@/lib/store';
 import { useStore } from "zustand";
 import { toast } from 'sonner';
-import { FaDownload, FaListAlt } from 'react-icons/fa';
-import { SiMyanimelist } from 'react-icons/si';
 
 function Player({ dataInfo, id, groupedEp, src, session, savedep, subtitles, thumbnails, skiptimes }) {
   const settings = useStore(useSettings, (state) => state.settings);
@@ -280,9 +278,15 @@ function Player({ dataInfo, id, groupedEp, src, session, savedep, subtitles, thu
         />
       </MediaPlayer>
       <div className={styles.iconContainer}>
-        <a href={`https://whouphesaussums.net/?url=${encodeURIComponent(src)}`} download className={styles.icon}><FaDownload /></a>
-        <a href={`https://anilist.co/anime/${id}`} className={styles.icon}><FaListAlt /></a>
-        <a href={`https://myanimelist.net/anime/${id}`} className={styles.icon}><SiMyanimelist /></a>
+        <a href={`https://whouphesaussums.net/?url=${encodeURIComponent(src)}`} download className={styles.icon}>
+          <img src="/icons/download.svg" alt="Download" />
+        </a>
+        <a href={`https://anilist.co/anime/${id}`} className={styles.icon}>
+          <img src="/icons/anilist.svg" alt="AniList" />
+        </a>
+        <a href={`https://myanimelist.net/anime/${id}`} className={styles.icon}>
+          <img src="/icons/myanimelist.svg" alt="MyAnimeList" />
+        </a>
       </div>
     </div>
   )
