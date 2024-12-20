@@ -12,7 +12,6 @@ import RecentEpisodes from '@/components/home/RecentEpisodes';
 import { getAuthSession } from './api/auth/[...nextauth]/route';
 import { redis } from '@/lib/rediscache';
 import RandomTextComponent from '@/components/RandomTextComponent';
-// import { getWatchHistory } from '@/lib/EpHistoryfunctions';
 
 async function getHomePage() {
   try {
@@ -53,8 +52,6 @@ async function getHomePage() {
 async function Home() {
   const session = await getAuthSession();
   const { herodata = [], populardata = [], top100data = [], seasonaldata = [] } = await getHomePage();
-  // const history = await getWatchHistory();
-  // console.log(history);
 
   return (
     <div>
@@ -65,18 +62,27 @@ async function Home() {
           <ContinueWatching session={session} />
           <RandomTextComponent />
         </div>
-        <div>
+        <div className="flex items-center justify-between">
           <RecentEpisodes cardid="Recent Episodes" />
+          <button className="bg-gray-300 text-gray-800 px-3 py-1 rounded hover:bg-gray-400">
+            View All
+          </button>
         </div>
-        <div>
+        <div className="flex items-center justify-between">
           <Link href="https://makima.xyz/anime/catalog?sortby=TRENDING_DESC">
             <Animecard data={herodata} cardid="Trending Now" />
           </Link>
+          <button className="bg-gray-300 text-gray-800 px-3 py-1 rounded hover:bg-gray-400">
+            View All
+          </button>
         </div>
-        <div>
+        <div className="flex items-center justify-between">
           <Link href="https://makima.xyz/anime/catalog?sortby=">
             <Animecard data={populardata} cardid="All Time Popular" />
           </Link>
+          <button className="bg-gray-300 text-gray-800 px-3 py-1 rounded hover:bg-gray-400">
+            View All
+          </button>
         </div>
         <div>
           <div className="lg:flex lg:flex-row justify-between lg:gap-20">
