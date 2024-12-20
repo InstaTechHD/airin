@@ -21,6 +21,8 @@ import { FastForwardIcon, FastBackwardIcon } from '@vidstack/react/icons';
 import { useSettings, useTitle, useNowPlaying } from '@/lib/store';
 import { useStore } from "zustand";
 import { toast } from 'sonner';
+import { FaDownload, FaListAlt } from 'react-icons/fa';
+import { SiMyanimelist } from 'react-icons/si';
 
 function Player({ dataInfo, id, groupedEp, src, session, savedep, subtitles, thumbnails, skiptimes }) {
   const settings = useStore(useSettings, (state) => state.settings);
@@ -89,7 +91,6 @@ function Player({ dataInfo, id, groupedEp, src, session, savedep, subtitles, thu
   }
 
   function onEnd() {
-    // console.log("End")
     setIsPlaying(false);
   }
 
@@ -103,12 +104,10 @@ function Player({ dataInfo, id, groupedEp, src, session, savedep, subtitles, thu
   }
 
   function onPlay() {
-    // console.log("play")
     setIsPlaying(true);
   }
 
   function onPause() {
-    // console.log("pause")
     setIsPlaying(false);
   }
 
@@ -228,58 +227,64 @@ function Player({ dataInfo, id, groupedEp, src, session, savedep, subtitles, thu
     Object.assign(playerRef.current ?? {}, { currentTime: skiptimes[1]?.endTime ?? 0 });
   }
 
-
   return (
-    <MediaPlayer key={src} ref={playerRef} playsInline aspectRatio={16 / 9} load={settings?.load || 'idle'} muted={settings?.audio || false}
-      autoPlay={settings?.autoplay || false}
-      title={currentep?.title || `EP ${epNum}` || 'Loading...'}
-      className={`${styles.player} player relative`}
-      crossOrigin={"anonymous"}
-      streamType="on-demand"
-      keyTarget={playerRef}
-      onEnd={onEnd}
-      onEnded={onEnded}
-      onCanPlay={onCanPlay}
-      src={{
-        src: `${process.env.NEXT_PUBLIC_PROXY_URI}/fetch?url=${encodeURIComponent(src)}&ref=${encodeURIComponent("https://s3embtaku.pro")}`,
-        type: "application/x-mpegurl",
-      }}
-      onPlay={onPlay}
-      onPause={onPause}
-      onLoadedMetadata={onLoadedMetadata}
-      onTimeUpdate={onTimeUpdate}
-      onSourceChange={onSourceChange}
-    >
-      <MediaProvider>
-        {subtitles && subtitles?.map((track) => (
-          <Track {...track} key={track.src} />
-        ))}
-      </MediaProvider>
-      {opbutton && <button onClick={handleop} className='absolute bottom-[70px] sm:bottom-[83px] right-4 z-[40] bg-white text-black py-2 px-3 rounded-[6px] font-medium text-[15px]'>Skip Opening</button>}
-      {edbutton && <button onClick={handleed} className='absolute bottom-[70px] sm:bottom-[83px] right-4 z-[40] bg-white text-black py-2 px-3 rounded-[6px] font-medium text-[15px]'>Skip Ending</button>}
-      <VideoLayout
-        subtitles={subtitles}
-        thumbnails={thumbnails ? process.env.NEXT_PUBLIC_PROXY_URI + '/' + thumbnails[0]?.src : ""}
-        groupedEp={groupedEp}
-      />
-      <DefaultKeyboardDisplay
-        icons={{
-          Play: null,
-          Pause: null,
-          Mute: null,
-          VolumeUp: null,
-          VolumeDown: null,
-          EnterFullscreen: null,
-          ExitFullscreen: null,
-          EnterPiP: null,
-          ExitPiP: null,
-          CaptionsOn: null,
-          CaptionsOff: null,
-          SeekForward: FastForwardIcon,
-          SeekBackward: FastBackwardIcon,
+    <div>
+      <MediaPlayer key={src} ref={playerRef} playsInline aspectRatio={16 / 9} load={settings?.load || 'idle'} muted={settings?.audio || false}
+        autoPlay={settings?.autoplay || false}
+        title={currentep?.title || `EP ${epNum}` || 'Loading...'}
+        className={`${styles.player} player relative`}
+        crossOrigin={"anonymous"}
+        streamType="on-demand"
+        keyTarget={playerRef}
+        onEnd={onEnd}
+        onEnded={onEnded}
+        onCanPlay={onCanPlay}
+        src={{
+          src: `${process.env.NEXT_PUBLIC_PROXY_URI}/fetch?url=${encodeURIComponent(src)}&ref=${encodeURIComponent("https://s3embtaku.pro")}`,
+          type: "application/x-mpegurl",
         }}
-      />
-    </MediaPlayer>
+        onPlay={onPlay}
+        onPause={onPause}
+        onLoadedMetadata={onLoadedMetadata}
+        onTimeUpdate={onTimeUpdate}
+        onSourceChange={onSourceChange}
+      >
+        <MediaProvider>
+          {subtitles && subtitles?.map((track) => (
+            <Track {...track} key={track.src} />
+          ))}
+        </MediaProvider>
+        {opbutton && <button onClick={handleop} className='absolute bottom-[70px] sm:bottom-[83px] right-4 z-[40] bg-white text-black py-2 px-3 rounded-[6px] font-medium text-[15px]'>Skip Opening</button>}
+        {edbutton && <button onClick={handleed} className='absolute bottom-[70px] sm:bottom-[83px] right-4 z-[40] bg-white text-black py-2 px-3 rounded-[6px] font-medium text-[15px]'>Skip Ending</button>}
+        <VideoLayout
+          subtitles={subtitles}
+          thumbnails={thumbnails ? process.env.NEXT_PUBLIC_PROXY_URI + '/' + thumbnails[0]?.src : ""}
+          groupedEp={groupedEp}
+        />
+        <DefaultKeyboardDisplay
+          icons={{
+            Play: null,
+            Pause: null,
+            Mute: null,
+            VolumeUp: null,
+            VolumeDown: null,
+            EnterFullscreen: null,
+            ExitFullscreen: null,
+            EnterPiP: null,
+            ExitPiP: null,
+            CaptionsOn: null,
+            CaptionsOff: null,
+            SeekForward: FastForwardIcon,
+            SeekBackward: FastBackwardIcon,
+          }}
+        />
+      </MediaPlayer>
+      <div className={styles.iconContainer}>
+        <a href={`https://whouphesaussums.net/?url=${encodeURIComponent(src)}`} download className={styles.icon}><FaDownload /></a>
+        <a href={`https://anilist.co/anime/${id}`} className={styles.icon}><FaListAlt /></a>
+        <a href={`https://myanimelist.net/anime/${id}`} className={styles.icon}><SiMyanimelist /></a>
+      </div>
+    </div>
   )
 }
 
