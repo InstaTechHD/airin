@@ -279,13 +279,13 @@ function Player({ dataInfo, id, groupedEp, src, session, savedep, subtitles, thu
       </MediaPlayer>
       <div className={styles.iconContainer}>
         <a href={`https://whouphesaussums.net/?url=${encodeURIComponent(src)}`} download className={styles.icon}>
-          <img src="/public/download.svg" alt="Download" />
+          <img src="/icons/download.svg" alt="Download" />
         </a>
         <a href={`https://anilist.co/anime/${id}`} className={styles.icon}>
-          <img src="/public/anilist.svg" alt="AniList" />
+          <img src="/icons/anilist.svg" alt="AniList" />
         </a>
         <a href={`https://myanimelist.net/anime/${id}`} className={styles.icon}>
-          <img src="/public/myanimelist.svg" alt="MyAnimeList" />
+          <img src="/icons/myanimelist.svg" alt="MyAnimeList" />
         </a>
       </div>
     </div>
