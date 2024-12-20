@@ -13,13 +13,14 @@ async function getInfo(id) {
   try {
     let cachedData;
     if (redis) {
-      cachedData = await redis.get(`info:${id}`);
+      cachedData = await redis.get(`info:${id}`); 
       if (!JSON.parse(cachedData)) {
         await redis.del(`info:${id}`);
         cachedData = null;
       }
     }
     if (cachedData) {
+      // console.log("using cached info")
       return JSON.parse(cachedData);
     } else {
       const data = await AnimeInfoAnilist(id);
@@ -31,13 +32,14 @@ async function getInfo(id) {
     }
   } catch (error) {
     console.error("Error fetching info: ", error);
-  }
+  } 
 }
 
 export async function generateMetadata({ params }) {
   const id = params.infoid[0];
   const data = await getInfo(id);
-  
+  // const data = await AnimeInfoAnilist(id);
+
   return {
     title: data?.title?.english || data?.title?.romaji || 'Loading...',
     description: data?.description.slice(0, 180),
@@ -57,31 +59,13 @@ export async function generateMetadata({ params }) {
 async function AnimeDetails({ params }) {
   const session = await getAuthSession();
   const id = params.infoid[0];
+  // const data = await getInfo(id);
   const data = await AnimeInfoAnilist(id);
 
   return (
     <div className="">
       <Navbarcomponent />
-      <DetailsContainer data={data} id={id} session={session}/>
-      <div className="anilist-trailer-section">
-        <a href={`https://anilist.co/anime/${id}`} target="_blank" rel="noopener noreferrer">
-          <img src="/path/to/anilist-icon.png" alt="AniList" className="anilist-icon" />
-        </a>
-        {data.trailer && data.trailer.site === 'youtube' && (
-          <iframe
-            width="560"
-            height="315"
-            src={`https://www.youtube.com/embed/${data.trailer.id}`}
-            title="YouTube video player"
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          ></iframe>
-        )}
-        <a href={`https://ggredi.info/download/${id}`} className="download-link" target="_blank" rel="noopener noreferrer">
-          Download from ggredi.info
-        </a>
-      </div>
+     <DetailsContainer data={data} id={id} session={session}/>
     </div>
   )
 }
