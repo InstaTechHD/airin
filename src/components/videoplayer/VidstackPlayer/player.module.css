@@ -44,3 +44,24 @@
   height: 100%;
   object-fit: cover;
 }
+
+.topButtons {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  gap: 10px;
+}
+
+.libraryButton, .castButton {
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.libraryButton:hover, .castButton:hover {
+  background-color: rgba(0, 0, 0, 0.7);
+}
