@@ -6,14 +6,12 @@
   --media-tooltip-y-offset: 30px;
   --media-menu-y-offset: 30px;
 
-  aspect-ratio: 16 /9;
-  /* background-color: black; */
+  aspect-ratio: 16 / 9;
   border-radius: var(--media-border-radius);
   color: #f5f5f5;
   contain: layout;
   font-family: sans-serif;
   overflow: hidden;
-  /* border: 1px solid rgb(255 255 255 / 0.1); */
 }
 
 .player[data-focus]:not([data-playing]) {
@@ -45,23 +43,27 @@
   object-fit: cover;
 }
 
-/*New Anilist, Download And MAL Buttons*/
+/* New AniList, Download, and MAL Buttons */
 .iconContainer {
   text-align: center;
-  margin-top: 10px;
+  margin-top: 15px;
   display: flex;
   justify-content: center;
-  gap: 20px;
+  gap: 15px;
 }
 
 .icon {
-  display: inline-block;
-  padding: 10px;
-  background-color: #4CAF50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  background-color: #4caf50;
   color: white;
   text-decoration: none;
   border-radius: 50%;
-  font-size: 24px;
+  font-size: 18px;
+  transition: background-color 0.3s ease;
 }
 
 .icon:hover {
