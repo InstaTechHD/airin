@@ -14,7 +14,7 @@ function Overview({data}) {
         const timeDifference = airingdate * 1000 - Date.now();
         const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
         const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+        const minutes = Math.floor((timeDifference % (1000 * 60)) / (1000 * 60));
 
         return `${days}d ${hours}h ${minutes}m`
     }
@@ -40,11 +40,9 @@ function Overview({data}) {
                     <div className={styles.singlecontent}>
                         <span className={`${styles.sideheading} font-semibold !text-[15px]`}>Airing</span>
                         <Tooltip content={getAiringTimeUnix(data?.nextAiringEpisode?.airingAt)}
-                        // showArrow
                         size='sm'
                         classNames={{
                             base: [
-                                // arrow color
                                 "before:bg-neutral-400 dark:before:bg-white",
                             ],
                             content: [
@@ -95,6 +93,16 @@ function Overview({data}) {
             <div className={styles.card2}>
                 <h3 className={styles.detailsheading}>Description</h3>
                 <div className={styles.descriptioncontent}>
+                    <div className="anilist-trailer-section">
+                        <a href={`https://anilist.co/anime/${data?.id}`} target="_blank" rel="noopener noreferrer">
+                            <img src="/path/to/anilist-icon.png" alt="AniList" className="anilist-icon" />
+                        </a>
+                        {data?.trailer && data?.trailer.site === 'youtube' && (
+                            <button onClick={() => window.open(`https://www.youtube.com/watch?v=${data.trailer.id}`, '_blank')} className="trailer-button">
+                                Watch Trailer
+                            </button>
+                        )}
+                    </div>
                     <p dangerouslySetInnerHTML={{ __html: data?.description }} />
                 </div>
                 <div className={styles.descriptioncontentmobile}>
