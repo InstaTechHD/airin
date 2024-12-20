@@ -69,9 +69,11 @@ async function Home() {
           <div className="flex justify-between items-center">
             <h2 className="text-lg font-semibold">Recent Episodes</h2>
             <div>
-              <button className="px-4 py-2 text-sm font-medium bg-gray-200 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400">
-                View All
-              </button>
+              <Link href="/recent-episodes">
+                <button className="px-2 py-1 text-sm font-medium bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                  View All
+                </button>
+              </Link>
             </div>
           </div>
           <RecentEpisodes cardid="Recent Episodes" />
@@ -80,27 +82,27 @@ async function Home() {
           <div className="flex justify-between items-center">
             <h2 className="text-lg font-semibold">Trending Now</h2>
             <div>
-              <button className="px-4 py-2 text-sm font-medium bg-gray-200 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400">
-                View All
-              </button>
+              <Link href="https://makima.xyz/anime/catalog?sortby=TRENDING_DESC">
+                <button className="px-2 py-1 text-sm font-medium bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                  View All
+                </button>
+              </Link>
             </div>
           </div>
-          <Link href="https://makima.xyz/anime/catalog?sortby=TRENDING_DESC">
-            <Animecard data={herodata} cardid="Trending Now" />
-          </Link>
+          <Animecard data={herodata} cardid="Trending Now" />
         </div>
         <div>
           <div className="flex justify-between items-center">
             <h2 className="text-lg font-semibold">All Time Popular</h2>
             <div>
-              <button className="px-4 py-2 text-sm font-medium bg-gray-200 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400">
-                View All
-              </button>
+              <Link href="https://makima.xyz/anime/catalog?sortby=">
+                <button className="px-2 py-1 text-sm font-medium bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                  View All
+                </button>
+              </Link>
             </div>
           </div>
-          <Link href="https://makima.xyz/anime/catalog?sortby=">
-            <Animecard data={populardata} cardid="All Time Popular" />
-          </Link>
+          <Animecard data={populardata} cardid="All Time Popular" />
         </div>
         <div>
           <div className="lg:flex lg:flex-row justify-between lg:gap-20">
