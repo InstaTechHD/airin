@@ -22,14 +22,16 @@
 }
 
 .detailstrailer {
+  position: absolute;
   background-color: white;
   border: none;
   color: black;
   padding: 10px 15px;
+  bottom: 9%;
+  right: 3%;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   font-weight: 500;
-  margin-left: 10px; /* Add margin to separate it from other buttons */
 }
 
 .detailsinfo {
@@ -169,8 +171,7 @@
     right: 50%;
     transform: translateX(50%);
     bottom: -70%;
-    display: block; /* Ensure the button is displayed in mobile view */
-    margin-top: 10px; /* Add margin to separate it from other buttons */
+    display: none;
   }
   .detailswatch {
     font-weight: 500;
