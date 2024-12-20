@@ -70,7 +70,7 @@ async function Home() {
             <h2 className="text-lg font-semibold">Recent Episodes</h2>
             <div>
               <Link href="/recent-episodes">
-                <button className="px-2 py-1 text-sm font-medium bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                <button className="px-2 py-1 text-sm font-medium bg-purple-600 text-white rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
                   View All
                 </button>
               </Link>
@@ -83,7 +83,7 @@ async function Home() {
             <h2 className="text-lg font-semibold">Trending Now</h2>
             <div>
               <Link href="https://makima.xyz/anime/catalog?sortby=TRENDING_DESC">
-                <button className="px-2 py-1 text-sm font-medium bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                <button className="px-2 py-1 text-sm font-medium bg-purple-600 text-white rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
                   View All
                 </button>
               </Link>
@@ -96,7 +96,7 @@ async function Home() {
             <h2 className="text-lg font-semibold">All Time Popular</h2>
             <div>
               <Link href="https://makima.xyz/anime/catalog?sortby=">
-                <button className="px-2 py-1 text-sm font-medium bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                <button className="px-2 py-1 text-sm font-medium bg-purple-600 text-white rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
                   View All
                 </button>
               </Link>
