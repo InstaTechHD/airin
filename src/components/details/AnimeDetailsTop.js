@@ -71,7 +71,7 @@ function AnimeDetailsTop({ data, list, session, setList, url }) {
           <div className='flex'>
             {isAnime ? (
               <Link className={`${styles.detailswatch} ${!url && 'opacity-50 bg-black pointer-events-none'} hover:opacity-80 transition-all`} href={url ?? ''}>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className="w-5 h-5 mr-1"><path fillRule="evenodd" d="M4.5 5.653c0-1.426 1.529-2.33 2.779-1.643l11.54 6.348c1.295.712 1.295 2.573 0 3.285L7.28 19.991c-1.25.687-2.779-.217-2.779-1.643V5.653z" clipRule="evenodd"></path></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className="w-5 h-5 mr-1"><path fillRule="evenodd" d="M4.5 5.653c0-1.426 1.529-2.33 2.5-2.33h10c.971 0 2.5.904 2.5 2.33v12.694c0 1.426-1.529 2.33-2.5 2.33h-10c-.971 0-2.5-.904-2.5-2.33V5.653z" clipRule="evenodd"/><path d="M9.553 10.598a.75.75 0 011.04-.145l3.5 2.625a.75.75 0 010 1.19l-3.5 2.625a.75.75 0 01-1.193-.598v-5.25a.75.75 0 01.153-.447z"/></svg>
                 {list !== null && list?.status === 'COMPLETED' ? 'Rewatch' : list !== null && list?.progress > 0 ? `Watch Ep ${list?.progress+1}` : `Play Now`}
               </Link>
             ) : (
@@ -84,6 +84,7 @@ function AnimeDetailsTop({ data, list, session, setList, url }) {
                 ? 'Edit List'
                 : 'Add to List'
             }</Button>
+            <Button className={styles.detailstrailer} onPress={onOpen}>Watch Trailer</Button>
             {session?.user ? (
               <Modal isOpen={openlist} onOpenChange={Handlelist} size={"3xl"} backdrop="opaque" hideCloseButton={true} placement="center" radius="sm" scrollBehavior="outside"
                 classNames={{
