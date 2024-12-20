@@ -67,7 +67,7 @@ function AnimeDetailsTop({ data, list, session, setList, url }) {
             </svg>
             {data?.averageScore / 10} | <span className={`${data?.status === 'RELEASING' ? styles.activestatus : styles.notactive}`}> {data?.status}</span>
           </p>
-          <div className='flex flex-col items-center'>
+          <div className='flex items-center'>
             {isAnime ? (
               <Link className={`${styles.detailswatch} ${!url && 'opacity-50 bg-black pointer-events-none'} hover:opacity-80 transition-all`} href={url ?? ''}>
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className="w-5 h-5 mr-1"><path fillRule="evenodd" d="M4.5 5.653c0-1.426 1.529-2.33 2.5-2.33h10c.971 0 2.5.904 2.5 2.33v12.694c0 1.426-1.529 2.33-2.5 2.33h-10c-.971 0-2.5-.904-2.5-2.33V5.653z" clipRule="evenodd"/><path d="M9.553 10.598a.75.75 0 011.04-.145l3.5 2.625a.75.75 0 010 1.19l-3.5 2.625a.75.75 0 01-1.193-.598v-5.25a.75.75 0 01.153-.447z"/></svg>
@@ -83,58 +83,62 @@ function AnimeDetailsTop({ data, list, session, setList, url }) {
                 ? 'Edit List'
                 : 'Add to List'
             }</Button>
-            <Button className={styles.detailstrailer} onPress={onOpen}>Watch Trailer</Button>
-            {session?.user ? (
-              <Modal isOpen={openlist} onOpenChange={Handlelist} size={"3xl"} backdrop="opaque" hideCloseButton={true} placement="center" radius="sm" scrollBehavior="outside"
-                classNames={{
-                  body: "p-0",
-                }}>
-                <ModalContent>
-                  {(onClose) => (
-                    <>
-                      <ModalBody className=''>
-                        <div className='relative'>
-                          <div
-                            className="w-full !h-40 brightness-50 rounded-t-md"
-                            style={{ backgroundImage: `url(${data?.bannerImage || data?.coverImage.extraLarge || null})`, backgroundPosition: "center", backgroundSize: "cover", height: "100%", }}
-                          ></div>
-                          <div className='absolute z-10 bottom-1 sm:bottom-0 sm:top-[65%] left-0 sm:left-3 md:left-10 flex flex-row items-center'>
-                            <Image src={data?.coverImage?.extraLarge} alt='Image' width={120} height={120} className="hidden sm:flex rounded-md" priority={true}/>
-                            <div className='px-2 sm:px-4 mb-4 font-medium !text-xl text-white max-w-full line-clamp-2'>{data?.title?.[animetitle] || data?.title?.romaji}</div>
-                          </div>
-                        </div>
-                        <div className='mt-2 sm:mt-20 md:px-[5%] px-[2%] mb-2'>
-                          <Addtolist session={session} setList={setList} list={list}
-                            id={data?.id} eplength={data?.episodes || data?.nextAiringEpisode?.episode - 1 || 24} Handlelist={Handlelist} />
-                        </div>
-                      </ModalBody>
-                    </>
-                  )}
-                </ModalContent>
-              </Modal>
-            ) : (
-              <Modal isOpen={openlist} onOpenChange={Handlelist} size={"xs"} backdrop="opaque" hideCloseButton={true} placement="center" radius="sm"
-                classNames={{
-                  body: "py-6 px-3",
-                }}
-              >
-                <ModalContent>
-                  {(onClose) => (
-                    <>
-                      <ModalBody className=''>
-                        <div className="text-center flex flex-col justify-center items-center">
-                          <p className="text-lg mb-3">Login to edit your list.</p>
-                          <button className="font-semibold outline-none border-none py-2 px-4 bg-[#4d148c] rounded-md flex items-center" onClick={() => signIn('AniListProvider')}>
-                            <Image alt="anilist-icon" loading="lazy" width="25" height="25" src="/anilist.svg" className='mr-2' />
-                            Login With Anilist</button>
-                        </div>
-                      </ModalBody>
-                    </>
-                  )}
-                </ModalContent>
-              </Modal>
-            )}
+            <Button className={styles.detailstrailer} onPress={onOpen}>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className="w-5 h-5">
+                <path fillRule="evenodd" d="M10 16.5l6-4.5-6-4.5v9z" clipRule="evenodd" />
+              </svg>
+            </Button>
           </div>
+          {session?.user ? (
+            <Modal isOpen={openlist} onOpenChange={Handlelist} size={"3xl"} backdrop="opaque" hideCloseButton={true} placement="center" radius="sm" scrollBehavior="outside"
+              classNames={{
+                body: "p-0",
+              }}>
+              <ModalContent>
+                {(onClose) => (
+                  <>
+                    <ModalBody className=''>
+                      <div className='relative'>
+                        <div
+                          className="w-full !h-40 brightness-50 rounded-t-md"
+                          style={{ backgroundImage: `url(${data?.bannerImage || data?.coverImage.extraLarge || null})`, backgroundPosition: "center", backgroundSize: "cover", height: "100%", }}
+                        ></div>
+                        <div className='absolute z-10 bottom-1 sm:bottom-0 sm:top-[65%] left-0 sm:left-3 md:left-10 flex flex-row items-center'>
+                          <Image src={data?.coverImage?.extraLarge} alt='Image' width={120} height={120} className="hidden sm:flex rounded-md" priority={true}/>
+                          <div className='px-2 sm:px-4 mb-4 font-medium !text-xl text-white max-w-full line-clamp-2'>{data?.title?.[animetitle] || data?.title?.romaji}</div>
+                        </div>
+                      </div>
+                      <div className='mt-2 sm:mt-20 md:px-[5%] px-[2%] mb-2'>
+                        <Addtolist session={session} setList={setList} list={list}
+                          id={data?.id} eplength={data?.episodes || data?.nextAiringEpisode?.episode - 1 || 24} Handlelist={Handlelist} />
+                      </div>
+                    </ModalBody>
+                  </>
+                )}
+              </ModalContent>
+            </Modal>
+          ) : (
+            <Modal isOpen={openlist} onOpenChange={Handlelist} size={"xs"} backdrop="opaque" hideCloseButton={true} placement="center" radius="sm"
+              classNames={{
+                body: "py-6 px-3",
+              }}
+            >
+              <ModalContent>
+                {(onClose) => (
+                  <>
+                    <ModalBody className=''>
+                      <div className="text-center flex flex-col justify-center items-center">
+                        <p className="text-lg mb-3">Login to edit your list.</p>
+                        <button className="font-semibold outline-none border-none py-2 px-4 bg-[#4d148c] rounded-md flex items-center" onClick={() => signIn('AniListProvider')}>
+                          <Image alt="anilist-icon" loading="lazy" width="25" height="25" src="/anilist.svg" className='mr-2' />
+                          Login With Anilist</button>
+                      </div>
+                    </ModalBody>
+                  </>
+                )}
+              </ModalContent>
+            </Modal>
+          )}
         </div>
       </div>
     </div>
