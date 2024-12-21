@@ -1,4 +1,5 @@
 "use server"
+import axios from 'axios';
 import { redis } from '@/lib/rediscache';
 import { ANIME } from "@consumet/extensions";
 import { AnimeInfoAnilist } from '@/lib/Anilistfunctions';
@@ -7,6 +8,7 @@ import { findSimilarTitles } from '@/lib/stringSimilarity';
 const gogo = new ANIME.Gogoanime();
 const hianime = new ANIME.Zoro();
 const anipahe = new ANIME.Anipahe();
+const weebApiBaseUrl = 'https://weebapi.onrender.com';
 
 export async function getMappings(anilistId) {
     const data = await getInfo(anilistId);
@@ -128,8 +130,8 @@ async function mapZoro(title) {
 }
 
 async function mapAnipahe(title) {
-    let eng = await anipahe.search(title?.english || title?.romaji || title?.userPreferred);
-    const anipahemap = findSimilarTitles(title?.english, eng?.results);
+    let eng = await axios.get(`${weebApiBaseUrl}/get_search_results/${encodeURIComponent(title?.english || title?.romaji || title?.userPreferred)}`);
+    const anipahemap = findSimilarTitles(title?.english, eng?.data.results);
     const combined = [...anipahemap];
 
     const uniqueCombined = combined.reduce((acc, current) => {
