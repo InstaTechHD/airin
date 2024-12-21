@@ -2,6 +2,7 @@
 import { ANIME } from "@consumet/extensions";
 
 const gogo = new ANIME.Gogoanime();
+const anipahe = new ANIME.Anipahe();
 
 export async function getGogoSources(id) {
     try {
@@ -9,6 +10,17 @@ export async function getGogoSources(id) {
 
         if (!data) return null;
 
+        return data;
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
+}
+
+export async function getAnipaheSources(id) {
+    try {
+        const data = await anipahe.fetchEpisodeSources(id);
+        if (!data) return null;
         return data;
     } catch (error) {
         console.log(error);
@@ -36,6 +48,7 @@ export async function getZoroSources(id, provider, episodeid, epnum, subtype) {
         return null;
     }
 }
+
 export async function getAnimeSources(id, provider, epid, epnum, subtype) {
     try {
         if (provider === "gogoanime") {
@@ -43,7 +56,11 @@ export async function getAnimeSources(id, provider, epid, epnum, subtype) {
             return data;
         }
         if (provider === "zoro") {
-            const data = await getZoroSources(id, provider, epid, epnum, subtype)
+            const data = await getZoroSources(id, provider, epid, epnum, subtype);
+            return data;
+        }
+        if (provider === "anipahe") {
+            const data = await getAnipaheSources(epid);
             return data;
         }
     } catch (error) {
