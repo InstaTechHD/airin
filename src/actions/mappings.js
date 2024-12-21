@@ -75,7 +75,7 @@ async function mapGogo(title) {
         const title = obj.title;
         const id = obj.id;
 
-        const match = title.replace(/TV/g, "").match(/([^)0-9]+)/);
+        const match = title.replace(/\(TV\)/g, "").match(/\(([^)0-9]+)\)/);
 
         if (match && (match[1].toLowerCase() === 'uncensored' || match[1].toLowerCase() === 'dub')) {
             const key = match[1].replace(/\s+/g, '-').toLowerCase();
@@ -114,7 +114,7 @@ async function mapZoro(title) {
         const title = obj.title;
         const id = obj.id;
 
-        const match = title.replace(/TV/g, "").match(/([^)0-9]+)/);
+        const match = title.replace(/\(TV\)/g, "").match(/\(([^)0-9]+)\)/);
         if (match && (match[1].toLowerCase() === 'uncensored' || match[1].toLowerCase() === 'dub')) {
             const key = match[1].replace(/\s+/g, '-').toLowerCase();
             if (!zoro[key]) {
@@ -147,11 +147,11 @@ async function mapAnipahe(title) {
 
     const anipahe = {};
 
-    uniqueCombined.forEach((obj) => {
+    anipahemap.forEach((obj) => {
         const title = obj.title;
         const id = obj.id;
 
-        const match = title.replace(/TV/g, "").match(/([^)0-9]+)/);
+        const match = title.replace(/\(TV\)/g, "").match(/\(([^)0-9]+)\)/);
         if (match && (match[1].toLowerCase() === 'uncensored' || match[1].toLowerCase() === 'dub')) {
             const key = match[1].replace(/\s+/g, '-').toLowerCase();
             if (!anipahe[key]) {
