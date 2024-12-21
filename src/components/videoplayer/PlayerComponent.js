@@ -7,6 +7,7 @@ import { Spinner } from '@vidstack/react';
 import { toast } from 'sonner';
 import { useTitle, useNowPlaying, useDataInfo } from '../../lib/store';
 import { useStore } from "zustand";
+import { CastButton } from 'react-cast-button'; // Import CastButton
 
 function PlayerComponent({ id, epId, provider, epNum, subdub, data, session, savedep }) {
     const animetitle = useStore(useTitle, (state) => state.animetitle);
@@ -32,7 +33,7 @@ function PlayerComponent({ id, epId, provider, epNum, subdub, data, session, sav
                     toast.error("Failed to load episode. Please try again later.");
                     setError(true);
                 }
-                const sources = response?.sources?.find(i => i.quality === "default" || i.quality === "auto")?.url || response?.sources?.find(i => i.quality === "1080p")?.url || response?.sources?.find(i => i.type === "hls")?.url;
+                const sources = response?.sources?.find(i => i.quality === "default" || i.quality === "auto")?.url || response?.sources?.find(i => i.quality === "1080p")?.url || response?.sources?.find(i => i.quality === "720p")?.url;
                 setSrc(sources);
                 const download = response?.download;
 
@@ -43,7 +44,6 @@ function PlayerComponent({ id, epId, provider, epNum, subdub, data, session, sav
                     kind: i?.kind || (i?.lang === "Thumbnails" ? "thumbnails" : "subtitles"),
                     default: i?.default || (i?.lang === "English"),
                 }));
-                
 
                 setSubtitles(reFormSubtitles?.filter((s) => s.kind !== 'thumbnails'));
                 setThumbnails(reFormSubtitles?.filter((s) => s.kind === 'thumbnails'));
@@ -139,6 +139,11 @@ function PlayerComponent({ id, epId, provider, epNum, subdub, data, session, sav
                     {!loading && !error ? (
                         <div className='h-full w-full aspect-video overflow-hidden'>
                             <Player dataInfo={data} id={id} groupedEp={groupedEp} session={session} savedep={savedep} src={src} subtitles={subtitles} thumbnails={thumbnails} skiptimes={skiptimes} />
+                            {/* Add the CastButton here */}
+                            <CastButton
+                                style={{ position: 'absolute', top: '10px', right: '10px', zIndex: 1000 }}
+                                className="cast-button"
+                            />
                         </div>
                     ) : (
                         <div className="h-full w-full rounded-[8px] relative flex items-center text-xl justify-center aspect-video border border-solid border-white border-opacity-10">
