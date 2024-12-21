@@ -51,25 +51,11 @@ const fetchAndCacheData = async (id, meta, redis, cacheTime, refresh) => {
 
   if (mappings) {
     if (mappings.gogoanime && Object.keys(mappings.gogoanime).length >= 1) {
-      // Fetch sub episodes if available
-      if (
-        mappings?.gogoanime?.uncensored ||
-        mappings?.gogoanime?.sub ||
-        mappings?.gogoanime?.tv
-      ) {
-        subEpisodes = await fetchGogoEpisodes(
-          mappings?.gogoanime?.uncensored ||
-            mappings.gogoanime.sub ||
-            mappings?.gogoanime?.tv
-        );
-      }
-
-      // Fetch dub episodes if available
-      if (mappings?.gogoanime?.dub) {
-        dubEpisodes = await fetchGogoEpisodes(mappings?.gogoanime?.dub);
-      }
-
-      if (subEpisodes?.length > 0 || dubEpisodes?.length > 0) {
+      subEpisodes = await fetchGogoEpisodes(
+        mappings.gogoanime.uncensored || mappings.gogoanime.sub || mappings.gogoanime.tv
+      );
+      dubEpisodes = await fetchGogoEpisodes(mappings.gogoanime.dub);
+      if (subEpisodes.length > 0 || dubEpisodes.length > 0) {
         allepisodes.push({
           episodes: { sub: subEpisodes, dub: dubEpisodes },
           providerId: "gogoanime",
@@ -78,26 +64,14 @@ const fetchAndCacheData = async (id, meta, redis, cacheTime, refresh) => {
       }
     }
     if (mappings.zoro && Object.keys(mappings.zoro).length >= 1) {
-      let subEpisodes = [];
-
-      // Fetch sub episodes if available
-      if (
-        mappings?.zoro?.uncensored ||
-        mappings?.zoro?.sub ||
-        mappings?.zoro?.tv
-      ) {
-        subEpisodes = await fetchZoroEpisodes(
-          mappings?.zoro?.uncensored
-            ? mappings?.zoro?.uncensored
-            : mappings.zoro.sub
-        );
-      }
-      if (subEpisodes?.length > 0) {
+      subEpisodes = await fetchZoroEpisodes(
+        mappings.zoro.uncensored || mappings.zoro.sub || mappings.zoro.tv
+      );
+      if (subEpisodes.length > 0) {
         const transformedEpisodes = subEpisodes.map(episode => ({
           ...episode,
           id: transformEpisodeId(episode.id)
         }));
-      
         allepisodes.push({
           episodes: transformedEpisodes,
           providerId: "zoro",
@@ -105,61 +79,39 @@ const fetchAndCacheData = async (id, meta, redis, cacheTime, refresh) => {
       }
     }
     if (mappings.anipahe && Object.keys(mappings.anipahe).length >= 1) {
-      let subEpisodes = [];
-
-      // Fetch sub episodes if available
-      if (
-        mappings.anipahe.uncensored ||
-        mappings.anipahe.sub ||
-        mappings.anipahe.tv
-      ) {
-        subEpisodes = await fetchAnipaheEpisodes(
-          mappings.anipahe.uncensored
-            ? mappings.anipahe.uncensored
-            : mappings.anipahe.sub
-        );
-      }
+      subEpisodes = await fetchAnipaheEpisodes(
+        mappings.anipahe.uncensored || mappings.anipahe.sub || mappings.anipahe.tv
+      );
       if (subEpisodes.length > 0) {
         const transformedEpisodes = subEpisodes.map(episode => ({
           ...episode,
           id: transformEpisodeId(episode.id)
         }));
-      
         allepisodes.push({
           episodes: transformedEpisodes,
           providerId: "anipahe",
         });
       }
     }
-  } 
-  const cover = await fetchEpisodeMeta(id, !refresh)
+  }
 
-  // Check if redis is available
+  const cover = await fetchEpisodeMeta(id, !refresh);
+
   if (redis) {
-    if (allepisodes) {
-      await redis.setex(
-        `episode:${id}`,
-        cacheTime,
-        JSON.stringify(allepisodes)
-      );
+    if (allepisodes.length > 0) {
+      await redis.setex(`episode:${id}`, cacheTime, JSON.stringify(allepisodes));
     }
-
     let data = allepisodes;
     if (refresh) {
-      if (cover && cover.length > 0) {
-        try {
-          await redis.setex(`meta:${id}`, cacheTime, JSON.stringify(cover));
-          data = await CombineEpisodeMeta(allepisodes, cover);
-        } catch (error) {
-          console.error("Error serializing cover:", error.message);
-        }
+      if (cover.length > 0) {
+        await redis.setex(`meta:${id}`, cacheTime, JSON.stringify(cover));
+        data = await CombineEpisodeMeta(allepisodes, cover);
       } else if (meta) {
         data = await CombineEpisodeMeta(allepisodes, JSON.parse(meta));
       }
     } else if (meta) {
       data = await CombineEpisodeMeta(allepisodes, JSON.parse(meta));
     }
-
     return data;
   } else {
     console.error("Redis URL not provided. Caching not possible.");
@@ -170,9 +122,8 @@ const fetchAndCacheData = async (id, meta, redis, cacheTime, refresh) => {
 function transformEpisodeId(episodeId) {
   const regex = /^([^$]*)\$episode\$([^$]*)/;
   const match = episodeId.match(regex);
-
   if (match && match[1] && match[2]) {
-    return `${match[1]}?ep=${match[2]}`; // Construct the desired output with the episode number
+    return `${match[1]}?ep=${match[2]}`;
   }
-  return episodeId; // Return original ID if no match is found
+  return episodeId;
 }
