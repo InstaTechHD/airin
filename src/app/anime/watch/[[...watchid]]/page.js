@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { AnimeInfoAnilist } from '@/lib/Anilistfunctions';
 import NextAiringDate from "@/components/videoplayer/NextAiringDate";
@@ -33,19 +35,6 @@ async function getInfo(id) {
     }
   } catch (error) {
     console.error("Error fetching info: ", error);
-  }
-}
-
-async function getMangaInfo(id) {
-  try {
-    const response = await fetch(`https://anifyapi.com/manga/${id}`);
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-    return await response.json();
-  } catch (error) {
-    console.error("Error fetching manga info: ", error);
-    return null;
   }
 }
 
@@ -92,7 +81,6 @@ async function AnimeWatch({ params, searchParams }) {
   const epId = searchParams.epid;
   const subdub = searchParams.type;
   const data = await getInfo(id);
-  const mangaData = await getMangaInfo(id);
   const savedep = await Ephistory(session, id, epNum);
   const comments = []; // Placeholder for comments data
 
