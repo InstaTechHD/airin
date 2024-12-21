@@ -4,7 +4,6 @@ import { ANIME } from "@consumet/extensions";
 import { AnimeInfoAnilist } from '@/lib/Anilistfunctions'
 import { findSimilarTitles } from '@/lib/stringSimilarity';
 
-
 const gogo = new ANIME.Gogoanime();
 const hianime = new ANIME.Zoro();
 
