@@ -1,0 +1,22 @@
+.comment-section {
+  margin-top: 20px;
+}
+
+.comment {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.comment.spoiler {
+  background-color: #f9f9f9;
+}
+
+.badge {
+  background-color: #007bff;
+  color: white;
+  padding: 2px 5px;
+  margin-right: 5px;
+  border-radius: 3px;
+  font-size: 0.8em;
+}
