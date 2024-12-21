@@ -11,6 +11,19 @@ import { WatchPageInfo } from "@/lib/AnilistUser";
 import { getAuthSession } from "../../../api/auth/[...nextauth]/route";
 import { redis } from '@/lib/rediscache';
 
+async function getMangaInfo(id) {
+  try {
+    const response = await fetch(`https://anifyapi.com/manga/${id}`);
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    return await response.json();
+  } catch (error) {
+    console.error("Error fetching manga info: ", error);
+    return null;
+  }
+}
+
 async function getInfo(id) {
   try {
     let cachedData;
@@ -79,6 +92,7 @@ async function AnimeWatch({ params, searchParams }) {
   const epId = searchParams.epid;
   const subdub = searchParams.type;
   const data = await getInfo(id);
+  const mangaData = await getMangaInfo(id);
   const savedep = await Ephistory(session, id, epNum);
 
   return (
@@ -95,6 +109,8 @@ async function AnimeWatch({ params, searchParams }) {
           <Animecards data={data?.relations?.edges} cardid="Related Anime" />
           {/* Add the recommendations section here */}
           <Animecards data={data?.recommendations?.nodes} cardid="Recommendations" />
+          {/* Add manga section here */}
+          <Animecards data={mangaData?.relations?.edges} cardid="Related Manga" />
           {/* Add anime details below episodes */}
           <div className="anime-details">
             <h2>{data?.title?.english || data?.title?.romaji}</h2>
