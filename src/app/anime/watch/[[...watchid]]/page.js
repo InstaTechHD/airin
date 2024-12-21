@@ -7,22 +7,9 @@ import PlayerComponent from "@/components/videoplayer/PlayerComponent";
 import Animecards from "@/components/CardComponent/Animecards";
 import RandomTextComponent from "@/components/RandomTextComponent";
 import { createWatchEp, getEpisode } from "@/lib/EpHistoryfunctions";
-import { WatchPageInfo } from "@/lib/AnilistUser";
 import { getAuthSession } from "../../../api/auth/[...nextauth]/route";
 import { redis } from '@/lib/rediscache';
-
-async function getMangaInfo(id) {
-  try {
-    const response = await fetch(`https://anifyapi.com/manga/${id}`);
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-    return await response.json();
-  } catch (error) {
-    console.error("Error fetching manga info: ", error);
-    return null;
-  }
-}
+import CommentSection from './CommentSection'; // Import CommentSection
 
 async function getInfo(id) {
   try {
@@ -49,28 +36,41 @@ async function getInfo(id) {
   }
 }
 
+async function getMangaInfo(id) {
+  try {
+    const response = await fetch(`https://anifyapi.com/manga/${id}`);
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    return await response.json();
+  } catch (error) {
+    console.error("Error fetching manga info: ", error);
+    return null;
+  }
+}
+
 export async function generateMetadata({ params, searchParams }) {
   const id = searchParams?.id;
   const data = await getInfo(id);
   const epnum = searchParams?.ep;
 
   return {
-    title: "Episode " + epnum + ' - ' + data?.title?.english || data?.title?.romaji || 'Loading...',
+    title: "Episode " + epnum + ' - ' + (data?.title?.english || data?.title?.romaji || 'Loading...'),
     description: data?.description?.slice(0, 180),
     openGraph: {
-      title: "Episode " + epnum + ' - ' + data?.title?.english || data?.title?.romaji,
+      title: "Episode " + epnum + ' - ' + (data?.title?.english || data?.title?.romaji),
       images: [data?.coverImage?.extraLarge],
       description: data?.description,
     },
     twitter: {
       card: "summary",
-      title: "Episode " + epnum + ' - ' + data?.title?.english || data?.title?.romaji,
+      title: "Episode " + epnum + ' - ' + (data?.title?.english || data?.title?.romaji),
       description: data?.description?.slice(0, 180),
     },
   }
 }
 
-export async function Ephistory(session, aniId, epNum){
+export async function Ephistory(session, aniId, epNum) {
   try {
     let savedep;
     if (session && aniId && epNum) {
@@ -82,7 +82,7 @@ export async function Ephistory(session, aniId, epNum){
     console.error(error);
     return null;
   }
-};
+}
 
 async function AnimeWatch({ params, searchParams }) {
   const session = await getAuthSession();
@@ -94,6 +94,7 @@ async function AnimeWatch({ params, searchParams }) {
   const data = await getInfo(id);
   const mangaData = await getMangaInfo(id);
   const savedep = await Ephistory(session, id, epNum);
+  const comments = []; // Placeholder for comments data
 
   return (
     <>
@@ -105,18 +106,9 @@ async function AnimeWatch({ params, searchParams }) {
       <div className="w-full flex flex-col lg:flex-row lg:max-w-[98%] mx-auto xl:max-w-[94%] lg:gap-[6px] mt-[70px]">
         <div className="flex-grow w-full h-full">
           <PlayerComponent id={id} epId={epId} provider={provider} epNum={epNum} data={data} subdub={subdub} session={session} savedep={savedep} />
-          {/* Add the related anime section here */}
           <Animecards data={data?.relations?.edges} cardid="Related Anime" />
-          {/* Add the recommendations section here */}
           <Animecards data={data?.recommendations?.nodes} cardid="Recommendations" />
-          {/* Add manga section here */}
-          <Animecards data={mangaData?.relations?.edges} cardid="Related Manga" />
-          {/* Add anime details below episodes */}
-          <div className="anime-details">
-            <h2>{data?.title?.english || data?.title?.romaji}</h2>
-            <p>{data?.description}</p>
-            <Image src={data?.coverImage?.extraLarge} alt={data?.title?.english || data?.title?.romaji} />
-          </div>
+          <CommentSection comments={comments} /> {/* Add CommentSection here */}
         </div>
         <div className="h-full lg:flex lg:flex-col md:max-lg:w-full gap-10">
           <div className="rounded-lg hidden lg:block lg:max-w-[280px] xl:max-w-[380px] w-[100%] xl:overflow-y-scroll xl:overflow-x-hidden overflow-hidden scrollbar-hide overflow-y-hidden">
