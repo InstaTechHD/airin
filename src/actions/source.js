@@ -1,15 +1,15 @@
 "use server"
+import axios from 'axios';
 import { ANIME } from "@consumet/extensions";
 
 const gogo = new ANIME.Gogoanime();
 const anipahe = new ANIME.Anipahe();
+const weebApiBaseUrl = 'https://weebapi.onrender.com';
 
 export async function getGogoSources(id) {
     try {
         const data = await gogo.fetchEpisodeSources(id);
-
         if (!data) return null;
-
         return data;
     } catch (error) {
         console.log(error);
@@ -19,11 +19,10 @@ export async function getGogoSources(id) {
 
 export async function getAnipaheSources(id) {
     try {
-        const data = await anipahe.fetchEpisodeSources(id);
-        if (!data) return null;
-        return data;
+        const response = await axios.get(`${weebApiBaseUrl}/get_episode/${id}`);
+        return response.data;
     } catch (error) {
-        console.log(error);
+        console.error("Error fetching anipahe sources:", error);
         return null;
     }
 }
