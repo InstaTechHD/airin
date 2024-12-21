@@ -1,12 +1,40 @@
-const anipahe = new ANIME.Anipahe();
+"use server";
+import axios from 'axios';
+import { ANIME } from "@consumet/extensions";
+import { CombineEpisodeMeta } from "@/utils/EpisodeFunctions";
+import { redis } from "@/lib/rediscache";
+import { getMappings } from "./mappings";
+
+const gogo = new ANIME.Gogoanime();
+const zoro = new ANIME.Zoro();
+const weebApiBaseUrl = 'https://weebapi.onrender.com';
+
+export async function fetchGogoEpisodes(id) {
+  try {
+    const data = await gogo.fetchAnimeInfo(id);
+    return data?.episodes || [];
+  } catch (error) {
+    console.error("Error fetching gogoanime:", error.message);
+    return [];
+  }
+}
+
+export async function fetchZoroEpisodes(id) {
+  try {
+    const data = await zoro.fetchAnimeInfo(id);
+    return data?.episodes || [];
+  } catch (error) {
+    console.error("Error fetching zoro:", error.message);
+    return [];
+  }
+}
 
 export async function fetchAnipaheEpisodes(id) {
   try {
-    const data = await anipahe.fetchAnimeInfo(id);
-
-    return data?.episodes || [];
+    const response = await axios.get(`${weebApiBaseUrl}/get_full_data/${id}`);
+    return response.data.episodes || [];
   } catch (error) {
-    console.error("Error fetching anipahe:", error.message);
+    console.error("Error fetching anipahe episodes:", error.message);
     return [];
   }
 }
@@ -49,7 +77,7 @@ const fetchAndCacheData = async (id, meta, redis, cacheTime, refresh) => {
         });
       }
     }
-    if (mappings?.zoro && Object.keys(mappings.zoro).length >= 1) {
+    if (mappings.zoro && Object.keys(mappings.zoro).length >= 1) {
       let subEpisodes = [];
 
       // Fetch sub episodes if available
@@ -76,22 +104,22 @@ const fetchAndCacheData = async (id, meta, redis, cacheTime, refresh) => {
         });
       }
     }
-    if (mappings?.anipahe && Object.keys(mappings.anipahe).length >= 1) {
+    if (mappings.anipahe && Object.keys(mappings.anipahe).length >= 1) {
       let subEpisodes = [];
 
       // Fetch sub episodes if available
       if (
-        mappings?.anipahe?.uncensored ||
-        mappings?.anipahe?.sub ||
-        mappings?.anipahe?.tv
+        mappings.anipahe.uncensored ||
+        mappings.anipahe.sub ||
+        mappings.anipahe.tv
       ) {
         subEpisodes = await fetchAnipaheEpisodes(
-          mappings?.anipahe?.uncensored
-            ? mappings?.anipahe?.uncensored
+          mappings.anipahe.uncensored
+            ? mappings.anipahe.uncensored
             : mappings.anipahe.sub
         );
       }
-      if (subEpisodes?.length > 0) {
+      if (subEpisodes.length > 0) {
         const transformedEpisodes = subEpisodes.map(episode => ({
           ...episode,
           id: transformEpisodeId(episode.id)
@@ -118,7 +146,7 @@ const fetchAndCacheData = async (id, meta, redis, cacheTime, refresh) => {
 
     let data = allepisodes;
     if (refresh) {
-      if (cover && cover?.length > 0) {
+      if (cover && cover.length > 0) {
         try {
           await redis.setex(`meta:${id}`, cacheTime, JSON.stringify(cover));
           data = await CombineEpisodeMeta(allepisodes, cover);
@@ -138,3 +166,13 @@ const fetchAndCacheData = async (id, meta, redis, cacheTime, refresh) => {
     return allepisodes;
   }
 };
+
+function transformEpisodeId(episodeId) {
+  const regex = /^([^$]*)\$episode\$([^$]*)/;
+  const match = episodeId.match(regex);
+
+  if (match && match[1] && match[2]) {
+    return `${match[1]}?ep=${match[2]}`; // Construct the desired output with the episode number
+  }
+  return episodeId; // Return original ID if no match is found
+}
