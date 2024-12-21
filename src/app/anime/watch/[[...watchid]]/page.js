@@ -5,6 +5,7 @@ import PlayerAnimeCard from "@/components/videoplayer/PlayerAnimeCard";
 import Navbarcomponent from "@/components/navbar/Navbar";
 import PlayerComponent from "@/components/videoplayer/PlayerComponent";
 import Animecards from "@/components/CardComponent/Animecards";
+import RandomTextComponent from "@/components/RandomTextComponent";
 import { createWatchEp, getEpisode } from "@/lib/EpHistoryfunctions";
 import { WatchPageInfo } from "@/lib/AnilistUser";
 import { getAuthSession } from "../../../api/auth/[...nextauth]/route";
@@ -83,12 +84,13 @@ async function AnimeWatch({ params, searchParams }) {
   return (
     <>
       <Navbarcomponent />
+      <RandomTextComponent />
+      {data?.status === 'RELEASING' &&
+        <NextAiringDate nextAiringEpisode={data?.nextAiringEpisode} />
+      }
       <div className="w-full flex flex-col lg:flex-row lg:max-w-[98%] mx-auto xl:max-w-[94%] lg:gap-[6px] mt-[70px]">
         <div className="flex-grow w-full h-full">
           <PlayerComponent id={id} epId={epId} provider={provider} epNum={epNum} data={data} subdub={subdub} session={session} savedep={savedep} />
-          {data?.status === 'RELEASING' &&
-            <NextAiringDate nextAiringEpisode={data?.nextAiringEpisode} />
-          }
           {/* Add the related anime section here */}
           <Animecards data={data?.relations?.edges} cardid="Related Anime" />
           {/* Add the recommendations section here */}
