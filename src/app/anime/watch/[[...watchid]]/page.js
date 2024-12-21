@@ -93,6 +93,12 @@ async function AnimeWatch({ params, searchParams }) {
           <Animecards data={data?.relations?.edges} cardid="Related Anime" />
           {/* Add the recommendations section here */}
           <Animecards data={data?.recommendations?.nodes} cardid="Recommendations" />
+          {/* Add anime details below episodes */}
+          <div className="anime-details">
+            <h2>{data?.title?.english || data?.title?.romaji}</h2>
+            <p>{data?.description}</p>
+            <Image src={data?.coverImage?.extraLarge} alt={data?.title?.english || data?.title?.romaji} />
+          </div>
         </div>
         <div className="h-full lg:flex lg:flex-col md:max-lg:w-full gap-10">
           <div className="rounded-lg hidden lg:block lg:max-w-[280px] xl:max-w-[380px] w-[100%] xl:overflow-y-scroll xl:overflow-x-hidden overflow-hidden scrollbar-hide overflow-y-hidden">
