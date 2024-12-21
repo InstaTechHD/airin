@@ -1,5 +1,5 @@
 "use client"
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import { getAnimeSources } from '@/actions/source';
 import PlayerEpisodeList from './PlayerEpisodeList';
 import Player from './VidstackPlayer/player';
@@ -7,7 +7,53 @@ import { Spinner } from '@vidstack/react';
 import { toast } from 'sonner';
 import { useTitle, useNowPlaying, useDataInfo } from '../../lib/store';
 import { useStore } from "zustand";
-import { CastButton } from 'react-cast-button'; // Import CastButton
+
+function CustomCastButton() {
+    useEffect(() => {
+        if (window.chrome && window.chrome.cast) {
+            const context = cast.framework.CastContext.getInstance();
+            context.setOptions({
+                receiverApplicationId: chrome.cast.media.DEFAULT_MEDIA_RECEIVER_APP_ID,
+                autoJoinPolicy: chrome.cast.AutoJoinPolicy.ORIGIN_SCOPED,
+            });
+        }
+    }, []);
+
+    const launchCastSession = () => {
+        const sessionRequest = new chrome.cast.SessionRequest(chrome.cast.media.DEFAULT_MEDIA_RECEIVER_APP_ID);
+        const apiConfig = new chrome.cast.ApiConfig(
+            sessionRequest,
+            (session) => console.log('Session started:', session),
+            (error) => console.error('Error starting session:', error)
+        );
+
+        chrome.cast.initialize(apiConfig, () => {
+            chrome.cast.requestSession(
+                (session) => console.log('Cast session started:', session),
+                (err) => console.error('Error starting cast session:', err)
+            );
+        });
+    };
+
+    return (
+        <button
+            onClick={launchCastSession}
+            style={{
+                position: 'absolute',
+                top: '10px',
+                right: '10px',
+                zIndex: 1000,
+                background: '#fff',
+                border: 'none',
+                borderRadius: '50%',
+                padding: '10px',
+                cursor: 'pointer',
+            }}
+        >
+            Cast
+        </button>
+    );
+}
 
 function PlayerComponent({ id, epId, provider, epNum, subdub, data, session, savedep }) {
     const animetitle = useStore(useTitle, (state) => state.animetitle);
@@ -28,7 +74,6 @@ function PlayerComponent({ id, epId, provider, epNum, subdub, data, session, sav
             try {
                 const response = await getAnimeSources(id, provider, epId, epNum, subdub);
 
-                // console.log(response)
                 if (!response?.sources?.length > 0) {
                     toast.error("Failed to load episode. Please try again later.");
                     setError(true);
@@ -91,7 +136,6 @@ function PlayerComponent({ id, epId, provider, epNum, subdub, data, session, sav
 
                 useNowPlaying.setState({ nowPlaying: episode });
                 setSkipTimes(skiptime);
-                // console.log(skipData);
                 setLoading(false);
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -139,11 +183,7 @@ function PlayerComponent({ id, epId, provider, epNum, subdub, data, session, sav
                     {!loading && !error ? (
                         <div className='h-full w-full aspect-video overflow-hidden'>
                             <Player dataInfo={data} id={id} groupedEp={groupedEp} session={session} savedep={savedep} src={src} subtitles={subtitles} thumbnails={thumbnails} skiptimes={skiptimes} />
-                            {/* Add the CastButton here */}
-                            <CastButton
-                                style={{ position: 'absolute', top: '10px', right: '10px', zIndex: 1000 }}
-                                className="cast-button"
-                            />
+                            <CustomCastButton />
                         </div>
                     ) : (
                         <div className="h-full w-full rounded-[8px] relative flex items-center text-xl justify-center aspect-video border border-solid border-white border-opacity-10">
@@ -172,7 +212,7 @@ function PlayerComponent({ id, epId, provider, epNum, subdub, data, session, sav
                 <PlayerEpisodeList id={id} data={data} setwatchepdata={setepisodeData} onprovider={provider} epnum={epNum} />
             </div>
         </div>
-    )
+    );
 }
 
-export default PlayerComponent
+export default
