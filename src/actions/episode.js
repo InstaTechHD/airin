@@ -1,51 +1,12 @@
-"use server";
-import { ANIME } from "@consumet/extensions";
-import { CombineEpisodeMeta } from "@/utils/EpisodeFunctions";
-import { redis } from "@/lib/rediscache";
-import { getMappings } from "./mappings";
+const anipahe = new ANIME.Anipahe();
 
-const gogo = new ANIME.Gogoanime();
-const zoro = new ANIME.Zoro();
-
-export async function fetchGogoEpisodes(id) {
+export async function fetchAnipaheEpisodes(id) {
   try {
-    const data = await gogo.fetchAnimeInfo(id);
+    const data = await anipahe.fetchAnimeInfo(id);
 
     return data?.episodes || [];
   } catch (error) {
-    console.error("Error fetching gogoanime:", error.message);
-    return [];
-  }
-}
-
-export async function fetchZoroEpisodes(id) {
-  try {
-    const data = await zoro.fetchAnimeInfo(id);
-
-    return data?.episodes || [];
-  } catch (error) {
-    console.error("Error fetching zoro:", error.message);
-    return [];
-  }
-}
-
-async function fetchEpisodeMeta(id, available = false) {
-  try {
-    if (available) {
-      return null;
-    }
-    const res = await fetch(
-      `https://api.ani.zip/mappings?anilist_id=${id}`
-    );
-const data = await res.json()
-    const episodesArray = Object.values(data?.episodes);
-
-    if (!episodesArray) {
-      return [];
-    }
-    return episodesArray;
-  } catch (error) {
-    console.error("Error fetching and processing meta:", error.message);
+    console.error("Error fetching anipahe:", error.message);
     return [];
   }
 }
@@ -115,6 +76,33 @@ const fetchAndCacheData = async (id, meta, redis, cacheTime, refresh) => {
         });
       }
     }
+    if (mappings?.anipahe && Object.keys(mappings.anipahe).length >= 1) {
+      let subEpisodes = [];
+
+      // Fetch sub episodes if available
+      if (
+        mappings?.anipahe?.uncensored ||
+        mappings?.anipahe?.sub ||
+        mappings?.anipahe?.tv
+      ) {
+        subEpisodes = await fetchAnipaheEpisodes(
+          mappings?.anipahe?.uncensored
+            ? mappings?.anipahe?.uncensored
+            : mappings.anipahe.sub
+        );
+      }
+      if (subEpisodes?.length > 0) {
+        const transformedEpisodes = subEpisodes.map(episode => ({
+          ...episode,
+          id: transformEpisodeId(episode.id)
+        }));
+      
+        allepisodes.push({
+          episodes: transformedEpisodes,
+          providerId: "anipahe",
+        });
+      }
+    }
   } 
   const cover = await fetchEpisodeMeta(id, !refresh)
 
@@ -150,83 +138,3 @@ const fetchAndCacheData = async (id, meta, redis, cacheTime, refresh) => {
     return allepisodes;
   }
 };
-
-export const getEpisodes = async (id, status, refresh = false) => {
-  let cacheTime = null;
-  if (status) {
-    cacheTime = 60 * 60 * 3;
-  } else {
-    cacheTime = 60 * 60 * 24 * 45;
-  }
-
-  let meta = null;
-  let cached;
-
-  if (redis) {
-    try {
-      // // Find keys matching the pattern "meta:*"
-      // const keys = await redis.keys("meta:*");
-
-      // // Delete keys matching the pattern "meta:*"
-      // if (keys.length > 0) {
-      //   await redis.del(keys);
-      //   console.log(`Deleted ${keys.length} keys matching the pattern "meta:*"`);
-      // }
-      meta = await redis.get(`meta:${id}`);
-      if (JSON.parse(meta)?.length === 0) {
-        await redis.del(`meta:${id}`);
-        console.log("deleted meta cache");
-        meta = null;
-      }
-      cached = await redis.get(`episode:${id}`);
-      if (JSON.parse(cached)?.length === 0) {
-        await redis.del(`episode:${id}`);
-        cached = null;
-      }
-      let data;
-      if (refresh) {
-        data = await fetchAndCacheData(id, meta, redis, cacheTime, refresh);
-      }
-      if (data?.length > 0) {
-        console.log("deleted cache");
-        return data;
-      }
-
-      console.log("using redis");
-    } catch (error) {
-      console.error("Error checking Redis cache:", error.message);
-    }
-  }
-
-  if (cached) {
-    try {
-      let cachedData = JSON.parse(cached);
-      if (meta) {
-        cachedData = await CombineEpisodeMeta(cachedData, JSON.parse(meta));
-      }
-      return cachedData;
-    } catch (error) {
-      console.error("Error parsing cached data:", error.message);
-    }
-  } else {
-    const fetchdata = await fetchAndCacheData(
-      id,
-      meta,
-      redis,
-      cacheTime,
-      !refresh
-    );
-    return fetchdata;
-  }
-};
-
-
-function transformEpisodeId(episodeId) {
-  const regex = /^([^$]*)\$episode\$([^$]*)/;
-  const match = episodeId.match(regex);
-
-  if (match && match[1] && match[2]) {
-    return `${match[1]}?ep=${match[2]}`; // Construct the desired output with the episode number
-  }
-  return episodeId; // Return original ID if no match is found
-}
