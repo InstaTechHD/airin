@@ -167,7 +167,7 @@ function Navbarcomponent({ home = false }) {
                                         className="cursor-default"
                                         endContent={
                                             <select
-                                                className="z-10 outline-none cursor-pointer w-[72px] py-0.5 rounded-md text-tiny group-data-[hover=true]:border-default-500 border-small border-default-300 dark:border-default-200 bg-transparent text-default-500"
+                                                className="z-10 outline-none cursor-pointer w-[72px] py-0.5 rounded-md text-tiny group-data-[hover=true]:border-default-500 border-small border-default-200"
                                                 id="theme"
                                                 name="theme"
                                                 value={selectedTimeframe}
@@ -176,10 +176,6 @@ function Navbarcomponent({ home = false }) {
                                                 <option>Today</option>
                                                 <option>Recent</option>
                                             </select>
-                                            // <div className='flex flex-row gap-3'>
-                                            //     <button className='bg-[#18181b] px-3 py-1'>Today</button>
-                                            //     <button>Recent</button>
-                                            // </div>
                                         }
                                     >
                                         Select Timeframe
