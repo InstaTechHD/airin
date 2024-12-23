@@ -2,7 +2,7 @@
 import Animecard from '@/components/CardComponent/Animecards'
 import Herosection from '@/components/home/Herosection'
 import Navbarcomponent from '@/components/navbar/Navbar'
-import { TrendingAnilist, PopularAnilist, Top100Anilist, SeasonalAnilist } from '@/lib/Anilistfunctions'
+import { TrendingAnilist, PopularAnilist, Top100Anilist, SeasonalAnilist, CategoriesAnilist, HeroAnilist } from '@/lib/Anilistfunctions'
 import React, { useEffect, useState } from 'react'
 import { MotionDiv } from '@/utils/MotionDiv'
 import VerticalList from '@/components/home/VerticalList'
@@ -27,20 +27,22 @@ async function getHomePage() {
       }
     }
     if (cachedData) {
-      const { herodata, populardata, top100data, seasonaldata } = JSON.parse(cachedData);
-      return { herodata, populardata, top100data, seasonaldata };
+      const { herodata, populardata, top100data, seasonaldata, categoriesdata, herosectiondata } = JSON.parse(cachedData);
+      return { herodata, populardata, top100data, seasonaldata, categoriesdata, herosectiondata };
     } else {
-      const [herodata, populardata, top100data, seasonaldata] = await Promise.all([
+      const [herodata, populardata, top100data, seasonaldata, categoriesdata, herosectiondata] = await Promise.all([
         TrendingAnilist(),
         PopularAnilist(),
         Top100Anilist(),
-        SeasonalAnilist()
+        SeasonalAnilist(),
+        CategoriesAnilist(),
+        HeroAnilist()
       ]);
       const cacheTime = 60 * 60 * 2;
       if (redis) {
-        await redis.set(`homepage`, JSON.stringify({ herodata, populardata, top100data, seasonaldata }), "EX", cacheTime);
+        await redis.set(`homepage`, JSON.stringify({ herodata, populardata, top100data, seasonaldata, categoriesdata, herosectiondata }), "EX", cacheTime);
       }
-      return { herodata, populardata, top100data, seasonaldata };
+      return { herodata, populardata, top100data, seasonaldata, categoriesdata, herosectiondata };
     }
   } catch (error) {
     console.error("Error fetching homepage from anilist: ", error);
@@ -54,7 +56,9 @@ function Home() {
     herodata: [],
     populardata: [],
     top100data: [],
-    seasonaldata: []
+    seasonaldata: [],
+    categoriesdata: [],
+    herosectiondata: []
   });
 
   useEffect(() => {
@@ -62,18 +66,18 @@ function Home() {
       const sessionData = await getAuthSession();
       setSession(sessionData);
 
-      const { herodata, populardata, top100data, seasonaldata } = await getHomePage();
-      setData({ herodata, populardata, top100data, seasonaldata });
+      const { herodata, populardata, top100data, seasonaldata, categoriesdata, herosectiondata } = await getHomePage();
+      setData({ herodata, populardata, top100data, seasonaldata, categoriesdata, herosectiondata });
     }
     fetchData();
   }, []);
 
-  const { herodata, populardata, top100data, seasonaldata } = data;
+  const { herodata, populardata, top100data, seasonaldata, categoriesdata, herosectiondata } = data;
 
   return (
     <div>
       <Navbarcomponent home={true} />
-      <Herosection data={herodata} />
+      <Herosection data={herosectiondata} />
       <div className='sm:max-w-[97%] md:max-w-[95%] lg:max-w-[90%] xl:max-w-[85%] mx-auto flex flex-col md:gap-11 sm:gap-7 gap-5 mt-8'>
         <div>
           <ContinueWatching session={session} />
@@ -90,6 +94,9 @@ function Home() {
         </div>
         <div>
           <MangaFeature /> {/* Add the MangaFeature component */}
+        </div>
+        <div>
+          <Animecard data={categoriesdata} cardid="Categories" />
         </div>
         <div className='lg:flex lg:flex-row justify-between lg:gap-20'>
           <VerticalList data={top100data} mobiledata={seasonaldata} id="Top 100 Anime" />
