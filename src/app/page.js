@@ -13,7 +13,7 @@ import EstimatedSchedule from '@/components/home/EstimatedSchedule'; // Import t
 import RandomTextComponent from '@/components/RandomTextComponent';
 import { getHomePageData, getSession } from './HomeServer'; // Import server functions
 
-export default function Home() {
+export default async function Home() {
   const session = await getSession();
   const { herodata = [], populardata = [], top100data = [], seasonaldata = [] } = await getHomePageData();
 
