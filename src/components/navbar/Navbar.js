@@ -182,7 +182,7 @@ function Navbarcomponent({ home = false }) {
                                         className="cursor-default"
                                         endContent={
                                             <select
-                                                className="z-10 outline-none cursor-pointer w-[72px] py-0.5 rounded-md text-tiny group-data-[hover=true]:border-default-500 border-small border-def[...]
+                                                className="z-10 outline-none cursor-pointer w-[72px] py-0.5 rounded-md text-tiny group-data-[hover=true]:border-default-500 border-small border-default-500"
                                                 id="theme"
                                                 name="theme"
                                                 value={selectedTimeframe}
@@ -204,7 +204,7 @@ function Navbarcomponent({ home = false }) {
                                                 <DropdownItem
                                                     key={item.id}
                                                     showFullDescription
-                                                    description={`${contexts?.[0]} ${episode} ${contexts?.[1]} ${media?.title?.[animetitle] || media?.title?.romaji} ${contexts?.[contexts?.length]}
+                                                    description={`${contexts?.[0]} ${episode} ${contexts?.[1]} ${media?.title?.[animetitle] || media?.title?.romaji} ${contexts?.[contexts?.length - 1]}`}
                                                     className='py-2 w-full'
                                                     classNames={{
                                                         description: 'text-[11px] text-[#A1A1AA]',
@@ -235,7 +235,7 @@ function Navbarcomponent({ home = false }) {
                                                 <DropdownItem
                                                     key={item.id}
                                                     showFullDescription
-                                                    description={`${contexts?.[0]} ${episode} ${contexts?.[1]} ${media?.title?.[animetitle] || media?.title?.romaji} ${contexts?.[contexts?.length]}
+                                                    description={`${contexts?.[0]} ${episode} ${contexts?.[1]} ${media?.title?.[animetitle] || media?.title?.romaji} ${contexts?.[contexts?.length - 1]}`}
                                                     className='py-2 w-full'
                                                     classNames={{
                                                         description: 'text-[11px] text-[#A1A1AA]',
