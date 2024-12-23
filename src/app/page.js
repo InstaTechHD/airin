@@ -1,4 +1,5 @@
 "use client"
+
 import Animecard from '@/components/CardComponent/Animecards'
 import Herosection from '@/components/home/Herosection'
 import Navbarcomponent from '@/components/navbar/Navbar'
@@ -75,22 +76,34 @@ const fetchMangaData = async (type) => {
   }
 };
 
-async function Home() {
-  const session = await getAuthSession();
-  const { herodata = [], populardata = [], top100data = [], seasonaldata = [] } = await getHomePage();
+function Home() {
+  const [session, setSession] = useState(null);
+  const [herodata, setHerodata] = useState([]);
+  const [populardata, setPopulardata] = useState([]);
+  const [top100data, setTop100data] = useState([]);
+  const [seasonaldata, setSeasonaldata] = useState([]);
   const [trendingManga, setTrendingManga] = useState([]);
   const [popularManga, setPopularManga] = useState([]);
 
   useEffect(() => {
-    const fetchManga = async () => {
+    const fetchData = async () => {
+      const session = await getAuthSession();
+      setSession(session);
+      const homePageData = await getHomePage();
+      if (homePageData) {
+        setHerodata(homePageData.herodata);
+        setPopulardata(homePageData.populardata);
+        setTop100data(homePageData.top100data);
+        setSeasonaldata(homePageData.seasonaldata);
+      }
       setTrendingManga(await fetchMangaData('TRENDING_DESC'));
       setPopularManga(await fetchMangaData('POPULARITY_DESC'));
     };
-    fetchManga();
+    fetchData();
   }, []);
 
   const renderMangaCard = (data, cardid) => (
-    <Animecard data={data} cardid={cardid} type="manga"/>
+    <Animecard data={data} cardid={cardid} type="manga" />
   );
 
   return (
@@ -106,10 +119,10 @@ async function Home() {
           <RecentEpisodes cardid="Recent Episodes" />
         </div>
         <div>
-          {renderMangaCard(herodata, "Trending Now")}
+          <Animecard data={herodata} cardid="Trending Now" />
         </div>
         <div>
-          {renderMangaCard(populardata, "All Time Popular")}
+          <Animecard data={populardata} cardid="All Time Popular" />
         </div>
         <div>
           <div className='lg:flex lg:flex-row justify-between lg:gap-20'>
@@ -125,7 +138,7 @@ async function Home() {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default Home
+export default Home;
