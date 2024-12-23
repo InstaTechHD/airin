@@ -1,4 +1,4 @@
-"use server"
+"use client"
 import Animecard from '@/components/CardComponent/Animecards'
 import Herosection from '@/components/home/Herosection'
 import Navbarcomponent from '@/components/navbar/Navbar'
