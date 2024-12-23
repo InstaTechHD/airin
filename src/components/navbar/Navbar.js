@@ -26,9 +26,14 @@ function Navbarcomponent({ home = false }) {
     const [notifications, setNotifications] = useState([]);
     const [todayNotifications, setTodayNotifications] = useState([]);
     const [selectedTimeframe, setSelectedTimeframe] = useState('Today');
+    const [selectedSearchType, setSelectedSearchType] = useState('anime');
 
     const handleTimeframeChange = (e) => {
         setSelectedTimeframe(e.target.value);
+    };
+
+    const handleSearchTypeChange = (e) => {
+        setSelectedSearchType(e.target.value);
     };
 
     useMotionValueEvent(scrollY, "change", (latest) => {
@@ -120,26 +125,36 @@ function Navbarcomponent({ home = false }) {
                 </div>
             </div>
             <div className={styles.navright}>
-                <button
-                    type="button"
-                    title="Search"
-                    onClick={() => useSearchbar.setState({ Isopen: true }) } 
-                    className="w-[26px] h-[26px] outline-none"
-                >
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
+                <div className="flex items-center">
+                    <select
+                        value={selectedSearchType}
+                        onChange={handleSearchTypeChange}
+                        className="mr-4 p-1 border rounded"
                     >
-                        <path
-                            fill="none"
-                            stroke="currentColor"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M15 15l6 6m-11-4a7 7 0 110-14 7 7 0 010 14z"
-                        ></path>
-                    </svg>
-                </button>
+                        <option value="anime">Anime</option>
+                        <option value="manga">Manga</option>
+                    </select>
+                    <button
+                        type="button"
+                        title="Search"
+                        onClick={() => useSearchbar.setState({ Isopen: true })} 
+                        className="w-[26px] h-[26px] outline-none"
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                fill="none"
+                                stroke="currentColor"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="2"
+                                d="M15 15l6 6m-11-4a7 7 0 110-14 7 7 0 010 14z"
+                            ></path>
+                        </svg>
+                    </button>
+                </div>
                 <div>
                     {isLoggedIn && (
                         <Dropdown placement="bottom-end" classNames={{
@@ -167,7 +182,7 @@ function Navbarcomponent({ home = false }) {
                                         className="cursor-default"
                                         endContent={
                                             <select
-                                                className="z-10 outline-none cursor-pointer w-[72px] py-0.5 rounded-md text-tiny group-data-[hover=true]:border-default-500 border-small border-default-200"
+                                                className="z-10 outline-none cursor-pointer w-[72px] py-0.5 rounded-md text-tiny group-data-[hover=true]:border-default-500 border-small border-def[...]
                                                 id="theme"
                                                 name="theme"
                                                 value={selectedTimeframe}
@@ -189,7 +204,7 @@ function Navbarcomponent({ home = false }) {
                                                 <DropdownItem
                                                     key={item.id}
                                                     showFullDescription
-                                                    description={`${contexts?.[0]} ${episode} ${contexts?.[1]} ${media?.title?.[animetitle] || media?.title?.romaji} ${contexts?.[contexts?.length - 1]}`}
+                                                    description={`${contexts?.[0]} ${episode} ${contexts?.[1]} ${media?.title?.[animetitle] || media?.title?.romaji} ${contexts?.[contexts?.length]}
                                                     className='py-2 w-full'
                                                     classNames={{
                                                         description: 'text-[11px] text-[#A1A1AA]',
@@ -220,7 +235,7 @@ function Navbarcomponent({ home = false }) {
                                                 <DropdownItem
                                                     key={item.id}
                                                     showFullDescription
-                                                    description={`${contexts?.[0]} ${episode} ${contexts?.[1]} ${media?.title?.[animetitle] || media?.title?.romaji} ${contexts?.[contexts?.length - 1]}`}
+                                                    description={`${contexts?.[0]} ${episode} ${contexts?.[1]} ${media?.title?.[animetitle] || media?.title?.romaji} ${contexts?.[contexts?.length]}
                                                     className='py-2 w-full'
                                                     classNames={{
                                                         description: 'text-[11px] text-[#A1A1AA]',
