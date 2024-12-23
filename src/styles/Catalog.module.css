@@ -270,3 +270,34 @@
         margin: 3px 0;
     }
 }
+
+/* 18+ icon and green pulse */
+
+.adultIcon {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    background-color: rgba(255, 0, 0, 0.8);
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 2px 4px;
+    border-radius: 4px;
+    z-index: 10;
+}
+
+.pulse-green {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(0, 255, 0, 0.7);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(0, 255, 0, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(0, 255, 0, 0);
+    }
+}
