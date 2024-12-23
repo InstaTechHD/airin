@@ -1,4 +1,6 @@
 // src/app/page.js
+"use client"; // Add this line
+
 "use server";
 import Link from 'next/link';
 import Animecard from '@/components/CardComponent/Animecards';
