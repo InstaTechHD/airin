@@ -23,11 +23,13 @@ module.exports = function (webpackEnv) {
     }),
     webpack: (config, { isServer }) => {
       if (!isServer) {
-        // Adding fallback for tls and net modules
+        // Adding fallback for common Node.js modules
         config.resolve.fallback = {
           ...config.resolve.fallback,
-          tls: false,
-          net: false,
+          fs: false,
+          child_process: false,
+          dns: false,
+          "fs/promises": false,
         };
       }
       return config;
