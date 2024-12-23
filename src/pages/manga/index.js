@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import Link from 'next/link';
 import styles from './Manga.module.css';
@@ -7,6 +7,8 @@ const MangaPage = () => {
   const [mangaList, setMangaList] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const touchStartX = useRef(0);
+  const touchEndX = useRef(0);
 
   useEffect(() => {
     const fetchManga = async () => {
@@ -59,8 +61,26 @@ const MangaPage = () => {
     }
   };
 
+  const handleTouchStart = (e) => {
+    touchStartX.current = e.changedTouches[0].screenX;
+  };
+
+  const handleTouchEnd = (e) => {
+    touchEndX.current = e.changedTouches[0].screenX;
+    handleSwipe();
+  };
+
+  const handleSwipe = () => {
+    if (touchStartX.current - touchEndX.current > 50) {
+      handleNextPage();
+    }
+    if (touchStartX.current - touchEndX.current < -50) {
+      handlePreviousPage();
+    }
+  };
+
   return (
-    <div className={styles.mangaPage}>
+    <div className={styles.mangaPage} onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
       <h1>All Manga</h1>
       <div className={styles.mangaGrid}>
         {mangaList.map(manga => (
