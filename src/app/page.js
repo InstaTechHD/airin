@@ -3,7 +3,7 @@ import Animecard from '@/components/CardComponent/Animecards'
 import Herosection from '@/components/home/Herosection'
 import Navbarcomponent from '@/components/navbar/Navbar'
 import { TrendingAnilist, PopularAnilist, Top100Anilist, SeasonalAnilist } from '@/lib/Anilistfunctions'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { MotionDiv } from '@/utils/MotionDiv'
 import VerticalList from '@/components/home/VerticalList'
 import ContinueWatching from '@/components/home/ContinueWatching'
@@ -11,7 +11,7 @@ import RecentEpisodes from '@/components/home/RecentEpisodes'
 import { getAuthSession } from './api/auth/[...nextauth]/route'
 import { redis } from '@/lib/rediscache'
 import RandomTextComponent from '@/components/RandomTextComponent';
-// import { getWatchHistory } from '@/lib/EpHistoryfunctions'
+import axios from 'axios';
 
 async function getHomePage() {
   try {
@@ -48,40 +48,80 @@ async function getHomePage() {
   }
 }
 
+const fetchMangaData = async (type) => {
+  try {
+    const response = await axios.post('https://graphql.anilist.co', {
+      query: `
+        query {
+          Page(page: 1, perPage: 10) {
+            media(type: MANGA, sort: ${type}) {
+              id
+              title {
+                romaji
+                english
+              }
+              coverImage {
+                extraLarge
+              }
+            }
+          }
+        }
+      `
+    });
+    return response.data.data.Page.media;
+  } catch (error) {
+    console.error(`Error fetching ${type.toLowerCase()} manga:`, error);
+    return [];
+  }
+};
+
 async function Home() {
   const session = await getAuthSession();
   const { herodata = [], populardata = [], top100data = [], seasonaldata = [] } = await getHomePage();
-  // const history = await getWatchHistory();
-  // console.log(history)
+  const [trendingManga, setTrendingManga] = useState([]);
+  const [popularManga, setPopularManga] = useState([]);
+
+  useEffect(() => {
+    const fetchManga = async () => {
+      setTrendingManga(await fetchMangaData('TRENDING_DESC'));
+      setPopularManga(await fetchMangaData('POPULARITY_DESC'));
+    };
+    fetchManga();
+  }, []);
+
+  const renderMangaCard = (data, cardid) => (
+    <Animecard data={data} cardid={cardid} type="manga"/>
+  );
 
   return (
     <div>
       <Navbarcomponent home={true} />
       <Herosection data={herodata} />
       <div className='sm:max-w-[97%] md:max-w-[95%] lg:max-w-[90%] xl:max-w-[85%] mx-auto flex flex-col md:gap-11 sm:gap-7 gap-5 mt-8'>
-        <div
-        >
+        <div>
           <ContinueWatching session={session} />
           <RandomTextComponent />
         </div>
-        <div
-        >
+        <div>
           <RecentEpisodes cardid="Recent Episodes" />
         </div>
-        <div
-        >
-          <Animecard data={herodata} cardid="Trending Now" />
+        <div>
+          {renderMangaCard(herodata, "Trending Now")}
         </div>
-        <div
-        >
-          <Animecard data={populardata} cardid="All Time Popular" />
+        <div>
+          {renderMangaCard(populardata, "All Time Popular")}
         </div>
-        <div
-        >
+        <div>
           <div className='lg:flex lg:flex-row justify-between lg:gap-20'>
             <VerticalList data={top100data} mobiledata={seasonaldata} id="Top 100 Anime" />
             <VerticalList data={seasonaldata} id="Seasonal Anime" />
           </div>
+        </div>
+        <div>
+          {renderMangaCard(trendingManga, "Trending Manga")}
+        </div>
+        <div>
+          {renderMangaCard(popularManga, "Popular Manga")}
         </div>
       </div>
     </div>
