@@ -48,10 +48,7 @@ async function getHomePage() {
   }
 }
 
-async function Home() {
-  const session = await getAuthSession();
-  const { herodata = [], populardata = [], top100data = [], seasonaldata = [] } = await getHomePage();
-
+function Home({ session, herodata, populardata, top100data, seasonaldata }) {
   return (
     <div>
       <Navbarcomponent home={true} />
@@ -71,7 +68,7 @@ async function Home() {
           <Animecard data={populardata} cardid="All Time Popular" />
         </div>
         <div>
-          <MangaFeature />  // Add the MangaFeature component
+          <MangaFeature /> {/* Add the MangaFeature component */}
         </div>
         <div className='lg:flex lg:flex-row justify-between lg:gap-20'>
           <VerticalList data={top100data} mobiledata={seasonaldata} id="Top 100 Anime" />
@@ -80,6 +77,20 @@ async function Home() {
       </div>
     </div>
   )
+}
+
+export async function getServerSideProps() {
+  const session = await getAuthSession();
+  const { herodata = [], populardata = [], top100data = [], seasonaldata = [] } = await getHomePage();
+  return {
+    props: {
+      session,
+      herodata,
+      populardata,
+      top100data,
+      seasonaldata,
+    },
+  };
 }
 
 export default Home
