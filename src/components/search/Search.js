@@ -150,6 +150,7 @@ function Search() {
                                                                     <div className="flex items-center text-gray-400 text-xs">
                                                                         <span className="flex gap-1">
                                                                             <svg xmlns="http://www.w3.org/2000/svg" className="w-3 h-3 mt-[1pxd]" viewBox="0 0 1664 1600"><path fill="currentColor" />
+                                                                            </svg>
                                                                             {item.averageScore / 10 || "0"}
                                                                         </span>
                                                                         <span className='mx-1 mb-[5px]'>.</span>
