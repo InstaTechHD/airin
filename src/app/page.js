@@ -13,47 +13,41 @@ import { getAuthSession } from './api/auth/[...nextauth]/route';
 import { redis } from '@/lib/rediscache';
 import RandomTextComponent from '@/components/RandomTextComponent';
 
-// Import CSS module
 import styles from '@/styles/Animecard.module.css';
 
 async function getHomePage() {
-  try {
-    let cachedData;
-    if (redis) {
-      cachedData = await redis.get(`homepage`);
-      if (cachedData) {
-        const parsedData = JSON.parse(cachedData);
-        if (Object.keys(parsedData).length === 0) { // Check if data is an empty object
-          await redis.del(`homepage`);
-          cachedData = null;
-        }
-      }
-    }
+  let cachedData;
+  if (redis) {
+    cachedData = await redis.get(`homepage`);
     if (cachedData) {
-      const { herodata, populardata, top100data, seasonaldata } = JSON.parse(cachedData);
-      return { herodata, populardata, top100data, seasonaldata };
-    } else {
-      const [herodata, populardata, top100data, seasonaldata] = await Promise.all([
-        TrendingAnilist(),
-        PopularAnilist(),
-        Top100Anilist(),
-        SeasonalAnilist(),
-      ]);
-      const cacheTime = 60 * 60 * 2;
-      if (redis) {
-        await redis.set(`homepage`, JSON.stringify({ herodata, populardata, top100data, seasonaldata }), "EX", cacheTime);
+      const parsedData = JSON.parse(cachedData);
+      if (Object.keys(parsedData).length === 0) { // Check if data is empty
+        await redis.del(`homepage`);
+        cachedData = null;
       }
-      return { herodata, populardata, top100data, seasonaldata };
     }
-  } catch (error) {
-    console.error("Error fetching homepage from anilist: ", error);
-    return { herodata: [], populardata: [], top100data: [], seasonaldata: [] }; // Return empty arrays to prevent breakage
+  }
+  if (cachedData) {
+    const { herodata, populardata, top100data, seasonaldata } = JSON.parse(cachedData);
+    return { herodata, populardata, top100data, seasonaldata };
+  } else {
+    const [herodata, populardata, top100data, seasonaldata] = await Promise.all([
+      TrendingAnilist(),
+      PopularAnilist(),
+      Top100Anilist(),
+      SeasonalAnilist(),
+    ]);
+    const cacheTime = 60 * 60 * 2;
+    if (redis) {
+      await redis.set(`homepage`, JSON.stringify({ herodata, populardata, top100data, seasonaldata }), "EX", cacheTime);
+    }
+    return { herodata, populardata, top100data, seasonaldata };
   }
 }
 
 async function Home() {
   const session = await getAuthSession();
-  const { herodata = [], populardata = [], top100data = [], seasonaldata = [] } = await getHomePage();
+  const { herodata, populardata, top100data, seasonaldata } = await getHomePage();
 
   return (
     <div>
@@ -79,14 +73,14 @@ async function Home() {
                   {/* Arrow content */}
                 </div>
                 <div className={styles.cardcontainer}>
-                  {herodata.length > 0 ? herodata.map((anime, index) => (
+                  {herodata.map((anime, index) => (
                     <div key={index} className={styles.carditem}>
                       <div className={styles.cardimgcontainer}>
                         <img src={anime.imageUrl} alt={anime.title} className={styles.cardimage} />
                       </div>
                       <div className={styles.cardtitle}>{anime.title}</div>
                     </div>
-                  )) : <p>No trending data available.</p>}
+                  ))}
                 </div>
                 <div className={styles.rightarrow}>
                   {/* Arrow content */}
@@ -107,14 +101,14 @@ async function Home() {
                   {/* Arrow content */}
                 </div>
                 <div className={styles.cardcontainer}>
-                  {populardata.length > 0 ? populardata.map((anime, index) => (
+                  {populardata.map((anime, index) => (
                     <div key={index} className={styles.carditem}>
                       <div className={styles.cardimgcontainer}>
                         <img src={anime.imageUrl} alt={anime.title} className={styles.cardimage} />
                       </div>
                       <div className={styles.cardtitle}>{anime.title}</div>
                     </div>
-                  )) : <p>No popular data available.</p>}
+                  ))}
                 </div>
                 <div className={styles.rightarrow}>
                   {/* Arrow content */}
