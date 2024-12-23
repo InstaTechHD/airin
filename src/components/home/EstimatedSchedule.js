@@ -1,4 +1,6 @@
 // src/components/home/EstimatedSchedule.js
+"use client"; // Add this line
+
 import React from 'react';
 
 const EstimatedSchedule = ({ schedule }) => {
