@@ -1,63 +1,21 @@
 // src/app/page.js
-"use client"; // Add this line
+"use client";
 
-"use server";
 import Link from 'next/link';
 import Animecard from '@/components/CardComponent/Animecards';
 import Herosection from '@/components/home/Herosection';
 import Navbarcomponent from '@/components/navbar/Navbar';
-import { TrendingAnilist, PopularAnilist, Top100Anilist, SeasonalAnilist } from '@/lib/Anilistfunctions';
-import React from 'react';
 import { MotionDiv } from '@/utils/MotionDiv';
 import VerticalList from '@/components/home/VerticalList';
 import ContinueWatching from '@/components/home/ContinueWatching';
 import RecentEpisodes from '@/components/home/RecentEpisodes';
 import EstimatedSchedule from '@/components/home/EstimatedSchedule'; // Import the new component
-import { getAuthSession } from './api/auth/[...nextauth]/route';
-import { redis } from '@/lib/rediscache';
 import RandomTextComponent from '@/components/RandomTextComponent';
+import { getHomePageData, getSession } from './HomeServer'; // Import server functions
 
-async function getHomePage() {
-  try {
-    let cachedData;
-    if (redis) {
-      cachedData = await redis.get('homepage');
-      if (cachedData) {
-        const parsedData = JSON.parse(cachedData);
-        if (Object.keys(parsedData).length === 0) {
-          await redis.del('homepage');
-          cachedData = null;
-        }
-      }
-    }
-
-    if (cachedData) {
-      const { herodata, populardata, top100data, seasonaldata } = JSON.parse(cachedData);
-      return { herodata, populardata, top100data, seasonaldata };
-    } else {
-      const [herodata, populardata, top100data, seasonaldata] = await Promise.all([
-        TrendingAnilist(),
-        PopularAnilist(),
-        Top100Anilist(),
-        SeasonalAnilist(),
-      ]);
-      const cacheTime = 60 * 60 * 2;
-      if (redis) {
-        await redis.set('homepage', JSON.stringify({ herodata, populardata, top100data, seasonaldata }), 'EX', cacheTime);
-      }
-      return { herodata, populardata, top100data, seasonaldata };
-    }
-  } catch (error) {
-    console.error('Error fetching homepage from anilist: ', error);
-    return null;
-  }
-}
-
-async function Home() {
-  const session = await getAuthSession();
-  const { herodata = [], populardata = [], top100data = [], seasonaldata = [] } = await getHomePage();
-  // const history = await getWatchHistory();
-  // console.log(history);
+export default function Home() {
+  const session = await getSession();
+  const { herodata = [], populardata = [], top100data = [], seasonaldata = [] } = await getHomePageData();
 
   const schedule = [
     { date: 'Monday', activity: 'New Episode of Anime A' },
@@ -101,5 +59,3 @@ async function Home() {
     </div>
   );
 }
-
-export default Home;
