@@ -3,7 +3,7 @@ import Animecard from '@/components/CardComponent/Animecards'
 import Herosection from '@/components/home/Herosection'
 import Navbarcomponent from '@/components/navbar/Navbar'
 import { TrendingAnilist, PopularAnilist, Top100Anilist, SeasonalAnilist } from '@/lib/Anilistfunctions'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { MotionDiv } from '@/utils/MotionDiv'
 import VerticalList from '@/components/home/VerticalList'
 import ContinueWatching from '@/components/home/ContinueWatching'
@@ -48,7 +48,28 @@ async function getHomePage() {
   }
 }
 
-function Home({ session, herodata, populardata, top100data, seasonaldata }) {
+function Home() {
+  const [session, setSession] = useState(null);
+  const [data, setData] = useState({
+    herodata: [],
+    populardata: [],
+    top100data: [],
+    seasonaldata: []
+  });
+
+  useEffect(() => {
+    async function fetchData() {
+      const sessionData = await getAuthSession();
+      setSession(sessionData);
+
+      const { herodata, populardata, top100data, seasonaldata } = await getHomePage();
+      setData({ herodata, populardata, top100data, seasonaldata });
+    }
+    fetchData();
+  }, []);
+
+  const { herodata, populardata, top100data, seasonaldata } = data;
+
   return (
     <div>
       <Navbarcomponent home={true} />
@@ -77,20 +98,6 @@ function Home({ session, herodata, populardata, top100data, seasonaldata }) {
       </div>
     </div>
   )
-}
-
-export async function getServerSideProps() {
-  const session = await getAuthSession();
-  const { herodata = [], populardata = [], top100data = [], seasonaldata = [] } = await getHomePage();
-  return {
-    props: {
-      session,
-      herodata,
-      populardata,
-      top100data,
-      seasonaldata,
-    },
-  };
 }
 
 export default Home
