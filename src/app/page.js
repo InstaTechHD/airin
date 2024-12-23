@@ -17,11 +17,11 @@ async function getHomePage() {
   try {
     let cachedData;
     if (redis) {
-      cachedData = await redis.get(`homepage`);
+      cachedData = await redis.get('homepage');
       if (cachedData) {
         const parsedData = JSON.parse(cachedData);
         if (Object.keys(parsedData).length === 0) { // Check if data is an empty object
-          await redis.del(`homepage`);
+          await redis.del('homepage');
           cachedData = null;
         }
       }
@@ -40,7 +40,7 @@ async function getHomePage() {
       ]);
       const cacheTime = 60 * 60 * 2;
       if (redis) {
-        await redis.set(`homepage`, JSON.stringify({ herodata, populardata, top100data, seasonaldata, categoriesdata, herosectiondata }), "EX", cacheTime);
+        await redis.set('homepage', JSON.stringify({ herodata, populardata, top100data, seasonaldata, categoriesdata, herosectiondata }), 'EX', cacheTime);
       }
       return { herodata, populardata, top100data, seasonaldata, categoriesdata, herosectiondata };
     }
