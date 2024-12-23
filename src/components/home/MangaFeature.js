@@ -9,10 +9,33 @@ const MangaFeature = () => {
   useEffect(() => {
     const fetchManga = async () => {
       try {
-        const response = await axios.get('https://api.mangadex.org/manga');
-        setMangaList(response.data.data);
+        const response = await axios.get('https://graphql.anilist.co', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+          },
+          body: JSON.stringify({
+            query: `
+              {
+                Media(type: MANGA, sort: POPULARITY_DESC) {
+                  id
+                  title {
+                    romaji
+                    english
+                  }
+                  coverImage {
+                    extraLarge
+                  }
+                }
+              }
+            `,
+          }),
+        });
+        const data = await response.json();
+        setMangaList(data.data.Media);
       } catch (error) {
-        console.error('Error fetching manga data:', error);
+        console.error('Error fetching manga data from AniList:', error);
       }
     };
 
@@ -30,8 +53,10 @@ const MangaFeature = () => {
   return (
     <div className={styles.animecard}>
       <div className={styles.cardhead}>
-        <span className={styles.bar}></span>
-        <h1 className={styles.headtitle}>Manga</h1>
+        <Link href="/manga">
+          <span className={styles.bar}></span>
+          <h1 className={styles.headtitle}>Manga</h1>
+        </Link>
       </div>
       <div className={styles.animeitems}>
         <span className={styles.leftarrow} onClick={scrollLeft}>
@@ -44,8 +69,8 @@ const MangaFeature = () => {
           {mangaList.map(manga => (
             <Link href={`/manga/info/${manga.id}`} key={manga.id}>
               <div className={styles.carditem}>
-                <img src={manga.attributes.coverImage} alt={manga.attributes.title.en} />
-                <div className={styles.cardtitle}>{manga.attributes.title.en}</div>
+                <img src={manga.coverImage.extraLarge} alt={manga.title.english || manga.title.romaji} />
+                <div className={styles.cardtitle}>{manga.title.english || manga.title.romaji}</div>
               </div>
             </Link>
           ))}
