@@ -1,3 +1,4 @@
+// src/app/page.js
 "use server";
 import Link from 'next/link';
 import Animecard from '@/components/CardComponent/Animecards';
@@ -9,10 +10,10 @@ import { MotionDiv } from '@/utils/MotionDiv';
 import VerticalList from '@/components/home/VerticalList';
 import ContinueWatching from '@/components/home/ContinueWatching';
 import RecentEpisodes from '@/components/home/RecentEpisodes';
+import EstimatedSchedule from '@/components/home/EstimatedSchedule'; // Import the new component
 import { getAuthSession } from './api/auth/[...nextauth]/route';
 import { redis } from '@/lib/rediscache';
 import RandomTextComponent from '@/components/RandomTextComponent';
-// import { getWatchHistory } from '@/lib/EpHistoryfunctions';
 
 async function getHomePage() {
   try {
@@ -56,6 +57,12 @@ async function Home() {
   // const history = await getWatchHistory();
   // console.log(history);
 
+  const schedule = [
+    { date: 'Monday', activity: 'New Episode of Anime A' },
+    { date: 'Wednesday', activity: 'New Episode of Anime B' },
+    { date: 'Friday', activity: 'New Episode of Anime C' },
+  ];
+
   return (
     <div>
       <Navbarcomponent home={true} />
@@ -67,6 +74,10 @@ async function Home() {
         </div>
         <div>
           <RecentEpisodes cardid="Recent Episodes" />
+        </div>
+        {/* Add the new Estimated Schedule section */}
+        <div>
+          <EstimatedSchedule schedule={schedule} />
         </div>
         <div>
           <Link href="https://makima.xyz/anime/catalog?sortby=TRENDING_DESC">
