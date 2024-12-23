@@ -13,6 +13,9 @@ import { getAuthSession } from './api/auth/[...nextauth]/route';
 import { redis } from '@/lib/rediscache';
 import RandomTextComponent from '@/components/RandomTextComponent';
 
+// CSS for pulse animation
+import './styles.css';  // Make sure you import the CSS file here
+
 async function getHomePage() {
   try {
     let cachedData;
