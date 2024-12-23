@@ -1,0 +1,27 @@
+.mangaPage {
+  padding: 20px;
+}
+
+.mangaGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.mangaCard {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow: hidden;
+  text-align: center;
+}
+
+.mangaCard img {
+  width: 100%;
+  height: auto;
+}
+
+.mangaTitle {
+  padding: 10px;
+  font-size: 1.2em;
+  font-weight: bold;
+}
