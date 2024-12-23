@@ -1,17 +1,17 @@
-"use server"
-import Animecard from '@/components/CardComponent/Animecards'
-import Herosection from '@/components/home/Herosection'
-import Navbarcomponent from '@/components/navbar/Navbar'
-import { TrendingAnilist, PopularAnilist, Top100Anilist, SeasonalAnilist } from '@/lib/Anilistfunctions'
-import React from 'react'
-import { MotionDiv } from '@/utils/MotionDiv'
-import VerticalList from '@/components/home/VerticalList'
-import ContinueWatching from '@/components/home/ContinueWatching'
-import RecentEpisodes from '@/components/home/RecentEpisodes'
-import { getAuthSession } from './api/auth/[...nextauth]/route'
-import { redis } from '@/lib/rediscache'
+"use server";
+
+import Animecard from '@/components/CardComponent/Animecards';
+import Herosection from '@/components/home/Herosection';
+import Navbarcomponent from '@/components/navbar/Navbar';
+import { TrendingAnilist, PopularAnilist, Top100Anilist, SeasonalAnilist } from '@/lib/Anilistfunctions';
+import React from 'react';
+import Link from 'next/link';
+import VerticalList from '@/components/home/VerticalList';
+import ContinueWatching from '@/components/home/ContinueWatching';
+import RecentEpisodes from '@/components/home/RecentEpisodes';
+import { getAuthSession } from './api/auth/[...nextauth]/route';
+import { redis } from '@/lib/rediscache';
 import RandomTextComponent from '@/components/RandomTextComponent';
-// import { getWatchHistory } from '@/lib/EpHistoryfunctions'
 
 async function getHomePage() {
   try {
@@ -34,7 +34,7 @@ async function getHomePage() {
         TrendingAnilist(),
         PopularAnilist(),
         Top100Anilist(),
-        SeasonalAnilist()
+        SeasonalAnilist(),
       ]);
       const cacheTime = 60 * 60 * 2;
       if (redis) {
@@ -51,33 +51,30 @@ async function getHomePage() {
 async function Home() {
   const session = await getAuthSession();
   const { herodata = [], populardata = [], top100data = [], seasonaldata = [] } = await getHomePage();
-  // const history = await getWatchHistory();
-  // console.log(history)
 
   return (
     <div>
       <Navbarcomponent home={true} />
       <Herosection data={herodata} />
       <div className='sm:max-w-[97%] md:max-w-[95%] lg:max-w-[90%] xl:max-w-[85%] mx-auto flex flex-col md:gap-11 sm:gap-7 gap-5 mt-8'>
-        <div
-        >
+        <div>
           <ContinueWatching session={session} />
           <RandomTextComponent />
         </div>
-        <div
-        >
+        <div>
           <RecentEpisodes cardid="Recent Episodes" />
         </div>
-        <div
-        >
-          <Animecard data={herodata} cardid="Trending Now" />
+        <div>
+          <Link href="https://makima.xyz/anime/catalog?sortby=TRENDING_DESC">
+            <Animecard data={herodata} cardid="Trending Now" />
+          </Link>
         </div>
-        <div
-        >
-          <Animecard data={populardata} cardid="All Time Popular" />
+        <div>
+          <Link href="https://makima.xyz/anime/catalog?sortby=">
+            <Animecard data={populardata} cardid="All Time Popular" />
+          </Link>
         </div>
-        <div
-        >
+        <div>
           <div className='lg:flex lg:flex-row justify-between lg:gap-20'>
             <VerticalList data={top100data} mobiledata={seasonaldata} id="Top 100 Anime" />
             <VerticalList data={seasonaldata} id="Seasonal Anime" />
@@ -85,7 +82,7 @@ async function Home() {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default Home
+export default Home;
