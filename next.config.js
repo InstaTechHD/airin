@@ -10,25 +10,27 @@ const withPWA = require("@ducanh2912/next-pwa").default({
   },
 });
 
-const nextConfig = {
-  images: {
-    domains: ['s4.anilist.co', 'artworks.thetvdb.com', 'media.kitsu.io', 'image.tmdb.org'],
-    unoptimized: true,
-  },
-  typescript: {
-    ignoreBuildErrors: true,
-  },
-  webpack: (config, { isServer }) => {
-    if (!isServer) {
-      // Fallback for missing node modules on the client-side
-      config.resolve.fallback = {
-        net: false,
-        tls: false,
-        os: false, // Added os module fallback for any potential dependencies
-      };
-    }
-    return config;
-  },
+module.exports = function (webpackEnv) {
+  return {
+    ...withPWA({
+      images: {
+        domains: ['s4.anilist.co', 'artworks.thetvdb.com', 'media.kitsu.io', 'image.tmdb.org'],
+        unoptimized: true,
+      },
+      typescript: {
+        ignoreBuildErrors: true,
+      },
+    }),
+    webpack: (config, { isServer }) => {
+      if (!isServer) {
+        // Adding fallback for tls and net modules
+        config.resolve.fallback = {
+          ...config.resolve.fallback,
+          tls: false,
+          net: false,
+        };
+      }
+      return config;
+    },
+  };
 };
-
-module.exports = withPWA(nextConfig);
