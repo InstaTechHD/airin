@@ -1,0 +1,52 @@
+.animecard {
+  /* Add styles similar to other category sections */
+  margin: 20px 0;
+  padding: 10px;
+  background-color: #1e1e24;
+  border-radius: 8px;
+}
+
+.cardhead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.bar {
+  width: 5px;
+  height: 20px;
+  background-color: #ff4c4c;
+  margin-right: 10px;
+}
+
+.headtitle {
+  font-size: 1.5em;
+  color: #fff;
+}
+
+.animeitems {
+  display: flex;
+  overflow-x: auto;
+}
+
+.leftarrow, .rightarrow {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cardcontainer {
+  display: flex;
+}
+
+.carditem {
+  margin: 0 10px;
+}
+
+.cardtitle {
+  font-size: 1em;
+  color: #fff;
+  text-align: center;
+}
