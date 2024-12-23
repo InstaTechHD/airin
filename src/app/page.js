@@ -47,7 +47,7 @@ async function getHomePage() {
     }
   } catch (error) {
     console.error("Error fetching homepage from anilist: ", error);
-    return null;
+    return { herodata: [], populardata: [], top100data: [], seasonaldata: [] }; // Return empty arrays to prevent breakage
   }
 }
 
@@ -79,14 +79,14 @@ async function Home() {
                   {/* Arrow content */}
                 </div>
                 <div className={styles.cardcontainer}>
-                  {herodata.map((anime, index) => (
+                  {herodata.length > 0 ? herodata.map((anime, index) => (
                     <div key={index} className={styles.carditem}>
                       <div className={styles.cardimgcontainer}>
                         <img src={anime.imageUrl} alt={anime.title} className={styles.cardimage} />
                       </div>
                       <div className={styles.cardtitle}>{anime.title}</div>
                     </div>
-                  ))}
+                  )) : <p>No trending data available.</p>}
                 </div>
                 <div className={styles.rightarrow}>
                   {/* Arrow content */}
@@ -107,14 +107,14 @@ async function Home() {
                   {/* Arrow content */}
                 </div>
                 <div className={styles.cardcontainer}>
-                  {populardata.map((anime, index) => (
+                  {populardata.length > 0 ? populardata.map((anime, index) => (
                     <div key={index} className={styles.carditem}>
                       <div className={styles.cardimgcontainer}>
                         <img src={anime.imageUrl} alt={anime.title} className={styles.cardimage} />
                       </div>
                       <div className={styles.cardtitle}>{anime.title}</div>
                     </div>
-                  ))}
+                  )) : <p>No popular data available.</p>}
                 </div>
                 <div className={styles.rightarrow}>
                   {/* Arrow content */}
