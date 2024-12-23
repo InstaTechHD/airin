@@ -285,18 +285,20 @@
     z-index: 10;
 }
 
+/* Add the pulse-green animation */
 .pulse-green {
-    animation: pulse 2s infinite;
+    animation: pulse-green 2s infinite;
 }
 
-@keyframes pulse {
+/* Update the pulse keyframes */
+@keyframes pulse-green {
     0% {
-        box-shadow: 0 0 0 0 rgba(0, 255, 0, 0.7);
+        opacity: 1;
     }
-    70% {
-        box-shadow: 0 0 0 10px rgba(0, 255, 0, 0);
+    50% {
+        opacity: 0.5;
     }
     100% {
-        box-shadow: 0 0 0 0 rgba(0, 255, 0, 0);
+        opacity: 1;
     }
 }
