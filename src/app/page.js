@@ -13,8 +13,8 @@ import { getAuthSession } from './api/auth/[...nextauth]/route';
 import { redis } from '@/lib/rediscache';
 import RandomTextComponent from '@/components/RandomTextComponent';
 
-// CSS for pulse animation
-import './styles.css';  // Make sure you import the CSS file here
+// Import CSS module
+import styles from '@/styles/Animecard.module.css';
 
 async function getHomePage() {
   try {
@@ -69,12 +69,58 @@ async function Home() {
         </div>
         <div>
           <Link href="https://makima.xyz/anime/catalog?sortby=TRENDING_DESC">
-            <Animecard data={herodata} cardid="Trending Now" />
+            <div className={styles.animecard}>
+              <div className={styles.cardhead}>
+                <div className={styles.bar}></div>
+                <h2 className={styles.headtitle}>Trending Now</h2>
+              </div>
+              <div className={styles.animeitems}>
+                <div className={styles.leftarrow}>
+                  {/* Arrow content */}
+                </div>
+                <div className={styles.cardcontainer}>
+                  {herodata.map((anime, index) => (
+                    <div key={index} className={styles.carditem}>
+                      <div className={styles.cardimgcontainer}>
+                        <img src={anime.imageUrl} alt={anime.title} className={styles.cardimage} />
+                      </div>
+                      <div className={styles.cardtitle}>{anime.title}</div>
+                    </div>
+                  ))}
+                </div>
+                <div className={styles.rightarrow}>
+                  {/* Arrow content */}
+                </div>
+              </div>
+            </div>
           </Link>
         </div>
         <div>
           <Link href="https://makima.xyz/anime/catalog?sortby=">
-            <Animecard data={populardata} cardid="All Time Popular" />
+            <div className={styles.animecard}>
+              <div className={styles.cardhead}>
+                <div className={styles.bar}></div>
+                <h2 className={styles.headtitle}>All Time Popular</h2>
+              </div>
+              <div className={styles.animeitems}>
+                <div className={styles.leftarrow}>
+                  {/* Arrow content */}
+                </div>
+                <div className={styles.cardcontainer}>
+                  {populardata.map((anime, index) => (
+                    <div key={index} className={styles.carditem}>
+                      <div className={styles.cardimgcontainer}>
+                        <img src={anime.imageUrl} alt={anime.title} className={styles.cardimage} />
+                      </div>
+                      <div className={styles.cardtitle}>{anime.title}</div>
+                    </div>
+                  ))}
+                </div>
+                <div className={styles.rightarrow}>
+                  {/* Arrow content */}
+                </div>
+              </div>
+            </div>
           </Link>
         </div>
         <div>
