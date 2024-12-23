@@ -21,6 +21,9 @@ function AnimeDetailsTop({ data, list, session, setList, url }) {
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
+  const isAdult = data.isAdult; // Assume isAdult is a property in the data
+  const isUpcoming = data.status === 'RELEASING' || data.status === 'NOT_YET_RELEASED';
+
   return (
     <div className={styles.detailsbanner}>
       <div
@@ -53,7 +56,7 @@ function AnimeDetailsTop({ data, list, session, setList, url }) {
       </>
       <div className={styles.detailsinfo}>
         <div className={styles.detailsimgcon}>
-          <Image src={data?.coverImage?.extraLarge} alt='Image' width={200} height={200} className={styles.detailsimage} />
+          <Image src={data?.coverImage?.extraLarge} alt='Image' width={200} height={200} className={`${styles.detailsimage} ${isAdult ? styles.adultIcon : ''} ${isUpcoming ? styles.pulseGreen : ''}`} />
         </div>
         <div className={styles.detailstitle}>
           <h1 className={`${styles.title} text-[1.7rem] font-[500]`}>
@@ -64,14 +67,14 @@ function AnimeDetailsTop({ data, list, session, setList, url }) {
           </h4>
           <p className={styles.scores}>
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-[17px] h-[17px] mr-[2px]">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
+              <path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.161.534l1.229 5.904c.093.448-.383.791-.78.581l-4.86-2.519a.563.563 0 00-.545 0l-4.86 2.52c-.397.209-.872-.133-.78-.581l1.229-5.904a.563.563 0 00-.161-.534L2.066 10.385c-.38-.325-.178-.948.32-.988l5.518-.442a.563.563 0 00.475-.345l2.125-5.11z" />
             </svg>
             {data?.averageScore / 10} | <span className={`${data?.status === 'RELEASING' ? styles.activestatus : styles.notactive}`}> {data?.status}</span>
           </p>
           <div className='flex'>
             {isAnime ? (
               <Link className={`${styles.detailswatch} ${!url && 'opacity-50 bg-black pointer-events-none'} hover:opacity-80 transition-all`} href={url ?? ''}>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className="w-5 h-5 mr-1"><path fillRule="evenodd" d="M4.5 5.653c0-1.426 1.529-2.33 2.779-1.643l11.54 6.348c1.295.712 1.295 2.573 0 3.285L7.28 19.991c-1.25.687-2.779-.217-2.779-1.643V5.653z" clipRule="evenodd"></path></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className="w-5 h-5 mr-1"><path fillRule="evenodd" d="M4.5 5.653c0-1.426 1.529-2.3[...]
                 {list !== null && list?.status === 'COMPLETED' ? 'Rewatch' : list !== null && list?.progress > 0 ? `Watch Ep ${list?.progress+1}` : `Play Now`}
               </Link>
             ) : (
