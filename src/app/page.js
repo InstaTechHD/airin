@@ -1,26 +1,24 @@
-// src/app/page.js
 "use client";
 
-import Link from 'next/link';
-import Animecard from '@/components/CardComponent/Animecards';
-import Herosection from '@/components/home/Herosection';
-import Navbarcomponent from '@/components/navbar/Navbar';
-import { MotionDiv } from '@/utils/MotionDiv';
-import VerticalList from '@/components/home/VerticalList';
-import ContinueWatching from '@/components/home/ContinueWatching';
-import RecentEpisodes from '@/components/home/RecentEpisodes';
-import EstimatedSchedule from '@/components/home/EstimatedSchedule'; // Import the new component
-import RandomTextComponent from '@/components/RandomTextComponent';
-import { getHomePageData, getSession } from './HomeServer'; // Import server functions
+import Link from "next/link";
+import Animecard from "@/components/CardComponent/Animecards";
+import Herosection from "@/components/home/Herosection";
+import Navbarcomponent from "@/components/navbar/Navbar";
+import VerticalList from "@/components/home/VerticalList";
+import ContinueWatching from "@/components/home/ContinueWatching";
+import RecentEpisodes from "@/components/home/RecentEpisodes";
+import EstimatedSchedule from "@/components/home/EstimatedSchedule";
+import RandomTextComponent from "@/components/RandomTextComponent";
+import { getHomePageData, getSession } from "./HomeServer";
 
 export default async function Home() {
   const session = await getSession();
   const { herodata = [], populardata = [], top100data = [], seasonaldata = [] } = await getHomePageData();
 
   const schedule = [
-    { date: 'Monday', activity: 'New Episode of Anime A' },
-    { date: 'Wednesday', activity: 'New Episode of Anime B' },
-    { date: 'Friday', activity: 'New Episode of Anime C' },
+    { date: "Monday", activity: "New Episode of Anime A" },
+    { date: "Wednesday", activity: "New Episode of Anime B" },
+    { date: "Friday", activity: "New Episode of Anime C" },
   ];
 
   return (
@@ -35,7 +33,6 @@ export default async function Home() {
         <div>
           <RecentEpisodes cardid="Recent Episodes" />
         </div>
-        {/* Add the new Estimated Schedule section */}
         <div>
           <EstimatedSchedule schedule={schedule} />
         </div>
