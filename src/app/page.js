@@ -1,110 +1,91 @@
-import React from "react";
-import { AnimeInfoAnilist } from '@/lib/Anilistfunctions';
-import NextAiringDate from "@/components/videoplayer/NextAiringDate";
-import PlayerAnimeCard from "@/components/videoplayer/PlayerAnimeCard";
-import Navbarcomponent from "@/components/navbar/Navbar";
-import PlayerComponent from "@/components/videoplayer/PlayerComponent";
-import Animecards from "@/components/CardComponent/Animecards";
-import { createWatchEp, getEpisode } from "@/lib/EpHistoryfunctions";
-import { WatchPageInfo } from "@/lib/AnilistUser";
-import { getAuthSession } from "../../../api/auth/[...nextauth]/route";
-import { redis } from '@/lib/rediscache';
+"use server"
+import Animecard from '@/components/CardComponent/Animecards'
+import Herosection from '@/components/home/Herosection'
+import Navbarcomponent from '@/components/navbar/Navbar'
+import { TrendingAnilist, PopularAnilist, Top100Anilist, SeasonalAnilist } from '@/lib/Anilistfunctions'
+import React from 'react'
+import { MotionDiv } from '@/utils/MotionDiv'
+import VerticalList from '@/components/home/VerticalList'
+import ContinueWatching from '@/components/home/ContinueWatching'
+import RecentEpisodes from '@/components/home/RecentEpisodes'
+import { getAuthSession } from './api/auth/[...nextauth]/route'
+import { redis } from '@/lib/rediscache'
+import RandomTextComponent from '@/components/RandomTextComponent';
+// import { getWatchHistory } from '@/lib/EpHistoryfunctions'
 
-async function getInfo(id) {
+async function getHomePage() {
   try {
     let cachedData;
     if (redis) {
-      cachedData = await redis.get(`info:${id}`);
-      if (!JSON.parse(cachedData)) {
-        await redis.del(`info:${id}`);
-        cachedData = null;
+      cachedData = await redis.get(`homepage`);
+      if (cachedData) {
+        const parsedData = JSON.parse(cachedData);
+        if (Object.keys(parsedData).length === 0) { // Check if data is an empty object
+          await redis.del(`homepage`);
+          cachedData = null;
+        }
       }
     }
     if (cachedData) {
-      return JSON.parse(cachedData);
+      const { herodata, populardata, top100data, seasonaldata } = JSON.parse(cachedData);
+      return { herodata, populardata, top100data, seasonaldata };
     } else {
-      const data = await AnimeInfoAnilist(id);
-      const cacheTime = data?.nextAiringEpisode?.episode ? 60 * 60 * 2 : 60 * 60 * 24 * 45;
-      if (redis && data !== null && data) {
-        await redis.set(`info:${id}`, JSON.stringify(data), "EX", cacheTime);
+      const [herodata, populardata, top100data, seasonaldata] = await Promise.all([
+        TrendingAnilist(),
+        PopularAnilist(),
+        Top100Anilist(),
+        SeasonalAnilist()
+      ]);
+      const cacheTime = 60 * 60 * 2;
+      if (redis) {
+        await redis.set(`homepage`, JSON.stringify({ herodata, populardata, top100data, seasonaldata }), "EX", cacheTime);
       }
-      return data;
+      return { herodata, populardata, top100data, seasonaldata };
     }
   } catch (error) {
-    console.error("Error fetching info: ", error);
-  }
-}
-
-export async function generateMetadata({ params, searchParams }) {
-  const id = searchParams?.id;
-  const data = await getInfo(id);
-  const epnum = searchParams?.ep;
-
-  return {
-    title: "Episode " + epnum + ' - ' + data?.title?.english || data?.title?.romaji || 'Loading...',
-    description: data?.description?.slice(0, 180),
-    openGraph: {
-      title: "Episode " + epnum + ' - ' + data?.title?.english || data?.title?.romaji,
-      images: [data?.coverImage?.extraLarge],
-      description: data?.description,
-    },
-    twitter: {
-      card: "summary",
-      title: "Episode " + epnum + ' - ' + data?.title?.english || data?.title?.romaji,
-      description: data?.description?.slice(0, 180),
-    },
-  }
-}
-
-export async function Ephistory(session, aniId, epNum){
-  try {
-    let savedep;
-    if (session && aniId && epNum) {
-      await createWatchEp(aniId, epNum);
-      savedep = await getEpisode(aniId, epNum);
-    }
-    return savedep;
-  } catch (error) {
-    console.error(error);
+    console.error("Error fetching homepage from anilist: ", error);
     return null;
   }
-};
+}
 
-async function AnimeWatch({ params, searchParams }) {
+async function Home() {
   const session = await getAuthSession();
-  const id = searchParams.id;
-  const provider = searchParams.host;
-  const epNum = searchParams.ep;
-  const epId = searchParams.epid;
-  const subdub = searchParams.type;
-  const data = await getInfo(id);
-  const savedep = await Ephistory(session, id, epNum);
+  const { herodata = [], populardata = [], top100data = [], seasonaldata = [] } = await getHomePage();
+  // const history = await getWatchHistory();
+  // console.log(history)
 
   return (
-    <>
-      <Navbarcomponent />
-      <div className="w-full flex flex-col lg:flex-row lg:max-w-[98%] mx-auto xl:max-w-[94%] lg:gap-[6px] mt-[70px]">
-        <div className="flex-grow w-full h-full">
-          <PlayerComponent id={id} epId={epId} provider={provider} epNum={epNum} data={data} subdub={subdub} session={session} savedep={savedep} />
-          {data?.status === 'RELEASING' &&
-            <NextAiringDate nextAiringEpisode={data?.nextAiringEpisode} />
-          }
-          {/* Add the related anime section here */}
-          <Animecards data={data?.relations?.edges} cardid="Related Anime" />
-          {/* Add the recommendations section here */}
-          <Animecards data={data?.recommendations?.nodes} cardid="Recommendations" />
+    <div>
+      <Navbarcomponent home={true} />
+      <Herosection data={herodata} />
+      <div className='sm:max-w-[97%] md:max-w-[95%] lg:max-w-[90%] xl:max-w-[85%] mx-auto flex flex-col md:gap-11 sm:gap-7 gap-5 mt-8'>
+        <div
+        >
+          <ContinueWatching session={session} />
+          <RandomTextComponent />
         </div>
-        <div className="h-full lg:flex lg:flex-col md:max-lg:w-full gap-10">
-          <div className="rounded-lg hidden lg:block lg:max-w-[280px] xl:max-w-[380px] w-[100%] xl:overflow-y-scroll xl:overflow-x-hidden overflow-hidden scrollbar-hide overflow-y-hidden">
-            <PlayerAnimeCard data={data?.relations?.edges} id="Related Anime" />
-          </div>
-          <div className="rounded-lg hidden lg:block lg:max-w-[280px] xl:max-w-[380px] w-[100%] xl:overflow-y-scroll xl:overflow-x-hidden overflow-hidden scrollbar-hide overflow-y-hidden">
-            <PlayerAnimeCard data={data?.recommendations?.nodes} id="Recommendations" />
+        <div
+        >
+          <RecentEpisodes cardid="Recent Episodes" />
+        </div>
+        <div
+        >
+          <Animecard data={herodata} cardid="Trending Now" />
+        </div>
+        <div
+        >
+          <Animecard data={populardata} cardid="All Time Popular" />
+        </div>
+        <div
+        >
+          <div className='lg:flex lg:flex-row justify-between lg:gap-20'>
+            <VerticalList data={top100data} mobiledata={seasonaldata} id="Top 100 Anime" />
+            <VerticalList data={seasonaldata} id="Seasonal Anime" />
           </div>
         </div>
       </div>
-    </>
-  );
+    </div>
+  )
 }
 
-export default AnimeWatch;
+export default Home
