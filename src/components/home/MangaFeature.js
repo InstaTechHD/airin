@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Link from 'next/link';
-import styles from './MangaFeature.module.css';  // Create a CSS module for styling similar to RecentEpisodes
+import styles from './MangaFeature.module.css';
 
 const MangaFeature = () => {
   const [mangaList, setMangaList] = useState([]);
