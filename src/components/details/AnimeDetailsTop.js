@@ -35,7 +35,7 @@ function AnimeDetailsTop({ data, list, session, setList, url }) {
   return (
     <div className={styles.detailsbanner}>
       <div
-        className={styles.detailsbgimage}
+        className={`${styles.detailsbgimage} ${isUpcoming ? styles.pulseGreen : ""}`}
         style={{
           backgroundImage: `url(${data?.bannerImage || data?.coverImage.extraLarge || null})`,
           backgroundPosition: "center",
@@ -110,7 +110,7 @@ function AnimeDetailsTop({ data, list, session, setList, url }) {
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.161.534l1.229 5.904c.093.448-.383.791-.78.581l-4.86-2.519a.563.563 0 00-.545 0l-4.86 2.52c-.397.209-.872-.133-.78-.581l1.229-5.904a.563.563 0 00-.161-.534L2.066 10.385c-.38-.325-.178-.948.32-.988l5.518-.442a.563.563 0 00.475-.345l2.125-5.11z"
+                d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.161.534l1.229 5.904c.093.448-.383.791-.78.581l-4.86-[...]
               />
             </svg>
             {data?.averageScore / 10} |{" "}
@@ -145,7 +145,7 @@ function AnimeDetailsTop({ data, list, session, setList, url }) {
                     className={`${styles.detailswatch} hover:opacity-80 transition-all bg-primary`}
                     onClick={() => {
                       if (url) {
-                        window.open(url, "_blank");
+                        window.open(`https://makima.xyz/read/${data.mangaId}`, "_blank");
                       } else {
                         alert("No URL available for this manga.");
                       }
