@@ -13,7 +13,7 @@ function AnimeDetailsTop({ data, list, session, setList, url }) {
   const animetitle = useStore(useTitle, (state) => state.animetitle);
   const [openlist, setOpenlist] = useState(false);
 
-  const isAnime = data?.type === 'ANIME' || true;
+  const isAnime = data?.type !== 'MANGA'; // Check if the type is not MANGA
 
   function Handlelist() {
     setOpenlist(!openlist);
@@ -75,9 +75,9 @@ function AnimeDetailsTop({ data, list, session, setList, url }) {
                 {list !== null && list?.status === 'COMPLETED' ? 'Rewatch' : list !== null && list?.progress > 0 ? `Watch Ep ${list?.progress+1}` : `Play Now`}
               </Link>
             ) : (
-              <button className={`${styles.detailswatch} opacity-40 bg-black`} disabled>
+              <Link className={`${styles.detailswatch} hover:opacity-80 transition-all`} href={`/manga/read/${data.id}`}>
                 Read Now
-              </button>
+              </Link>
             )}
             <Button className={styles.detailsaddlist} onClick={Handlelist}>{
               list && list?.status !== null
