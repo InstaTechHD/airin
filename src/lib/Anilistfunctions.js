@@ -1,4 +1,68 @@
-"
+"use server"
+import { trending, animeinfo, advancedsearch, top100anime, seasonal, popular } from "./anilistqueries";
+
+export const TrendingAnilist = async () => {
+    try {
+        const response = await fetch('https://graphql.anilist.co', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+            },
+            body: JSON.stringify({
+                query: trending,
+                variables: {
+                    page: 1,
+                    perPage: 15,
+                },
+            }),
+        // }, { cache: "no-store" });
+    }, { next: { revalidate: 3600 } });
+
+        const data = await response.json();
+        return data.data.Page.media;
+    } catch (error) {
+        console.error('Error fetching data from AniList:', error);
+    }
+}
+
+export const PopularAnilist = async () => {
+    try {
+        const response = await fetch('https://graphql.anilist.co', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+            },
+            body: JSON.stringify({
+                query: popular,
+                variables: {
+                    page: 1,
+                    perPage: 15,
+                },
+            }),
+        // }, { cache: "no-store" });
+    }, { next: { revalidate: 3600 } });
+
+        const data = await response.json();
+        return data.data.Page.media;
+    } catch (error) {
+        console.error('Error fetching popular data from AniList:', error);
+    }
+}
+
+export const Top100Anilist = async () => {
+    try {
+        const response = await fetch('https://graphql.anilist.co', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+            },
+            body: JSON.stringify({
+                query: top100anime,
+                variables: {
+                    page: 1,
                     perPage: 10,
                 },
             }),
