@@ -176,7 +176,8 @@ function Search() {
                                                                 useSearchbar.setState({ Isopen: false });
                                                                 setQuery("");
                                                             }}
-                                                            className="flex w-full items-center justify-center gap-2 py-4 transition duration-300 ease-in-out cursor-pointer border-none bg-[#4d148c] te[...]">
+                                                            className="flex w-full items-center justify-center gap-2 py-4 transition duration-300 ease-in-out cursor-pointer border-none bg-[#4d148c] rounded-lg"
+                                                        >
                                                             View Results
                                                         </button>
                                                     </Link>
