@@ -1,4 +1,13 @@
+"use client";
+import Link from 'next/link';
+import Image from 'next/image';
 import { AdvancedSearch } from '@/lib/Anilistfunctions';
+import React, { useEffect, useState } from 'react';
+import { Pagination } from "@nextui-org/react";
+import styles from '../../styles/Catalog.module.css';
+import UseDebounce from '@/utils/UseDebounce';
+import { useTitle } from '@/lib/store';
+import { useStore } from 'zustand';
 
 function Searchcard({ searchvalue, selectedYear, seasonvalue, formatvalue, genrevalue, sortbyvalue, airingvalue }) {
     const animetitle = useStore(useTitle, (state) => state.animetitle);
@@ -6,7 +15,7 @@ function Searchcard({ searchvalue, selectedYear, seasonvalue, formatvalue, genre
     const [searchdata, setsearchdata] = useState(null);
     const [lastpage, setlastpage] = useState();
     const [loading, setLoading] = useState(true);
-    const debouncedSearch = UseDebounce(searchvalue, 500)
+    const debouncedSearch = UseDebounce(searchvalue, 500);
 
     useEffect(() => {
         const fetchsearch = async () => {
@@ -77,6 +86,16 @@ function Searchcard({ searchvalue, selectedYear, seasonvalue, formatvalue, genre
                     ))
                 )}
             </div>
+            {lastpage > 2 && (
+                <div className={styles.cardbottom}>
+                    <Pagination
+                        total={lastpage}
+                        color="secondary"
+                        page={currentPage}
+                        onChange={setCurrentPage}
+                    />
+                </div>
+            )}
         </div>
     );
 }
