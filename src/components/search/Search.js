@@ -53,6 +53,7 @@ function Search() {
                     as={Fragment}
                     enter="ease-out duration-300"
                     enterFrom="opacity-0"
+
                     enterTo="opacity-100"
                     leave="ease-in duration-200"
                     leaveFrom="opacity-100"
@@ -100,6 +101,7 @@ function Search() {
                                     </div>
                                     <div className="flex items-center text-base font-medium rounded-lg bg-[#1a1a1f]">
                                         <Combobox.Input
+
                                             ref={focusInput}
                                             className="p-4 text-white w-full bg-transparent border-0 outline-none"
                                             placeholder={`Search ${searchType.charAt(0).toUpperCase() + searchType.slice(1)}...`}
@@ -141,7 +143,8 @@ function Search() {
                                                                     />
                                                                 </div>
                                                             </Link>
-                                                            <Link href={`/${searchType}/${searchType === "manga" ? "read" : "info"}/${item.id}`} onClick={() => { useSearchbar.setState({ Isopen: false }) }}>
+
+                                                            <Link href={`/${searchType}/info/${item.id}`} onClick={() => { useSearchbar.setState({ Isopen: false }) }}>
                                                                 <div className="flex flex-col overflow-hidden">
                                                                     <p className="line-clamp-2 text-base">
                                                                         {item.title[animetitle] || item.title.romaji}
@@ -149,7 +152,7 @@ function Search() {
                                                                     <span className="my-1 text-xs text-gray-400">Episodes - {item?.episodes || item?.nextAiringEpisode?.episode - 1 || "?"}</span>
                                                                     <div className="flex items-center text-gray-400 text-xs">
                                                                         <span className="flex gap-1">
-                                                                            <svg xmlns="http://www.w3.org/2000/svg" className="w-3 h-3 mt-[1px]" viewBox="0 0 1664 1600"><path fill="currentColor" /></svg>
+                                                                            <svg xmlns="http://www.w3.org/2000/svg" className="w-3 h-3 mt-[1pxd]" viewBox="0 0 1664 1600"><path fill="currentColor" /></svg>
                                                                             {item.averageScore / 10 || "0"}
                                                                         </span>
                                                                         <span className='mx-1 mb-[5px]'>.</span>
@@ -176,8 +179,8 @@ function Search() {
                                                                 useSearchbar.setState({ Isopen: false });
                                                                 setQuery("");
                                                             }}
-                                                            className="flex w-full items-center justify-center gap-2 py-4 transition duration-300 ease-in-out cursor-pointer border-none bg-[#4d148c] rounded-lg text-white"
-                                                        >
+
+                                                            className="flex w-full items-center justify-center gap-2 py-4 transition duration-300 ease-in-out cursor-pointer border-none bg-[#4d148c] te[...]">
                                                             View Results
                                                         </button>
                                                     </Link>
