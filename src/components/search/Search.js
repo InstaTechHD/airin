@@ -149,7 +149,7 @@ function Search() {
                                                                     <span className="my-1 text-xs text-gray-400">Episodes - {item?.episodes || item?.nextAiringEpisode?.episode - 1 || "?"}</span>
                                                                     <div className="flex items-center text-gray-400 text-xs">
                                                                         <span className="flex gap-1">
-                                                                            <svg xmlns="http://www.w3.org/2000/svg" className="w-3 h-3 mt-[1pxd]" viewBox="0 0 1664 1600"><path fill="currentColor" /></[...]
+                                                                            <svg xmlns="http://www.w3.org/2000/svg" className="w-3 h-3 mt-[1px]" viewBox="0 0 1664 1600"><path fill="currentColor" /></svg>
                                                                             {item.averageScore / 10 || "0"}
                                                                         </span>
                                                                         <span className='mx-1 mb-[5px]'>.</span>
@@ -176,7 +176,7 @@ function Search() {
                                                                 useSearchbar.setState({ Isopen: false });
                                                                 setQuery("");
                                                             }}
-                                                            className="flex w-full items-center justify-center gap-2 py-4 transition duration-300 ease-in-out cursor-pointer border-none bg-[#4d148c] ro[...]
+                                                            className="flex w-full items-center justify-center gap-2 py-4 transition duration-300 ease-in-out cursor-pointer border-none bg-[#4d148c] rounded-lg text-white"
                                                         >
                                                             View Results
                                                         </button>
