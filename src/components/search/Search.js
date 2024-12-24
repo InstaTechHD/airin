@@ -53,7 +53,6 @@ function Search() {
                     as={Fragment}
                     enter="ease-out duration-300"
                     enterFrom="opacity-0"
-
                     enterTo="opacity-100"
                     leave="ease-in duration-200"
                     leaveFrom="opacity-100"
@@ -101,7 +100,6 @@ function Search() {
                                     </div>
                                     <div className="flex items-center text-base font-medium rounded-lg bg-[#1a1a1f]">
                                         <Combobox.Input
-
                                             ref={focusInput}
                                             className="p-4 text-white w-full bg-transparent border-0 outline-none"
                                             placeholder={`Search ${searchType.charAt(0).toUpperCase() + searchType.slice(1)}...`}
@@ -143,7 +141,6 @@ function Search() {
                                                                     />
                                                                 </div>
                                                             </Link>
-
                                                             <Link href={`/${searchType}/info/${item.id}`} onClick={() => { useSearchbar.setState({ Isopen: false }) }}>
                                                                 <div className="flex flex-col overflow-hidden">
                                                                     <p className="line-clamp-2 text-base">
@@ -179,8 +176,8 @@ function Search() {
                                                                 useSearchbar.setState({ Isopen: false });
                                                                 setQuery("");
                                                             }}
-
-                                                            className="flex w-full items-center justify-center gap-2 py-4 transition duration-300 ease-in-out cursor-pointer border-none bg-[#4d148c] te[...]">
+                                                            className="flex w-full items-center justify-center gap-2 py-4 transition duration-300 ease-in-out cursor-pointer border-none bg-[#4d148c] rounded-lg"
+                                                        >
                                                             View Results
                                                         </button>
                                                     </Link>
