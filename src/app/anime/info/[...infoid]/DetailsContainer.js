@@ -1,4 +1,4 @@
-"use client"
+"use client
 import React, { useState, useEffect } from 'react'
 import Episodesection from '@/components/Episodesection'
 import AnimeDetailsTop from '@/components/details/AnimeDetailsTop'
