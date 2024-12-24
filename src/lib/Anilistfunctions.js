@@ -167,30 +167,3 @@ export const AdvancedSearch = async (searchvalue, selectedYear=null, seasonvalue
         console.error('Error fetching search data from AniList:', error);
     }
 };
-
-export const MangaSearchAnilist = async (searchValue, currentPage = 1) => {
-    try {
-        const response = await fetch('https://graphql.anilist.co', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-            },
-            body: JSON.stringify({
-                query: advancedsearch,
-                variables: {
-                    search: searchValue,
-                    type: "MANGA",
-                    page: currentPage,
-                    perPage: 15,
-                    sort: "SEARCH_MATCH",
-                },
-            }),
-        });
-
-        const data = await response.json();
-        return data.data.Page.media;
-    } catch (error) {
-        console.error('Error fetching manga data from AniList:', error);
-    }
-};
