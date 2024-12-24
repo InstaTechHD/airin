@@ -1,13 +1,13 @@
-"use client"
+"use client";
 import { Fragment, useEffect, useRef, useState } from "react";
 import { Combobox, Dialog, Transition } from "@headlessui/react";
 import axios from "axios";
-import Link from 'next/link'
+import Link from "next/link";
 import UseDebounce from "@/utils/UseDebounce";
 import { AdvancedSearch } from "@/lib/Anilistfunctions";
-import { useRouter } from 'next/navigation';
-import { useTitle, useSearchbar } from '@/lib/store';
-import { useStore } from 'zustand';
+import { useRouter } from "next/navigation";
+import { useTitle, useSearchbar } from "@/lib/store";
+import { useStore } from "zustand";
 
 function Search() {
     const router = useRouter();
@@ -20,15 +20,22 @@ function Search() {
     const [nextPage, setNextPage] = useState(false);
     const [searchType, setSearchType] = useState("anime");
 
-    let focusInput = useRef(null);
+    const focusInput = useRef(null);
 
     async function searchdata() {
-        setLoading(true);
-        const res = await AdvancedSearch(debouncedSearch, searchType);
-        setData(res?.media)
-        setNextPage(res?.pageInfo?.hasNextPage);
-        console.log(res);
-        setLoading(false);
+        try {
+            setLoading(true);
+            console.log("Searching:", { query: debouncedSearch, type: searchType });
+            const res = await AdvancedSearch(debouncedSearch, searchType);
+            setData(res?.media || []);
+            setNextPage(res?.pageInfo?.hasNextPage || false);
+            console.log("API Response:", res);
+        } catch (error) {
+            console.error("Error fetching data:", error);
+            setData([]);
+        } finally {
+            setLoading(false);
+        }
     }
 
     useEffect(() => {
@@ -43,12 +50,7 @@ function Search() {
 
     return (
         <Transition appear show={Isopen} as={Fragment}>
-            <Dialog
-                as="div"
-                className="relative z-[99999]"
-                initialFocus={focusInput}
-                onClose={closeModal}
-            >
+            <Dialog as="div" className="relative z-[99999]" initialFocus={focusInput} onClose={closeModal}>
                 <Transition.Child
                     as={Fragment}
                     enter="ease-out duration-300"
@@ -76,7 +78,7 @@ function Search() {
                                 <Combobox
                                     as="div"
                                     className="max-w-[600px] mx-auto rounded-lg shadow-2xl relative flex flex-col"
-                                    onChange={(e) => {
+                                    onChange={() => {
                                         useSearchbar.setState({ Isopen: false });
                                         setData(null);
                                         setQuery("");
@@ -120,74 +122,52 @@ function Search() {
                                         className="bg-[#1a1a1f] rounded-xl mt-2 max-h-[50dvh] overflow-y-auto flex flex-col scrollbar-thin scrollbar-thumb-primary scrollbar-thumb-rounded "
                                     >
                                         {!loading ? (
-                                            <Fragment>
-                                                {data?.length > 0
-                                                    ? data?.map((item) => (
-                                                        <Combobox.Option
-                                                            key={item.id}
-                                                            value={item.id}
-                                                            className={({ active }) =>
-                                                                `flex items-center gap-3 py-[8px] px-5 border-b border-solid border-gray-800  ${active ? "bg-black/20 cursor-pointer" : ""
-                                                                }`
-                                                            }>
-                                                            <Link href={`/${searchType}/info/${item.id}`} onClick={() => { useSearchbar.setState({ Isopen: false }) }}>
-                                                                <div className="shrink-0">
-                                                                    <img
-                                                                        src={item.image || item.coverImage.large}
-                                                                        alt="image"
-                                                                        width={52}
-                                                                        height={70}
-                                                                        className="rounded"
-                                                                    />
+                                            data?.length > 0 ? (
+                                                data.map((item) => (
+                                                    <Combobox.Option
+                                                        key={item.id}
+                                                        value={item.id}
+                                                        className={({ active }) =>
+                                                            `flex items-center gap-3 py-[8px] px-5 border-b border-solid border-gray-800 ${active ? "bg-black/20 cursor-pointer" : ""
+                                                            }`
+                                                        }
+                                                    >
+                                                        <Link href={`/${searchType}/info/${item.id}`} onClick={() => useSearchbar.setState({ Isopen: false })}>
+                                                            <div className="shrink-0">
+                                                                <img
+                                                                    src={item.image || item.coverImage.large}
+                                                                    alt="image"
+                                                                    width={52}
+                                                                    height={70}
+                                                                    className="rounded"
+                                                                />
+                                                            </div>
+                                                        </Link>
+                                                        <Link href={`/${searchType}/info/${item.id}`} onClick={() => useSearchbar.setState({ Isopen: false })}>
+                                                            <div className="flex flex-col overflow-hidden">
+                                                                <p className="line-clamp-2 text-base">{item.title[animetitle] || item.title.romaji}</p>
+                                                                <span className="my-1 text-xs text-gray-400">Episodes - {item?.episodes || item?.nextAiringEpisode?.episode - 1 || "?"}</span>
+                                                                <div className="flex items-center text-gray-400 text-xs">
+                                                                    <span className="flex gap-1">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" className="w-3 h-3 mt-[1px]" viewBox="0 0 1664 1600"><path fill="currentColor" /></svg>
+                                                                        {item.averageScore / 10 || "0"}
+                                                                    </span>
+                                                                    <span className="mx-1 mb-[5px]">.</span>
+                                                                    <span>{item.format || item.type || "Na"}</span>
+                                                                    <span className="mx-1 mb-[5px]">.</span>
+                                                                    <span> {item?.startDate?.year || "Na"}</span>
+                                                                    <span className="mx-1 mb-[5px]">.</span>
+                                                                    <span>{item.status}</span>
                                                                 </div>
-                                                            </Link>
-                                                            <Link href={`/${searchType}/${searchType === "manga" ? "read" : "info"}/${item.id}`} onClick={() => { useSearchbar.setState({ Isopen: false }) }}>
-                                                                <div className="flex flex-col overflow-hidden">
-                                                                    <p className="line-clamp-2 text-base">
-                                                                        {item.title[animetitle] || item.title.romaji}
-                                                                    </p>
-                                                                    <span className="my-1 text-xs text-gray-400">Episodes - {item?.episodes || item?.nextAiringEpisode?.episode - 1 || "?"}</span>
-                                                                    <div className="flex items-center text-gray-400 text-xs">
-                                                                        <span className="flex gap-1">
-                                                                            <svg xmlns="http://www.w3.org/2000/svg" className="w-3 h-3 mt-[1px]" viewBox="0 0 1664 1600"><path fill="currentColor" /></svg>
-                                                                            {item.averageScore / 10 || "0"}
-                                                                        </span>
-                                                                        <span className='mx-1 mb-[5px]'>.</span>
-                                                                        <span>{item.format || item.type || "Na"}</span>
-                                                                        <span className='mx-1 mb-[5px]'>.</span>
-                                                                        <span> {item?.startDate?.year || "Na"}</span>
-                                                                        <span className='mx-1 mb-[5px]'>.</span>
-                                                                        <span>{item.status}</span>
-                                                                    </div>
-                                                                </div>
-                                                            </Link>
-                                                        </Combobox.Option>
-                                                    ))
-                                                    : (query !== '' &&
-                                                        <p className="flex items-center justify-center py-4 gap-1">
-                                                            No results found.
-                                                        </p>
-                                                    )}
-                                                {data && nextPage && (
-                                                    <Link href={`/${searchType}/catalog?search=${encodeURIComponent(query)}`}>
-                                                        <button
-                                                            type="button"
-                                                            onClick={() => {
-                                                                useSearchbar.setState({ Isopen: false });
-                                                                setQuery("");
-                                                            }}
-                                                            className="flex w-full items-center justify-center gap-2 py-4 transition duration-300 ease-in-out cursor-pointer border-none bg-[#4d148c] rounded-lg text-white"
-                                                        >
-                                                            View Results
-                                                        </button>
-                                                    </Link>
-                                                )}
-                                            </Fragment>
+                                                            </div>
+                                                        </Link>
+                                                    </Combobox.Option>
+                                                ))
+                                            ) : (
+                                                query && <p className="flex items-center justify-center py-4 gap-1">No results found.</p>
+                                            )
                                         ) : (
-                                            query !== "" &&
-                                            <div className="flex items-center justify-center py-4">
-                                                Loading...
-                                            </div>
+                                            <div className="flex items-center justify-center py-4">Loading...</div>
                                         )}
                                     </Combobox.Options>
                                 </Combobox>
