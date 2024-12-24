@@ -1,5 +1,5 @@
 import React from "react";
-import { AnimeInfoAnilist } from '@/lib/Anilistfunctions';
+import { AnimeInfoAnilist, MangaInfoAnilist } from '@/lib/Anilistfunctions'; // Updated import
 import NextAiringDate from "@/components/videoplayer/NextAiringDate";
 import PlayerAnimeCard from "@/components/videoplayer/PlayerAnimeCard";
 import Navbarcomponent from "@/components/navbar/Navbar";
@@ -10,7 +10,7 @@ import { WatchPageInfo } from "@/lib/AnilistUser";
 import { getAuthSession } from "../../../api/auth/[...nextauth]/route";
 import { redis } from '@/lib/rediscache';
 
-async function getInfo(id) {
+async function getInfo(id, type) {
   try {
     let cachedData;
     if (redis) {
@@ -23,7 +23,7 @@ async function getInfo(id) {
     if (cachedData) {
       return JSON.parse(cachedData);
     } else {
-      const data = await AnimeInfoAnilist(id);
+      const data = type === "anime" ? await AnimeInfoAnilist(id) : await MangaInfoAnilist(id); // Use Manga API if type is manga
       const cacheTime = data?.nextAiringEpisode?.episode ? 60 * 60 * 2 : 60 * 60 * 24 * 45;
       if (redis && data !== null && data) {
         await redis.set(`info:${id}`, JSON.stringify(data), "EX", cacheTime);
@@ -37,7 +37,8 @@ async function getInfo(id) {
 
 export async function generateMetadata({ params, searchParams }) {
   const id = searchParams?.id;
-  const data = await getInfo(id);
+  const type = searchParams?.type || "anime"; // Determine if it's anime or manga
+  const data = await getInfo(id, type);
   const epnum = searchParams?.ep;
 
   return {
@@ -77,7 +78,8 @@ async function AnimeWatch({ params, searchParams }) {
   const epNum = searchParams.ep;
   const epId = searchParams.epid;
   const subdub = searchParams.type;
-  const data = await getInfo(id);
+  const type = searchParams.type || "anime"; // Determine if it's anime or manga
+  const data = await getInfo(id, type);
   const savedep = await Ephistory(session, id, epNum);
 
   return (
@@ -99,10 +101,10 @@ async function AnimeWatch({ params, searchParams }) {
           </div>
         </div>
         <div className="lg:hidden">
-          <Animecards data={data?.relations?.edges} cardid="Related Anime" />
+          <Animecards data={data?.relations?.edges} cardid="Related Anime" type={type} /> {/* Pass type to component */}
         </div>
         <div className="lg:hidden">
-          <Animecards data={data?.recommendations?.nodes} cardid="Recommendations" />
+          <Animecards data={data?.recommendations?.nodes} cardid="Recommendations" type={type} /> {/* Pass type to component */}
         </div>
       </div>
     </>
