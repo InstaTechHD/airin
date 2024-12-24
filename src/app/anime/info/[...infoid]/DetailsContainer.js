@@ -6,7 +6,7 @@ import AnimeDetailsBottom from '@/components/details/AnimeDetailsBottom'
 import Animecards from '@/components/CardComponent/Animecards'
 import { getUserLists } from '@/lib/AnilistUser';
 
-function DetailsContainer({data, id, session}) {
+function DetailsContainer({data, id, session, type}) { // Added type to props
     const [list,setList] = useState(null);
     const [url, setUrl] = useState(null);
 
@@ -29,7 +29,7 @@ function DetailsContainer({data, id, session}) {
       <Episodesection data={data} id={id} setUrl={setUrl} progress={progress}/>
       {data?.recommendations?.nodes?.length > 0 && (
         <div className="recommendationglobal">
-          <Animecards data={data.recommendations.nodes} cardid={"Recommendations"} />
+          <Animecards data={data.recommendations.nodes} cardid={"Recommendations"} type={type} /> {/* Pass type to component */}
         </div>
       )} 
     </>
