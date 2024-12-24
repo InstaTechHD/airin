@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { AdvancedSearch } from '@/lib/Anilistfunctions';
 import React, { useEffect, useState } from 'react';
 import { Pagination } from "@nextui-org/react";
-import styles from '../../styles/Catalog.module.css';
+import styles from '../../styles/Catalog.module.css'
 import UseDebounce from '@/utils/UseDebounce';
 import { useTitle } from '@/lib/store';
 import { useStore } from 'zustand';
@@ -15,13 +15,13 @@ function Searchcard({ searchvalue, selectedYear, seasonvalue, formatvalue, genre
     const [searchdata, setsearchdata] = useState(null);
     const [lastpage, setlastpage] = useState();
     const [loading, setLoading] = useState(true);
-    const debouncedSearch = UseDebounce(searchvalue, 500);
+    const debouncedSearch = UseDebounce(searchvalue, 500)
 
     useEffect(() => {
         const fetchsearch = async () => {
             setLoading(true);
             try {
-                const response = await AdvancedSearch(debouncedSearch, "ANIME", selectedYear, seasonvalue, formatvalue, genrevalue, sortbyvalue, currentPage);
+                const response = await AdvancedSearch(debouncedSearch, selectedYear, seasonvalue, formatvalue, genrevalue, sortbyvalue,currentPage);
                 setsearchdata(response.media);
                 setlastpage(response.pageInfo.lastPage);
                 setLoading(false);
@@ -81,10 +81,15 @@ function Searchcard({ searchvalue, selectedYear, seasonvalue, formatvalue, genre
                                         <span>Ep {item.episodes || item?.nextAiringEpisode?.episode-1 || '?'}</span>
                                     </div>
                                 </div>
+                                <span className={styles.cardtitle}> <span className={`aspect-square w-2 h-2 inline-block mr-1 rounded-full ${item.status === "NOT_YET_RELEASED" ? 'bg-red-500' : item.status === 'RELEASING' ? 'bg-green-500' : 'hidden'} xl:hidden`}></span>{item.title[animetitle] || item.title.romaji}</span>
+                                {/* <span className={styles.cardtitle}>
+                                    {item.title.english ? item.title.english : item.title.romaji}
+                                </span> */}
                             </div>
                         </Link>
                     ))
                 )}
+
             </div>
             {lastpage > 2 && (
                 <div className={styles.cardbottom}>
