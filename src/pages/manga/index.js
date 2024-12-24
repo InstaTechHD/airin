@@ -92,11 +92,6 @@ const MangaPage = () => {
           </Link>
         ))}
       </div>
-      <div className={styles.pagination}>
-  <button onClick={handlePreviousPage}>Previous</button>
-  <span>Page {page} of {totalPages}</span>
-  <button onClick={handleNextPage}>Next</button>
-</div>
     </div>
   );
 };
