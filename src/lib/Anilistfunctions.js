@@ -1,4 +1,4 @@
-"use server"
+"use server
 import { trending, animeinfo, advancedsearch, top100anime, seasonal, popular } from "./anilistqueries";
 
 export const TrendingAnilist = async () => {
