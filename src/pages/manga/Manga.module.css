@@ -25,3 +25,17 @@
   font-size: 1.2em;
   font-weight: bold;
 }
+.pagination button {
+  background-color: #4e148c;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  margin: 5px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.pagination button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
