@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import styles from '../../styles/Catalog.module.css';
 import { Accordion, AccordionItem, Select, SelectItem, RadioGroup, Radio, Input } from "@nextui-org/react";
 import { seasonOptions, genreOptions, tagsOptions, formatOptions, yearOptions, sortbyOptions, airingOptions } from './options';
-import { Combobox, Transition } from '@headlessui/react'
+import { Combobox, Transition } from '@headlessui/react';
 import Searchcard from './Searchcard';
 
 function Catalog({ searchParams }) {
@@ -11,8 +11,8 @@ function Catalog({ searchParams }) {
     const [selectedYear, setSelectedYear] = useState(null);
     const [seasonvalue, setSeasonvalue] = useState(null);
     const [formatvalue, setFormatvalue] = useState(null);
-    const [genrevalue, setGenrevalue] = useState([])
-    const [query, setQuery] = useState('')
+    const [genrevalue, setGenrevalue] = useState([]);
+    const [query, setQuery] = useState('');
     const [sortbyvalue, setSortbyvalue] = useState(null);
     const [status, setStatus] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -60,25 +60,13 @@ function Catalog({ searchParams }) {
         setSelectedYear(yearId);
     };
 
-    const filteredGenre =
-        query === ""
-            ? genreOptions
-            : genreOptions.filter((item) =>
-                item.name
-                    .toLowerCase()
-                    .replace(/\s+/g, "")
-                    .includes(query.toLowerCase().replace(/\s+/g, ""))
-            );
+    const filteredGenre = query === "" ? genreOptions : genreOptions.filter((item) =>
+        item.name.toLowerCase().replace(/\s+/g, "").includes(query.toLowerCase().replace(/\s+/g, ""))
+    );
 
-    const filteredTags =
-        query === ""
-            ? tagsOptions
-            : tagsOptions.filter((item) =>
-                item.name
-                    .toLowerCase()
-                    .replace(/\s+/g, "")
-                    .includes(query.toLowerCase().replace(/\s+/g, ""))
-            );
+    const filteredTags = query === "" ? tagsOptions : tagsOptions.filter((item) =>
+        item.name.toLowerCase().replace(/\s+/g, "").includes(query.toLowerCase().replace(/\s+/g, ""))
+    );
 
     const isFormEmpty = !selectedYear && !seasonvalue && !formatvalue && genrevalue.length === 0 && !query && !sortbyvalue && !searchvalue;
 
@@ -262,7 +250,7 @@ function Catalog({ searchParams }) {
                         </div>
                         <button className='hidden lg:flex items-end cursor-default' onClick={resetValues} disabled={isFormEmpty}>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6 mb-2 cursor-pointer">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.2[...]
+                                <path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2[...]
                             </svg>
                         </button>
                         <div className={styles.yearmobil}>
