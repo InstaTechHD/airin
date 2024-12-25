@@ -4,13 +4,13 @@ import Navbarcomponent from '@/components/navbar/Navbar'
 
 export async function generateMetadata({ params }) {
   return {
-    title: "Airin - Catalog",
+    title: "Makima - Catalog",
     openGraph: {
-      title: "Airin - Catalog",
+      title: "Makima - Catalog",
     },
     twitter: {
       card: "summary",
-      title: "Airin - Catalog",
+      title: "Makima - Catalog",
     },
   }
 }
