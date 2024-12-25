@@ -121,17 +121,7 @@ export const AnimeInfoAnilist = async (animeid) => {
 }
 
 export const AdvancedSearch = async (searchvalue, searchType="ANIME", selectedYear=null, seasonvalue=null, formatvalue=null, genrevalue=[], statusvalue=null, sortbyvalue=null, currentPage=1) => {
-    const types = {};
-
-    for (const item of genrevalue) {
-        const { type, value } = item;
-
-        if (types[type]) {
-            types[type].push(value);
-        } else {
-            types[type] = [value];
-        }
-    }
+    const genres = genrevalue.length ? { genre_in: genrevalue } : {};
 
     try {
         const response = await fetch('https://graphql.anilist.co', {
@@ -153,7 +143,7 @@ export const AdvancedSearch = async (searchvalue, searchType="ANIME", selectedYe
                     ...(formatvalue && { format: formatvalue }),
                     ...(statusvalue && { status: statusvalue }),
                     ...(sortbyvalue && { sort: sortbyvalue }),
-                    ...(types && { ...types }),
+                    ...genres,
                     ...(currentPage && { page: currentPage }),
                 },
             }),
