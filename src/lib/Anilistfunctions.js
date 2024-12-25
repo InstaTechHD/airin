@@ -18,12 +18,17 @@ export const TrendingAnilist = async () => {
             }),
         }, { next: { revalidate: 3600 } });
 
+        if (!response.ok) {
+            throw new Error('Failed to fetch trending anime');
+        }
+
         const data = await response.json();
-        return data.data.Page.media;
+        return data.data.Page.media || [];
     } catch (error) {
         console.error('Error fetching data from AniList:', error);
+        return [];
     }
-}
+};
 
 export const PopularAnilist = async () => {
     try {
@@ -42,12 +47,17 @@ export const PopularAnilist = async () => {
             }),
         }, { next: { revalidate: 3600 } });
 
+        if (!response.ok) {
+            throw new Error('Failed to fetch popular anime');
+        }
+
         const data = await response.json();
-        return data.data.Page.media;
+        return data.data.Page.media || [];
     } catch (error) {
         console.error('Error fetching popular data from AniList:', error);
+        return [];
     }
-}
+};
 
 export const Top100Anilist = async () => {
     try {
@@ -66,12 +76,17 @@ export const Top100Anilist = async () => {
             }),
         }, { next: { revalidate: 3600 } });
 
+        if (!response.ok) {
+            throw new Error('Failed to fetch top 100 anime');
+        }
+
         const data = await response.json();
-        return data.data.Page.media;
+        return data.data.Page.media || [];
     } catch (error) {
         console.error('Error fetching data from AniList:', error);
+        return [];
     }
-}
+};
 
 export const SeasonalAnilist = async () => {
     try {
@@ -90,12 +105,17 @@ export const SeasonalAnilist = async () => {
             }),
         }, { next: { revalidate: 3600 } });
 
+        if (!response.ok) {
+            throw new Error('Failed to fetch seasonal anime');
+        }
+
         const data = await response.json();
-        return data.data.Page.media;
+        return data.data.Page.media || [];
     } catch (error) {
         console.error('Error fetching data from AniList:', error);
+        return [];
     }
-}
+};
 
 export const AnimeInfoAnilist = async (animeid) => {
     try {
@@ -113,12 +133,17 @@ export const AnimeInfoAnilist = async (animeid) => {
             }),
         }, { next: { revalidate: 3600 } });
 
+        if (!response.ok) {
+            throw new Error(`Failed to fetch anime info for ID: ${animeid}`);
+        }
+
         const data = await response.json();
-        return data.data.Media;
+        return data.data.Media || null;
     } catch (error) {
         console.error('Error fetching data from AniList:', error);
+        return null;
     }
-}
+};
 
 export const AdvancedSearch = async (
     searchvalue,
@@ -133,36 +158,13 @@ export const AdvancedSearch = async (
 ) => {
     const types = {};
 
-    // Check if genrevalue is an array and not empty
-    if (Array.isArray(genrevalue) && genrevalue.length > 0) {
-        for (const item of genrevalue) {
-            const { type, value } = item;
-            if (types[type]) {
-                types[type].push(value);
-            } else {
-                types[type] = [value];
-            }
+    for (const item of genrevalue) {
+        const { type, value } = item;
+        if (types[type]) {
+            types[type].push(value);
+        } else {
+            types[type] = [value];
         }
-    } else {
-        console.log("Genre value is either empty or not an array:", genrevalue);
-    }
-
-    // Log the query variables
-    console.log("Search Query Variables:", {
-        searchvalue,
-        searchType,
-        selectedYear,
-        seasonvalue,
-        formatvalue,
-        genrevalue,
-        statusvalue,
-        sortbyvalue,
-        currentPage
-    });
-
-    // Validate sortbyvalue and provide a default if missing
-    if (!sortbyvalue) {
-        sortbyvalue = "POPULARITY"; // Default sort value, if needed
     }
 
     try {
@@ -185,29 +187,20 @@ export const AdvancedSearch = async (
                     ...(formatvalue && { format: formatvalue }),
                     ...(statusvalue && { status: statusvalue }),
                     ...(sortbyvalue && { sort: sortbyvalue }),
-                    ...(Object.keys(types).length > 0 && { ...types }), // Only include types if they're not empty
+                    ...(types && { ...types }),
                     ...(currentPage && { page: currentPage }),
                 },
             }),
         });
 
+        if (!response.ok) {
+            throw new Error('Failed to fetch advanced search data');
+        }
+
         const data = await response.json();
-
-        // Log the full response to check for errors
-        console.log("Response Data:", data);
-        
-        if (data.errors) {
-            console.error("GraphQL errors:", data.errors);
-            return null; // Handle errors gracefully
-        }
-
-        if (data.data && data.data.Page) {
-            return data.data.Page;
-        } else {
-            console.error("Invalid response structure:", data);
-            return null; // Handle missing data
-        }
+        return data.data.Page || { media: [] };
     } catch (error) {
         console.error('Error fetching search data from AniList:', error);
+        return { media: [] };
     }
 };
