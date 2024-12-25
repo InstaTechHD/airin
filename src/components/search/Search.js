@@ -38,8 +38,8 @@ function Search() {
     function handleResultClick(item) {
         closeModal();
         setQuery("");
-        const basePath = searchType === "anime" ? `/anime/info/${item.id}` : `/manga/read/${item.id}`;
-        router.push(basePath);
+        const basePath = searchType === "anime" ? "/anime/info" : "/manga/read";
+        router.push(`${basePath}/${item.id}`);
     }
 
     return (
@@ -144,6 +144,11 @@ function Search() {
                                             )}
                                         </Combobox.Options>
                                     </Combobox>
+                                </div>
+
+                                {/* For quick access: CTRL + S */}
+                                <div className="mt-4 text-xs text-center text-gray-400">
+                                    For quick access: <span className="font-bold">CTRL + S</span>
                                 </div>
                             </Dialog.Panel>
                         </Transition.Child>
