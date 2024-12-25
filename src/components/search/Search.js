@@ -1,7 +1,8 @@
 "use client"
 import { Fragment, useEffect, useRef, useState } from "react";
 import { Combobox, Dialog, Transition } from "@headlessui/react";
-import Link from 'next/link';
+import axios from "axios";
+import Link from 'next/link'
 import UseDebounce from "@/utils/UseDebounce";
 import { AdvancedSearch } from "@/lib/Anilistfunctions";
 import { useRouter } from 'next/navigation';
@@ -18,16 +19,12 @@ function Search() {
     const debouncedSearch = UseDebounce(query, 500);
     const [nextPage, setNextPage] = useState(false);
     const [searchType, setSearchType] = useState('anime'); // Default to 'anime'
-    const [year, setYear] = useState(null);
-    const [genres, setGenres] = useState([]);
-    const [status, setStatus] = useState(null);
-    const [sortBy, setSortBy] = useState(null);
 
     let focusInput = useRef(null);
 
     async function searchdata() {
         setLoading(true);
-        const res = await AdvancedSearch(debouncedSearch, searchType, year, null, null, genres, status, sortBy); // Pass all filters for correct API filtering
+        const res = await AdvancedSearch(debouncedSearch, searchType); // Pass searchType for correct API filtering
         setData(res?.media);
         setNextPage(res?.pageInfo?.hasNextPage);
         setLoading(false);
@@ -37,7 +34,7 @@ function Search() {
         if (debouncedSearch) {
             searchdata();
         }
-    }, [debouncedSearch, searchType, year, genres, status, sortBy]);
+    }, [debouncedSearch, searchType]);
 
     function closeModal() {
         useSearchbar.setState({ Isopen: false });
@@ -55,6 +52,7 @@ function Search() {
                     as={Fragment}
                     enter="ease-out duration-300"
                     enterFrom="opacity-0"
+
                     enterTo="opacity-100"
                     leave="ease-in duration-200"
                     leaveFrom="opacity-100"
@@ -93,6 +91,7 @@ function Search() {
                                             <div className="bg-[#1a1a1f] text-white text-xs font-bold px-2 py-1 rounded-md">S</div>
                                         </div>
 
+                                        {/* Dropdown for toggling anime and manga search */}
                                         <div className="flex justify-between items-center py-1 px-2">
                                             <select
                                                 className="bg-[#1a1a1f] text-white text-xs font-bold px-2 py-1 rounded-md"
@@ -100,56 +99,10 @@ function Search() {
                                                 value={searchType}
                                             >
                                                 <option value="anime">Anime</option>
+
                                                 <option value="manga">Manga</option>
                                             </select>
                                         </div>        
-                                    </div>
-
-                                    {/* Filters for year, genres, status, and sort by */}
-                                    <div className="flex flex-col py-2">
-                                        <select
-                                            className="bg-[#1a1a1f] text-white text-xs font-bold px-2 py-1 rounded-md mb-2"
-                                            onChange={(e) => setYear(e.target.value)}
-                                            value={year}
-                                        >
-                                            <option value="">Select Year</option>
-                                            <option value="2025">2025</option>
-                                            <option value="2024">2024</option>
-                                            {/* Add more years as needed */}
-                                        </select>
-                                        <input
-                                            type="text"
-                                            className="bg-[#1a1a1f] text-white text-xs font-bold px-2 py-1 rounded-md mb-2"
-                                            placeholder="Genres (comma separated)"
-                                            onChange={(e) => setGenres(e.target.value.split(','))}
-                                        />
-                                        <select
-                                            className="bg-[#1a1a1f] text-white text-xs font-bold px-2 py-1 rounded-md mb-2"
-                                            onChange={(e) => setStatus(e.target.value)}
-                                            value={status}
-                                        >
-                                            <option value="">Select Status</option>
-                                            <option value="CANCELLED">Cancelled</option>
-                                            <option value="NOT_YET_RELEASED">Not Yet Released</option>
-                                            <option value="FINISHED">Finished</option>
-                                            <option value="RELEASING">Releasing</option>
-                                            {/* Add more statuses as needed */}
-                                        </select>
-                                        <select
-                                            className="bg-[#1a1a1f] text-white text-xs font-bold px-2 py-1 rounded-md"
-                                            onChange={(e) => setSortBy(e.target.value)}
-                                            value={sortBy}
-                                        >
-                                            <option value="">Sort By</option>
-                                            <option value="TITLE">Title</option>
-                                            <option value="POPULARITY">Popularity</option>
-                                            <option value="AVERAGE_SCORE">Average Score</option>
-                                            <option value="TRENDING">Trending</option>
-                                            <option value="FAVORITES">Favorites</option>
-                                            <option value="DATE_ADDED">Date Added</option>
-                                            <option value="RELEASE_DATE">Release Date</option>
-                                            {/* Add more sort options as needed */}
-                                        </select>
                                     </div>
 
                                     <div className="flex items-center text-base font-medium rounded-lg bg-[#1a1a1f]">
@@ -189,6 +142,7 @@ function Search() {
                                                                     <img
                                                                         src={item.image || item.coverImage.large}
                                                                         alt="image"
+
                                                                         width={52}
                                                                         height={70}
                                                                         className="rounded"
@@ -222,6 +176,7 @@ function Search() {
                                                         </Combobox.Option>
                                                     ))
                                                     : (query !== '' &&
+
                                                         <p className="flex items-center justify-center py-4 gap-1">
                                                             No results found.
                                                         </p>
