@@ -90,19 +90,17 @@ function Search() {
                                             <div className="bg-[#1a1a1f] text-white text-xs font-bold px-2 py-1 rounded-md">S</div>
                                         </div>
 
-                                    {/* Real Dropdown Starts Here */}
-
-                                    <div className="flex justify-between items-center py-1 px-2">
                                         {/* Dropdown for toggling anime and manga search */}
-                                        <select
-                                            className="bg-[#1a1a1f] text-white text-xs font-bold px-2 py-1 rounded-md"
-                                            onChange={(e) => setSearchType(e.target.value)}
-                                            value={searchType}
-                                        >
-                                            <option value="anime">Anime</option>
-                                            <option value="manga">Manga</option>
-                                        </select>
-                                    </div>        
+                                        <div className="flex justify-between items-center py-1 px-2">
+                                            <select
+                                                className="bg-[#1a1a1f] text-white text-xs font-bold px-2 py-1 rounded-md"
+                                                onChange={(e) => setSearchType(e.target.value)}
+                                                value={searchType}
+                                            >
+                                                <option value="anime">Anime</option>
+                                                <option value="manga">Manga</option>
+                                            </select>
+                                        </div>        
                                     </div>
 
                                     <div className="flex items-center text-base font-medium rounded-lg bg-[#1a1a1f]">
@@ -135,10 +133,9 @@ function Search() {
                                                             key={item.id}
                                                             value={item.id}
                                                             className={({ active }) =>
-                                                                `flex items-center gap-3 py-[8px] px-5 border-b border-solid border-gray-800  ${active ? "bg-black/20 cursor-pointer" : ""
-                                                                }`
+                                                                `flex items-center gap-3 py-[8px] px-5 border-b border-solid border-gray-800 ${active ? "bg-black/20 cursor-pointer" : ""}`
                                                             }>
-                                                            <Link href={`/${searchType === 'anime' ? 'anime/info' : 'manga/read'}/${item.id}`} onClick={() => { useSearchbar.setState({ Isopen: false })[...]
+                                                            <Link href={`/${searchType === 'anime' ? 'anime/info' : 'manga/read'}/${item.id}`} onClick={() => { useSearchbar.setState({ Isopen: false }) }}>
                                                                 <div className="shrink-0">
                                                                     <img
                                                                         src={item.image || item.coverImage.large}
@@ -149,7 +146,7 @@ function Search() {
                                                                     />
                                                                 </div>
                                                             </Link>
-                                                            <Link href={`/${searchType === 'anime' ? 'anime/info' : 'manga/read'}/${item.id}`} onClick={() => { useSearchbar.setState({ Isopen: false })[...]
+                                                            <Link href={`/${searchType === 'anime' ? 'anime/info' : 'manga/read'}/${item.id}`} onClick={() => { useSearchbar.setState({ Isopen: false }) }}>
                                                                 <div className="flex flex-col overflow-hidden">
                                                                     <p className="line-clamp-2 text-base">
                                                                         {item.title[animetitle] || item.title.romaji}
@@ -160,7 +157,7 @@ function Search() {
                                                                     <div className="flex items-center text-gray-400 text-xs">
                                                                         <span className="flex gap-1">
                                                                             <svg xmlns="http://www.w3.org/2000/svg" className="w-3 h-3 mt-[1px]" viewBox="0 0 1664 1600">
-                                                                                <path fill="currentColor" d="M1664 615q0 22-26 48l-363 354l86 500q1 7 1 20q0 21-10.5 35.5T1321 1587q-19 0-40-12l-449-236[...]
+                                                                                <path fill="currentColor" d="M1664 615q0 22-26 48l-363 354l86 500q1 7 1 20q0 21-10.5 35.5T1321 1587q-19 0-40-12l-449-236[...]"></path>
                                                                             </svg>
                                                                             {item.averageScore / 10 || "0"}
                                                                         </span>
@@ -188,8 +185,9 @@ function Search() {
                                                                 useSearchbar.setState({ Isopen: false });
                                                                 setQuery("");
                                                             }}
-                                                            className="flex w-full items-center justify-center gap-2 py-4 transition duration-300 ease-in-out cursor-pointer border-none bg-[#4d148c] te[...]
-                                                                <span>See more results</span>
+                                                            className="flex w-full items-center justify-center gap-2 py-4 transition duration-300 ease-in-out cursor-pointer border-none bg-[#4d148c] text-white"
+                                                        >
+                                                            <span>See more results</span>
                                                         </button>
                                                     </Link>
                                                 )}
