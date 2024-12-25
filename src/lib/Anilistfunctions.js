@@ -133,13 +133,36 @@ export const AdvancedSearch = async (
 ) => {
     const types = {};
 
-    for (const item of genrevalue) {
-        const { type, value } = item;
-        if (types[type]) {
-            types[type].push(value);
-        } else {
-            types[type] = [value];
+    // Check if genrevalue is an array and not empty
+    if (Array.isArray(genrevalue) && genrevalue.length > 0) {
+        for (const item of genrevalue) {
+            const { type, value } = item;
+            if (types[type]) {
+                types[type].push(value);
+            } else {
+                types[type] = [value];
+            }
         }
+    } else {
+        console.log("Genre value is either empty or not an array:", genrevalue);
+    }
+
+    // Log the query variables
+    console.log("Search Query Variables:", {
+        searchvalue,
+        searchType,
+        selectedYear,
+        seasonvalue,
+        formatvalue,
+        genrevalue,
+        statusvalue,
+        sortbyvalue,
+        currentPage
+    });
+
+    // Validate sortbyvalue and provide a default if missing
+    if (!sortbyvalue) {
+        sortbyvalue = "POPULARITY"; // Default sort value, if needed
     }
 
     try {
@@ -162,14 +185,28 @@ export const AdvancedSearch = async (
                     ...(formatvalue && { format: formatvalue }),
                     ...(statusvalue && { status: statusvalue }),
                     ...(sortbyvalue && { sort: sortbyvalue }),
-                    ...(types && { ...types }),
+                    ...(Object.keys(types).length > 0 && { ...types }), // Only include types if they're not empty
                     ...(currentPage && { page: currentPage }),
                 },
             }),
         });
 
         const data = await response.json();
-        return data.data.Page;
+
+        // Log the full response to check for errors
+        console.log("Response Data:", data);
+        
+        if (data.errors) {
+            console.error("GraphQL errors:", data.errors);
+            return null; // Handle errors gracefully
+        }
+
+        if (data.data && data.data.Page) {
+            return data.data.Page;
+        } else {
+            console.error("Invalid response structure:", data);
+            return null; // Handle missing data
+        }
     } catch (error) {
         console.error('Error fetching search data from AniList:', error);
     }
