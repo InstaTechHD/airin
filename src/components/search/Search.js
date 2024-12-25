@@ -84,6 +84,7 @@ function Search() {
                                     {/* Dropdown for anime and manga */}
                                     <div className="flex justify-between py-1">
                                         <div className="flex items-center px-2 gap-2">
+                                            <p className="my-1">For quick access :</p>
                                             <div className="bg-[#1a1a1f] text-white text-xs font-bold px-2 py-1 rounded-md">CTRL</div>
                                             <span>+</span>
                                             <div className="bg-[#1a1a1f] text-white text-xs font-bold px-2 py-1 rounded-md">S</div>
