@@ -89,7 +89,8 @@ function Search() {
                                             <span>+</span>
                                             <div className="bg-[#1a1a1f] text-white text-xs font-bold px-2 py-1 rounded-md">S</div>
                                         </div>
-                                    </div>
+
+                                    {/* Real Dropdown Starts Here */}
 
                                     <div className="flex justify-between items-center py-1 px-2">
                                         {/* Dropdown for toggling anime and manga search */}
@@ -101,6 +102,8 @@ function Search() {
                                             <option value="anime">Anime</option>
                                             <option value="manga">Manga</option>
                                         </select>
+                                    </div>
+                                      /* Drop Down End*/          
                                     </div>
 
                                     <div className="flex items-center text-base font-medium rounded-lg bg-[#1a1a1f]">
