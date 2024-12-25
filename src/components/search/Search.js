@@ -106,23 +106,23 @@ function Search() {
                                     </div>
 
                                     {/* Search box */}
-<div className="flex items-center text-base font-medium rounded-lg bg-[#1a1a1f]">
-    <Combobox.Input
-        ref={focusInput}
-        className="p-4 text-white w-full bg-transparent border-0 outline-none"
-        placeholder={`Search for ${isManga ? 'manga' : 'anime'}`}
-        onChange={(event) => setQuery(event.target.value)}
-        onKeyDown={(event) => {
-            if (event.key === "Enter") {
-                useSearchbar.setState({ Isopen: false });
-                router.push(`/${isManga ? 'manga' : 'anime'}/catalog?search=${encodeURIComponent(event.target.value)}`);
-                setData(null);
-                setQuery("");
-            }
-        }}
-        autoComplete="off"
-    />
-</div>
+                                    <div className="flex items-center text-base font-medium rounded-lg bg-[#1a1a1f]">
+                                        <Combobox.Input
+                                            ref={focusInput}
+                                            className="p-4 text-white w-full bg-transparent border-0 outline-none"
+                                            placeholder="Search Anime..."
+                                            onChange={(event) => setQuery(event.target.value)}
+                                            onKeyDown={(event) => {
+                                                if (event.key === "Enter") {
+                                                    useSearchbar.setState({ Isopen: false });
+                                                    router.push(`/anime/catalog?search=${encodeURIComponent(event.target.value)}`);
+                                                    setData(null);
+                                                    setQuery("");
+                                                }
+                                            }}
+                                            autoComplete="off"
+                                        />
+                                    </div>
                                     <Combobox.Options
                                         static
                                         className="bg-[#1a1a1f] rounded-xl mt-2 max-h-[50dvh] overflow-y-auto flex flex-col scrollbar-thin scrollbar-thumb-primary scrollbar-thumb-rounded "
@@ -185,7 +185,7 @@ function Search() {
                                                                 useSearchbar.setState({ Isopen: false });
                                                                 setQuery("");
                                                             }}
-                                                            className="flex w-full items-center justify-center gap-2 py-4 transition duration-300 ease-in-out cursor-pointer border-none bg-[#4d148c] text-white font-semibold rounded-md hover:bg-[#5a1a9a]"
+                                                         className="flex w-full items-center justify-center gap-2 py-4 transition duration-300 ease-in-out cursor-pointer border-none bg-[#4d148c] text-white font-semibold rounded-md hover:bg-[#5a1a9a]"
                                                         >
                                                             <span>See More Results</span>
                                                         </button>
