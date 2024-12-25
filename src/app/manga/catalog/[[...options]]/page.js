@@ -23,7 +23,7 @@ function page({ searchParams }) {
       <div className='max-w-[94%] xl:max-w-[88%] mx-auto mt-[70px]'>
         <Catalog searchParams={searchParams} />
       </div>
-      <Search />
+      <Search searchType="manga" />
     </div>
   )
 }
