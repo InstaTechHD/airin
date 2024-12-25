@@ -58,8 +58,10 @@ function Searchcard({ searchvalue, selectedYear, seasonvalue, formatvalue, genre
                 )}
                 {!loading && (
                     searchdata?.map((item) => (
-                        <Link href={`/anime/info/${item.id}`} key={item.id}>
-                            <div key={item.id} className={styles.carditem}>
+                        <Link 
+                            href={item.format === 'MANGA' ? `/manga/read/${item.id}` : `/anime/info/${item.id}`} 
+                            key={item.id}>
+                            <div className={styles.carditem}>
                                 <div className={styles.cardimgcontainer}>
                                     <Image
                                         src={item.coverImage?.extraLarge ?? item.image}
@@ -81,6 +83,11 @@ function Searchcard({ searchvalue, selectedYear, seasonvalue, formatvalue, genre
                                         <span>Ep {item.episodes || item?.nextAiringEpisode?.episode-1 || '?'}</span>
                                     </div>
                                 </div>
+                                <span className={styles.cardtitle}> 
+                                    <span className={`aspect-square w-2 h-2 inline-block mr-1 rounded-full ${item.status === "NOT_YET_RELEASED" ? 'bg-red-500' : item.status === 'RELEASING' ? 'bg-green-500' : 'hidden'} xl:hidden`}>
+                                    </span>
+                                    {item.title[animetitle] || item.title.romaji}
+                                </span>
                             </div>
                         </Link>
                     ))
