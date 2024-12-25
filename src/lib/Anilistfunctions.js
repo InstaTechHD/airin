@@ -18,17 +18,12 @@ export const TrendingAnilist = async () => {
             }),
         }, { next: { revalidate: 3600 } });
 
-        if (!response.ok) {
-            throw new Error('Failed to fetch trending anime');
-        }
-
         const data = await response.json();
-        return data.data.Page.media || [];
+        return data.data.Page.media;
     } catch (error) {
         console.error('Error fetching data from AniList:', error);
-        return [];
     }
-};
+}
 
 export const PopularAnilist = async () => {
     try {
@@ -47,21 +42,17 @@ export const PopularAnilist = async () => {
             }),
         }, { next: { revalidate: 3600 } });
 
-        if (!response.ok) {
-            throw new Error('Failed to fetch popular anime');
-        }
-
         const data = await response.json();
-        return data.data.Page.media || [];
+        return data.data.Page.media;
     } catch (error) {
         console.error('Error fetching popular data from AniList:', error);
-        return [];
     }
-};
+}
 
 export const Top100Anilist = async () => {
     try {
         const response = await fetch('https://graphql.anilist.co', {
+
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -76,17 +67,12 @@ export const Top100Anilist = async () => {
             }),
         }, { next: { revalidate: 3600 } });
 
-        if (!response.ok) {
-            throw new Error('Failed to fetch top 100 anime');
-        }
-
         const data = await response.json();
-        return data.data.Page.media || [];
+        return data.data.Page.media;
     } catch (error) {
         console.error('Error fetching data from AniList:', error);
-        return [];
     }
-};
+}
 
 export const SeasonalAnilist = async () => {
     try {
@@ -105,17 +91,12 @@ export const SeasonalAnilist = async () => {
             }),
         }, { next: { revalidate: 3600 } });
 
-        if (!response.ok) {
-            throw new Error('Failed to fetch seasonal anime');
-        }
-
         const data = await response.json();
-        return data.data.Page.media || [];
+        return data.data.Page.media;
     } catch (error) {
         console.error('Error fetching data from AniList:', error);
-        return [];
     }
-};
+}
 
 export const AnimeInfoAnilist = async (animeid) => {
     try {
@@ -127,44 +108,33 @@ export const AnimeInfoAnilist = async (animeid) => {
             },
             body: JSON.stringify({
                 query: animeinfo,
+
                 variables: {
                     id: animeid,
                 },
             }),
         }, { next: { revalidate: 3600 } });
 
-        if (!response.ok) {
-            throw new Error(`Failed to fetch anime info for ID: ${animeid}`);
-        }
-
         const data = await response.json();
-        return data.data.Media || null;
+        return data.data.Media;
     } catch (error) {
         console.error('Error fetching data from AniList:', error);
-        return null;
     }
-};
+}
 
-export const AdvancedSearch = async (
-    searchvalue,
-    searchType = "ANIME",
-    selectedYear = null,
-    seasonvalue = null,
-    formatvalue = null,
-    genrevalue = [],
-    statusvalue = null,
-    sortbyvalue = null,
-    currentPage = 1
-) => {
+export const AdvancedSearch = async (searchvalue, searchType="ANIME", selectedYear=null, seasonvalue=null, formatvalue=null, genrevalue=[], sortbyvalue=null, currentPage=1) => {
     const types = {};
 
-    for (const item of genrevalue) {
-        const { type, value } = item;
-        if (types[type]) {
-            types[type].push(value);
-        } else {
-            types[type] = [value];
-        }
+    // Correcting how the genre is handled. Genre values need to be passed properly
+    if (genrevalue && genrevalue.length > 0) {
+        genrevalue.forEach(item => {
+            const { type, value } = item;
+            if (types[type]) {
+                types[type].push(value);
+            } else {
+                types[type] = [value];
+            }
+        });
     }
 
     try {
@@ -185,22 +155,17 @@ export const AdvancedSearch = async (
                     ...(selectedYear && { seasonYear: selectedYear }),
                     ...(seasonvalue && { season: seasonvalue }),
                     ...(formatvalue && { format: formatvalue }),
-                    ...(statusvalue && { status: statusvalue }),
                     ...(sortbyvalue && { sort: sortbyvalue }),
-                    ...(types && { ...types }),
+                    ...(Object.keys(types).length > 0 && { genre: types }), // Properly handle genre filter
                     ...(currentPage && { page: currentPage }),
                 },
             }),
         });
 
-        if (!response.ok) {
-            throw new Error('Failed to fetch advanced search data');
-        }
-
         const data = await response.json();
-        return data.data.Page || { media: [] };
+        return data.data.Page;
+
     } catch (error) {
         console.error('Error fetching search data from AniList:', error);
-        return { media: [] };
     }
 };
