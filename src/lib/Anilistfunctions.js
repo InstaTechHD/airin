@@ -120,7 +120,7 @@ export const AnimeInfoAnilist = async (animeid) => {
     }
 }
 
-export const AdvancedSearch = async (searchvalue, searchType="ANIME", selectedYear=null, seasonvalue=null, formatvalue=null, genrevalue=[], sortbyvalue=null, currentPage=1) => {
+export const AdvancedSearch = async (searchvalue, searchType="ANIME", selectedYear=null, seasonvalue=null, formatvalue=null, genrevalue=[], statusvalue=null, sortbyvalue=null, currentPage=1) => {
     const types = {};
 
     for (const item of genrevalue) {
@@ -151,6 +151,7 @@ export const AdvancedSearch = async (searchvalue, searchType="ANIME", selectedYe
                     ...(selectedYear && { seasonYear: selectedYear }),
                     ...(seasonvalue && { season: seasonvalue }),
                     ...(formatvalue && { format: formatvalue }),
+                    ...(statusvalue && { status: statusvalue }),
                     ...(sortbyvalue && { sort: sortbyvalue }),
                     ...(types && { ...types }),
                     ...(currentPage && { page: currentPage }),
