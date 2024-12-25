@@ -88,6 +88,7 @@ function Search() {
                                             <span>+</span>
                                             <div className="bg-[#1a1a1f] text-white text-xs font-bold px-2 py-1 rounded-md">S</div>
                                         </div>
+                                        <div className="mx-1 bg-[#1a1a1f] text-xs font-bold px-2 py-1 rounded-lg flex items-center justify-center">Search for Anime</div>
                                     </div>
 
                                     {/* Dropdown for Anime or Manga selection */}
@@ -109,12 +110,12 @@ function Search() {
                                         <Combobox.Input
                                             ref={focusInput}
                                             className="p-4 text-white w-full bg-transparent border-0 outline-none"
-                                            placeholder={`Search for ${isManga ? 'manga' : 'anime'}`}  {/* This part is updated */}
+                                            placeholder="Search Anime..."
                                             onChange={(event) => setQuery(event.target.value)}
                                             onKeyDown={(event) => {
                                                 if (event.key === "Enter") {
                                                     useSearchbar.setState({ Isopen: false });
-                                                    router.push(`/${isManga ? 'manga' : 'anime'}/catalog?search=${encodeURIComponent(event.target.value)}`);
+                                                    router.push(`/anime/catalog?search=${encodeURIComponent(event.target.value)}`);
                                                     setData(null);
                                                     setQuery("");
                                                 }
@@ -192,8 +193,13 @@ function Search() {
                                                 )}
                                             </Fragment>
                                         ) : (
-                                            <div className="flex
-                                            )}
+                                            <div className="flex justify-center py-4">
+                                                <svg xmlns="http://www.w3.org/2000/svg" className="animate-spin h-5 w-5 mr-3 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                                    <circle cx="12" cy="12" r="10" strokeWidth="4" stroke="currentColor" fill="none"></circle>
+                                                    <path d="M4 12a8 8 0 0 1 8-8" fill="none" stroke="currentColor" strokeWidth="4"></path>
+                                                </svg>
+                                            </div>
+                                        )}
                                     </Combobox.Options>
                                 </Combobox>
                             </Dialog.Panel>
