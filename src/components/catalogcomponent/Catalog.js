@@ -101,7 +101,7 @@ function Catalog({ searchParams }) {
                             onValueChange={setSearchvalue}
                             isClearable
                             autoComplete="off"
-                            startContent={<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-5 h-5 text-2xl text-default-400 pointer-events-none flex-shrink-0">
+                            startContent={<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-5 h-5 text-default-400 pointer-events-none flex-shrink-0">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
                             </svg>}
                         />
@@ -114,7 +114,8 @@ function Catalog({ searchParams }) {
                     <button className='flex lg:hidden items-end cursor-default' onClick={resetValues} disabled={isFormEmpty}>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6 mb-2 cursor-pointer">
                             <path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2[...]
-                        </svg></button>
+                        </svg>
+                    </button>
                 </div>
                 {showTopBottom && <>
                     <div className={styles.toptwo}>
