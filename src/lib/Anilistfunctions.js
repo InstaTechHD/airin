@@ -52,6 +52,7 @@ export const PopularAnilist = async () => {
 export const Top100Anilist = async () => {
     try {
         const response = await fetch('https://graphql.anilist.co', {
+
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -107,6 +108,7 @@ export const AnimeInfoAnilist = async (animeid) => {
             },
             body: JSON.stringify({
                 query: animeinfo,
+
                 variables: {
                     id: animeid,
                 },
@@ -120,8 +122,18 @@ export const AnimeInfoAnilist = async (animeid) => {
     }
 }
 
-export const AdvancedSearch = async (searchvalue, searchType="ANIME", selectedYear=null, seasonvalue=null, formatvalue=null, genrevalue=[], statusvalue=null, sortbyvalue=null, currentPage=1) => {
-    const genres = genrevalue.length ? { genre_in: genrevalue } : {};
+export const AdvancedSearch = async (searchvalue, searchType="ANIME", selectedYear=null, seasonvalue=null, formatvalue=null, genrevalue=[], sortbyvalue=null, currentPage=1) => {
+    const types = {};
+
+    for (const item of genrevalue) {
+        const { type, value } = item;
+
+        if (types[type]) {
+            types[type].push(value);
+        } else {
+            types[type] = [value];
+        }
+    }
 
     try {
         const response = await fetch('https://graphql.anilist.co', {
@@ -141,9 +153,8 @@ export const AdvancedSearch = async (searchvalue, searchType="ANIME", selectedYe
                     ...(selectedYear && { seasonYear: selectedYear }),
                     ...(seasonvalue && { season: seasonvalue }),
                     ...(formatvalue && { format: formatvalue }),
-                    ...(statusvalue && { status: statusvalue }),
                     ...(sortbyvalue && { sort: sortbyvalue }),
-                    ...genres,
+                    ...(types && { ...types }),
                     ...(currentPage && { page: currentPage }),
                 },
             }),
@@ -151,6 +162,7 @@ export const AdvancedSearch = async (searchvalue, searchType="ANIME", selectedYe
 
         const data = await response.json();
         return data.data.Page;
+
     } catch (error) {
         console.error('Error fetching search data from AniList:', error);
     }
