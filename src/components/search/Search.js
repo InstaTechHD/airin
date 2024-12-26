@@ -9,6 +9,9 @@ import { useRouter } from 'next/navigation';
 import { useTitle, useSearchbar } from '@/lib/store';
 import { useStore } from 'zustand';
 
+// Import Hianime API
+import { fetchHianimeData } from "@/lib/hianimeApi"; // Make sure to create this function in your hianimeApi.js
+
 function Search() {
     const router = useRouter();
     const animetitle = useStore(useTitle, (state) => state.animetitle);
@@ -24,9 +27,14 @@ function Search() {
 
     async function searchdata() {
         setLoading(true);
-        const res = await AdvancedSearch(debouncedSearch, searchType); // Pass searchType for correct API filtering
-        setData(res?.media);
-        setNextPage(res?.pageInfo?.hasNextPage);
+        const anilistData = await AdvancedSearch(debouncedSearch, searchType); // Pass searchType for correct API filtering
+        const hianimeData = await fetchHianimeData(debouncedSearch); // Fetch data from Hianime API
+
+        // Combine the data from different sources
+        const combinedData = [...(anilistData?.media || []), ...(hianimeData || [])];
+
+        setData(combinedData);
+        setNextPage(anilistData?.pageInfo?.hasNextPage);
         setLoading(false);
     }
 
@@ -137,7 +145,7 @@ function Search() {
                                                             className={({ active }) =>
                                                                 `flex items-center gap-3 py-[8px] px-5 border-b border-solid border-gray-800 ${active ? "bg-black/20 cursor-pointer" : ""}`
                                                             }>
-                                                            <Link href={`/${searchType === 'anime' ? 'anime/info' : 'manga/read'}/${item.id}`} onClick={() => { useSearchbar.setState({ Isopen: false }) }}>
+                                                            <Link href={`/${searchType === 'anime' ? 'anime/info' : 'manga/read'}/${item.id}`} onClick={() => { useSearchbar.setState({ Isopen: false })[...]
                                                                 <div className="shrink-0">
                                                                     <img
                                                                         src={item.image || item.coverImage.large}
@@ -149,7 +157,7 @@ function Search() {
                                                                     />
                                                                 </div>
                                                             </Link>
-                                                            <Link href={`/${searchType === 'anime' ? 'anime/info' : 'manga/read'}/${item.id}`} onClick={() => { useSearchbar.setState({ Isopen: false }) }}>
+                                                            <Link href={`/${searchType === 'anime' ? 'anime/info' : 'manga/read'}/${item.id}`} onClick={() => { useSearchbar.setState({ Isopen: false })[...]
                                                                 <div className="flex flex-col overflow-hidden">
                                                                     <p className="line-clamp-2 text-base">
                                                                         {item.title[animetitle] || item.title.romaji}
@@ -160,7 +168,7 @@ function Search() {
                                                                     <div className="flex items-center text-gray-400 text-xs">
                                                                         <span className="flex gap-1">
                                                                             <svg xmlns="http://www.w3.org/2000/svg" className="w-3 h-3 mt-[1px]" viewBox="0 0 1664 1600">
-                                                                                <path fill="currentColor" d="M1664 615q0 22-26 48l-363 354l86 500q1 7 1 20q0 21-10.5 35.5T1321 1587q-19 0-40-12l-449-236[...]"></path>
+                                                                                <path fill="currentColor" d="M1664 615q0 22-26 48l-363 354l86 500q1 7 1 20q0 21-10.5 35.5T1321 1587q-19 0-40-12l-449-236[...]
                                                                             </svg>
                                                                             {item.averageScore / 10 || "0"}
                                                                         </span>
