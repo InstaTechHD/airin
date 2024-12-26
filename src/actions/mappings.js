@@ -4,18 +4,19 @@ import { ANIME } from "@consumet/extensions";
 import { AnimeInfoAnilist } from '@/lib/Anilistfunctions'
 import { findSimilarTitles } from '@/lib/stringSimilarity';
 
+
 const gogo = new ANIME.Gogoanime();
-const hianime = new ANIME.Hianime(); // Corrected initialization
+const hianime = new ANIME.Zoro();
 
 export async function getMappings(anilistId) {
     const data = await getInfo(anilistId);
-    let gogores, hianimeres;
+    let gogores, zorores;
     if (!data) {
         return null;
     }
     gogores = await mapGogo(data?.title);
-    hianimeres = await mapHianime(data?.title); // Corrected mapping
-    return { gogoanime: gogores, hianime: hianimeres, id: data?.id, malId: data?.idMal, title: data?.title.romaji };
+    zorores = await mapZoro(data?.title);
+    return { gogoanime: gogores, zoro: zorores, id: data?.id, malId: data?.idMal, title: data?.title.romaji };
 }
 
 async function getInfo(id) {
@@ -29,6 +30,7 @@ async function getInfo(id) {
             }
         }
         if (cachedData) {
+            // console.log("using cached info")
             return JSON.parse(cachedData);
         } else {
             const data = await AnimeInfoAnilist(id);
@@ -48,6 +50,7 @@ async function mapGogo(title) {
     let rom = await gogo.search(title?.romaji);
     let english_search = eng?.results || [];
     let romaji_search = rom?.results || [];
+    // Combine both results and remove duplicates
     const combined = [...english_search, ...romaji_search];
 
     const uniqueResults = Array.from(new Set(combined.map(item => JSON.stringify(item))))
@@ -76,11 +79,11 @@ async function mapGogo(title) {
     return gogoanime;
 }
 
-async function mapHianime(title) {
+async function mapZoro(title) {
     let eng = await hianime.search(title?.english || title?.romaji || title?.userPreferred);
-    const hianimemap = findSimilarTitles(title?.english, eng?.results);
-    const hianimemaprom = findSimilarTitles(title?.romaji, eng?.results);
-    const combined = [...hianimemap, ...hianimemaprom];
+    const zoromap = findSimilarTitles(title?.english, eng?.results)
+    const zoromaprom = findSimilarTitles(title?.romaji, eng?.results)
+    const combined = [...zoromap, ...zoromaprom];
 
     const uniqueCombined = combined.reduce((acc, current) => {
         const x = acc.find(item => item.id === current.id);
@@ -91,9 +94,10 @@ async function mapHianime(title) {
         }
     }, []);
 
+    // Sort based on similarity (assuming similarity is a property of the objects)
     uniqueCombined.sort((a, b) => b.similarity - a.similarity);
 
-    const hianime = {};
+    const zoro = {};
 
     uniqueCombined.forEach((obj) => {
         const title = obj.title;
@@ -102,14 +106,14 @@ async function mapHianime(title) {
         const match = title.replace(/\(TV\)/g, "").match(/\(([^)0-9]+)\)/);
         if (match && (match[1].toLowerCase() === 'uncensored' || match[1].toLowerCase() === 'dub')) {
             const key = match[1].replace(/\s+/g, '-').toLowerCase();
-            if (!hianime[key]) {
-                hianime[key] = id;
+            if (!zoro[key]) {
+                zoro[key] = id;
             }
         } else {
-            if (!hianime['sub']) {
-                hianime['sub'] = id;
+            if (!zoro['sub']) {
+                zoro['sub'] = id;
             }
         }
     });
-    return hianime;
+    return zoro;
 }
