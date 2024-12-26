@@ -37,35 +37,21 @@ function PlayerAnimeCard({ data, id }) {
         {data && data?.slice(0, visibleItems).map((item) => (
           <div className={styles.playcarditem} key={item?.node?.id || item?.mediaRecommendation?.id}>
             <div className={styles.playcardimgcon}>
-              {item?.node?.format?.toLowerCase() === 'manga' || item?.node?.format?.toLowerCase() === 'novel' ? (
+              <Link href={`/${item?.node?.format?.toLowerCase() === 'manga' || item?.node?.format?.toLowerCase() === 'novel' ? 'manga/read' : 'anime/info'}/${item?.node?.id || item?.mediaRecommendation?.id}`}>
                 <Image
                   src={item?.node?.coverImage?.large || item?.mediaRecommendation?.coverImage?.extraLarge}
                   width={70}
                   height={90}
                   alt='image'
                   className={styles.playcardimg}
-                />
-              ) : (
-                <Link href={`/anime/info/${item?.node?.id || item?.mediaRecommendation?.id}`}>
-                  <Image
-                    src={item?.node?.coverImage?.large || item?.mediaRecommendation?.coverImage?.extraLarge}
-                    width={70}
-                    height={90}
-                    alt='image'
-                    className={styles.playcardimg}
-                  />              
-                </Link>
-              )}
+                />              
+              </Link>
             </div>
             <div className={styles.playcardinfo}>
               <p className={styles.playcardrelation}>{item?.relationType}</p>
-              {item?.node?.format?.toLowerCase() === 'manga' || item?.node?.format?.toLowerCase() === 'novel' ? (
-                <span className={styles.playcardtitle}>{item?.node?.title?.[animetitle] || item?.mediaRecommendation?.title?.[animetitle] || item?.node?.title?.romaji || item?.mediaRecommendation?.title?.romaji}</span>
-              ) : (
-                <Link href={`/anime/info/${item?.node?.id || item?.mediaRecommendation?.id}`}>
-                  <p className={styles.playcardtitle}>{item?.node?.title?.[animetitle] || item?.mediaRecommendation?.title?.[animetitle] || item?.node?.title?.romaji || item?.mediaRecommendation?.title?.romaji}</p>
-                </Link>
-              )}
+              <Link href={`/${item?.node?.format?.toLowerCase() === 'manga' || item?.node?.format?.toLowerCase() === 'novel' ? 'manga/read' : 'anime/info'}/${item?.node?.id || item?.mediaRecommendation?.id}`}>
+                <p className={styles.playcardtitle}>{item?.node?.title?.[animetitle] || item?.mediaRecommendation?.title?.[animetitle] || item?.node?.title?.romaji || item?.mediaRecommendation?.title?.romaji}</p>
+              </Link>
               <p className={styles.playepnum}>
                 {item?.node?.format || item?.mediaRecommendation?.format} <span>.</span>
                 {item?.node ? (
