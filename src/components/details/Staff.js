@@ -1,4 +1,4 @@
-"use client";
+"use client;
 import React, { useRef, useState } from 'react';
 import styles from '../../styles/Animecard.module.css';
 import { useDraggable } from 'react-use-draggable-scroll';
