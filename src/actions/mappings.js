@@ -4,20 +4,19 @@ import { ANIME } from "@consumet/extensions";
 import { AnimeInfoAnilist } from '@/lib/Anilistfunctions'
 import { findSimilarTitles } from '@/lib/stringSimilarity';
 
+
 const gogo = new ANIME.Gogoanime();
-const zoro = new ANIME.Zoro();
-const hianime = new ANIME.Hianime(); // Import Hianime
+const hianime = new ANIME.Zoro();
 
 export async function getMappings(anilistId) {
     const data = await getInfo(anilistId);
-    let gogores, zorores, hianimeres;
+    let gogores, zorores;
     if (!data) {
         return null;
     }
     gogores = await mapGogo(data?.title);
     zorores = await mapZoro(data?.title);
-    hianimeres = await mapHianime(data?.title); // Add Hianime mapping
-    return { gogoanime: gogores, zoro: zorores, hianime: hianimeres, id: data?.id, malId: data?.idMal, title: data?.title.romaji };
+    return { gogoanime: gogores, zoro: zorores, id: data?.id, malId: data?.idMal, title: data?.title.romaji };
 }
 
 async function getInfo(id) {
@@ -52,6 +51,7 @@ async function mapGogo(title) {
     let english_search = eng?.results || [];
     let romaji_search = rom?.results || [];
     // Combine both results and remove duplicates
+
     const combined = [...english_search, ...romaji_search];
 
     const uniqueResults = Array.from(new Set(combined.map(item => JSON.stringify(item))))
@@ -81,7 +81,7 @@ async function mapGogo(title) {
 }
 
 async function mapZoro(title) {
-    let eng = await zoro.search(title?.english || title?.romaji || title?.userPreferred);
+    let eng = await hianime.search(title?.english || title?.romaji || title?.userPreferred);
     const zoromap = findSimilarTitles(title?.english, eng?.results)
     const zoromaprom = findSimilarTitles(title?.romaji, eng?.results)
     const combined = [...zoromap, ...zoromaprom];
@@ -104,6 +104,7 @@ async function mapZoro(title) {
         const title = obj.title;
         const id = obj.id;
 
+
         const match = title.replace(/\(TV\)/g, "").match(/\(([^)0-9]+)\)/);
         if (match && (match[1].toLowerCase() === 'uncensored' || match[1].toLowerCase() === 'dub')) {
             const key = match[1].replace(/\s+/g, '-').toLowerCase();
@@ -117,43 +118,4 @@ async function mapZoro(title) {
         }
     });
     return zoro;
-}
-
-async function mapHianime(title) {
-    let eng = await hianime.search(title?.english || title?.romaji || title?.userPreferred);
-    const hianimemap = findSimilarTitles(title?.english, eng?.results);
-    const hianimemaprom = findSimilarTitles(title?.romaji, eng?.results);
-    const combined = [...hianimemap, ...hianimemaprom];
-
-    const uniqueCombined = combined.reduce((acc, current) => {
-        const x = acc.find(item => item.id === current.id);
-        if (!x) {
-            return acc.concat([current]);
-        } else {
-            return acc;
-        }
-    }, []);
-
-    // Sort based on similarity (assuming similarity is a property of the objects)
-    uniqueCombined.sort((a, b) => b.similarity - a.similarity);
-
-    const hianime = {};
-
-    uniqueCombined.forEach((obj) => {
-        const title = obj.title;
-        const id = obj.id;
-
-        const match = title.replace(/\(TV\)/g, "").match(/\(([^)0-9]+)\)/);
-        if (match && (match[1].toLowerCase() === 'uncensored' || match[1].toLowerCase() === 'dub')) {
-            const key = match[1].replace(/\s+/g, '-').toLowerCase();
-            if (!hianime[key]) {
-                hianime[key] = id;
-            }
-        } else {
-            if (!hianime['sub']) {
-                hianime['sub'] = id;
-            }
-        }
-    });
-    return hianime;
 }
