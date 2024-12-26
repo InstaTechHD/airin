@@ -101,12 +101,12 @@ async function AnimeWatch({ params, searchParams }) {
             <PlayerAnimeCard data={data?.recommendations?.nodes} id="Recommendations"/>
           </div>
         </div>
-        {/* <div className="lg:hidden">
+        <div className="lg:hidden">
         <Animecards data={data?.relations?.edges} cardid="Related Anime"/>
-        </div> */}
-        {/* <div className="lg:hidden">
+        </div>
+        <div className="lg:hidden">
         <Animecards data={data?.recommendations?.nodes} cardid={"Recommendations"}/>
-        </div> */}
+        </div>
       </div>
     </>
   );
