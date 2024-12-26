@@ -8,13 +8,15 @@ const MangaRead = () => {
   const { id } = router.query;
   const [manga, setManga] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1); // Set a default value for total pages
+  const [totalPages, setTotalPages] = useState(1);
+  const [pages, setPages] = useState([]);
+  const [allPagesFetched, setAllPagesFetched] = useState(false);
 
-  const fetchManga = async (page) => {
+  const fetchMangaPages = async (page) => {
     try {
       const response = await axios.post('https://graphql.anilist.co', {
         query: `
-          query ($id: Int) {
+          query ($id: Int, $page: Int) {
             Media(id: $id, type: MANGA) {
               id
               title {
@@ -26,24 +28,36 @@ const MangaRead = () => {
                 extraLarge
               }
               chapters
+              pages(page: $page) {
+                id
+                page
+                imageUrl
+              }
             }
           }
         `,
-        variables: { id: parseInt(id, 10) }
+        variables: { id: parseInt(id, 10), page }
       });
       const mangaData = response.data.data.Media;
       setManga(mangaData);
-      setTotalPages(mangaData.chapters.length); // Assuming chapters is an array
+      setTotalPages(mangaData.chapters.length);
+      setPages(prevPages => [...prevPages, ...mangaData.pages]);
     } catch (error) {
-      console.error('Error fetching manga data:', error);
+      console.error('Error fetching manga pages:', error);
     }
   };
 
   useEffect(() => {
-    if (id) {
-      fetchManga(currentPage);
+    if (id && !allPagesFetched) {
+      fetchMangaPages(currentPage);
     }
   }, [id, currentPage]);
+
+  useEffect(() => {
+    if (pages.length === totalPages) {
+      setAllPagesFetched(true);
+    }
+  }, [pages, totalPages]);
 
   const handleNextPage = () => {
     if (currentPage < totalPages) {
@@ -57,16 +71,30 @@ const MangaRead = () => {
     }
   };
 
+  const handlePageSelect = (event) => {
+    setCurrentPage(parseInt(event.target.value, 10));
+  };
+
   if (!manga) return <div>Loading...</div>;
 
   return (
-    <div className={`${styles.mangaRead} dark:bg-gray-900 dark:text-white`}>
-      <h1 className="text-3xl font-bold mb-4">{manga.title.english || manga.title.romaji}</h1>
-      <img className="mb-4 rounded-lg" src={manga.coverImage.extraLarge} alt={manga.title.english || manga.title.romaji} />
-      <p className="mb-6">{manga.description}</p>
-      <div className="flex justify-between">
-        <button onClick={handlePreviousPage} disabled={currentPage === 1} className="bg-blue-500 text-white py-2 px-4 rounded disabled:bg-gray-500">Previous</button>
-        <button onClick={handleNextPage} disabled={currentPage === totalPages} className="bg-blue-500 text-white py-2 px-4 rounded disabled:bg-gray-500">Next</button>
+    <div className={styles.mangaRead}>
+      <h1>{manga.title.english || manga.title.romaji}</h1>
+      <img src={manga.coverImage.extraLarge} alt={manga.title.english || manga.title.romaji} />
+      <p>{manga.description}</p>
+      <div className={styles.pages}>
+        {pages.map(page => (
+          <img key={page.id} src={page.imageUrl} alt={`Page ${page.page}`} />
+        ))}
+      </div>
+      <div className={styles.navigationButtons}>
+        <button onClick={handlePreviousPage} disabled={currentPage === 1}>Previous</button>
+        <select onChange={handlePageSelect} value={currentPage}>
+          {Array.from({ length: totalPages }, (_, index) => (
+            <option key={index + 1} value={index + 1}>{index + 1}</option>
+          ))}
+        </select>
+        <button onClick={handleNextPage} disabled={currentPage === totalPages}>Next</button>
       </div>
     </div>
   );
