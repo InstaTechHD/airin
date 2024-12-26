@@ -3,7 +3,14 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import styles from "../../styles/AnimeDetailsTop.module.css";
-import { Modal, ModalContent, ModalHeader, ModalBody, Button, useDisclosure } from "@nextui-org/react";
+import {
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  Button,
+  useDisclosure,
+} from "@nextui-org/react";
 import Link from "next/link";
 import Addtolist from "./Addtolist";
 import { signIn } from "next-auth/react";
