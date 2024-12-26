@@ -145,19 +145,18 @@ function Search() {
                                                             className={({ active }) =>
                                                                 `flex items-center gap-3 py-[8px] px-5 border-b border-solid border-gray-800 ${active ? "bg-black/20 cursor-pointer" : ""}`
                                                             }>
-                                                            <Link href={`/${searchType === 'anime' ? 'anime/info' : 'manga/read'}/${item.id}`} onClick={() => { useSearchbar.setState({ Isopen: false })[...]
+                                                            <Link href={`/${searchType === 'anime' ? 'anime/info' : 'manga/read'}/${item.id}`} onClick={() => { useSearchbar.setState({ Isopen: false }); }}>
                                                                 <div className="shrink-0">
                                                                     <img
                                                                         src={item.image || item.coverImage.large}
                                                                         alt="image"
-
                                                                         width={52}
                                                                         height={70}
                                                                         className="rounded"
                                                                     />
                                                                 </div>
                                                             </Link>
-                                                            <Link href={`/${searchType === 'anime' ? 'anime/info' : 'manga/read'}/${item.id}`} onClick={() => { useSearchbar.setState({ Isopen: false })[...]
+                                                            <Link href={`/${searchType === 'anime' ? 'anime/info' : 'manga/read'}/${item.id}`} onClick={() => { useSearchbar.setState({ Isopen: false }); }}>
                                                                 <div className="flex flex-col overflow-hidden">
                                                                     <p className="line-clamp-2 text-base">
                                                                         {item.title[animetitle] || item.title.romaji}
@@ -168,7 +167,7 @@ function Search() {
                                                                     <div className="flex items-center text-gray-400 text-xs">
                                                                         <span className="flex gap-1">
                                                                             <svg xmlns="http://www.w3.org/2000/svg" className="w-3 h-3 mt-[1px]" viewBox="0 0 1664 1600">
-                                                                                <path fill="currentColor" d="M1664 615q0 22-26 48l-363 354l86 500q1 7 1 20q0 21-10.5 35.5T1321 1587q-19 0-40-12l-449-236[...]
+                                                                                <path fill="currentColor" d="M1664 615q0 22-26 48l-363 354l86 500q1 7 1 20q0 21-10.5 35.5T1321 1587q-19 0-40-12l-449-236q-8-4-15.5-10T850 1325q-7-7-11-15.5T830 1294q-1-9-1-20q0-13 2-21l86-500l-363-354q-26-26-26-48q0-27 19.5-42T640 533l502-73l224-454q10-21 23.5-32.5T1440 0q17 0 30.5 11.5T1494 44l224 454l502 73q28 4 47.5 19.5T2304 615z"/>
                                                                             </svg>
                                                                             {item.averageScore / 10 || "0"}
                                                                         </span>
@@ -184,7 +183,6 @@ function Search() {
                                                         </Combobox.Option>
                                                     ))
                                                     : (query !== '' &&
-
                                                         <p className="flex items-center justify-center py-4 gap-1">
                                                             No results found.
                                                         </p>
