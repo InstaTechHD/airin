@@ -40,29 +40,27 @@ function AnimeDetailsTop({ data, list, session, setList, url }) {
         style={{ backgroundImage: `url(${data?.bannerImage || data?.coverImage.extraLarge || null})`, backgroundPosition: "center", backgroundSize: "cover", height: "100%" }}
       ></div>
       <div className={styles.gradientOverlay}></div>
-      <>
-        <Button className={styles.detailstrailer} onPress={onOpen}>Watch Trailer</Button>
-        <Modal backdrop='blur' isOpen={isOpen} onOpenChange={onOpenChange} size={"2xl"} placement="center">
-          <ModalContent>
-            {(onClose) => (
-              <>
-                <ModalHeader className="flex flex-col gap-0">{data.title?.[animetitle] || data?.title?.romaji}</ModalHeader>
-                <ModalBody>
-                  <div>
-                    <iframe
-                      title="Trailer"
-                      className='w-[620px] h-[350px] mb-4'
-                      src={`https://www.youtube.com/embed/${data?.trailer?.id}`}
-                      frameBorder="0"
-                      allowFullScreen
-                    ></iframe>
-                  </div>
-                </ModalBody>
-              </>
-            )}
-          </ModalContent>
-        </Modal>
-      </>
+      <Button className={styles.detailstrailer} onPress={onOpen}>Watch Trailer</Button>
+      <Modal backdrop='blur' isOpen={isOpen} onOpenChange={onOpenChange} size={"2xl"} placement="center">
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader className="flex flex-col gap-0">{data.title?.[animetitle] || data?.title?.romaji}</ModalHeader>
+              <ModalBody>
+                <div>
+                  <iframe
+                    title="Trailer"
+                    className='w-[620px] h-[350px] mb-4'
+                    src={`https://www.youtube.com/embed/${data?.trailer?.id}`}
+                    frameBorder="0"
+                    allowFullScreen
+                  ></iframe>
+                </div>
+              </ModalBody>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
       <div className={styles.detailsinfo}>
         <div className={styles.detailsimgcon}>
           <Image src={data?.coverImage?.extraLarge} alt='Image' width={200} height={200} className={styles.detailsimage} />
