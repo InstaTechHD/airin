@@ -10,40 +10,40 @@ const MangaRead = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1); // Set a default value for total pages
 
+  const fetchManga = async (page) => {
+    try {
+      const response = await axios.post('https://graphql.anilist.co', {
+        query: `
+          query ($id: Int) {
+            Media(id: $id, type: MANGA) {
+              id
+              title {
+                romaji
+                english
+              }
+              description
+              coverImage {
+                extraLarge
+              }
+              chapters
+            }
+          }
+        `,
+        variables: { id: parseInt(id, 10) }
+      });
+      const mangaData = response.data.data.Media;
+      setManga(mangaData);
+      setTotalPages(mangaData.chapters.length); // Assuming chapters is an array
+    } catch (error) {
+      console.error('Error fetching manga data:', error);
+    }
+  };
+
   useEffect(() => {
     if (id) {
-      const fetchManga = async () => {
-        try {
-          const response = await axios.post('https://graphql.anilist.co', {
-            query: `
-              query ($id: Int) {
-                Media(id: $id, type: MANGA) {
-                  id
-                  title {
-                    romaji
-                    english
-                  }
-                  description
-                  coverImage {
-                    extraLarge
-                  }
-                  chapters
-                }
-              }
-            `,
-            variables: { id: parseInt(id, 10) }
-          });
-          const mangaData = response.data.data.Media;
-          setManga(mangaData);
-          setTotalPages(mangaData.chapters.length); // Assuming chapters is an array
-        } catch (error) {
-          console.error('Error fetching manga data:', error);
-        }
-      };
-
-      fetchManga();
+      fetchManga(currentPage);
     }
-  }, [id]);
+  }, [id, currentPage]);
 
   const handleNextPage = () => {
     if (currentPage < totalPages) {
