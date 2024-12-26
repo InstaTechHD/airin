@@ -21,7 +21,7 @@ function AnimeDetailsTop({ data, list, session, setList, url }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [mangaData, setMangaData] = useState(null);
 
-  const isAnime = data?.type === 'ANIME' || true;
+  const isAnime = data?.type === 'ANIME';
 
   useEffect(() => {
     if (!isAnime) {
