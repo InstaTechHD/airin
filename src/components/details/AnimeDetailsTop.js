@@ -90,15 +90,37 @@ function AnimeDetailsTop({ data, list, session, setList, url }) {
           </p>
           <div className='flex'>
             {isAnime ? (
-              <Link className={`${styles.detailswatch} ${!url && 'opacity-50 bg-black pointer-events-none'} hover:opacity-80 transition-all`} href={url ?? ''}>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className="w-5 h-5 mr-1"><path fillRule="evenodd" d="M4.5 5.653c0-1.426 1.529-2.33 2.779-1.643l11.54 6.348c1.295.712 1.295 2.573 0 3.285L7.28 19.991c-1.25.687-2.779-.217-2.779-1.643V5.653z" clipRule="evenodd"></path></svg>
-                {list !== null && list?.status === 'COMPLETED' ? 'Rewatch' : list !== null && list?.progress > 0 ? `Watch Ep ${list?.progress+1}` : `Play Now`}
-              </Link>
-            ) : (
-              <Link className={`${styles.detailswatch} hover:opacity-80 transition-all`} href={`/manga/read/${data.id}`}>
-                Read Now
-              </Link>
-            )}
+  <Link
+    className={`${styles.detailswatch} ${!url && 'opacity-50 bg-black pointer-events-none'} hover:opacity-80 transition-all`}
+    href={url ?? ''}
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      aria-hidden="true"
+      className="w-5 h-5 mr-1"
+    >
+      <path
+        fillRule="evenodd"
+        d="M4.5 5.653c0-1.426 1.529-2.33 2.779-1.643l11.54 6.348c1.295.712 1.295 2.573 0 3.285L7.28 19.991c-1.25.687-2.779-.217-2.779-1.643V5.653z"
+        clipRule="evenodd"
+      ></path>
+    </svg>
+    {list !== null && list?.status === 'COMPLETED'
+      ? 'Rewatch'
+      : list !== null && list?.progress > 0
+      ? `Watch Ep ${list?.progress + 1}`
+      : `Play Now`}
+  </Link>
+) : (
+  <Link
+    className={`${styles.detailswatch} hover:opacity-80 transition-all`}
+    href={`/manga/read/${data.id}`}
+  >
+    Read Now
+  </Link>
+)}
             <Button className={styles.detailsaddlist} onClick={Handlelist}>
               {list && list?.status !== null ? 'Edit List' : 'Add to List'}
             </Button>
