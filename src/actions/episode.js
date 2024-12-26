@@ -6,11 +6,11 @@ import { getMappings } from "./mappings";
 
 const gogo = new ANIME.Gogoanime();
 const zoro = new ANIME.Zoro();
+const hianime = new ANIME.Hianime(); // Import Hianime
 
 export async function fetchGogoEpisodes(id) {
   try {
     const data = await gogo.fetchAnimeInfo(id);
-
     return data?.episodes || [];
   } catch (error) {
     console.error("Error fetching gogoanime:", error.message);
@@ -21,10 +21,19 @@ export async function fetchGogoEpisodes(id) {
 export async function fetchZoroEpisodes(id) {
   try {
     const data = await zoro.fetchAnimeInfo(id);
-
     return data?.episodes || [];
   } catch (error) {
     console.error("Error fetching zoro:", error.message);
+    return [];
+  }
+}
+
+export async function fetchHianimeEpisodes(id) { // Add Hianime function
+  try {
+    const data = await hianime.fetchAnimeInfo(id);
+    return data?.episodes || [];
+  } catch (error) {
+    console.error("Error fetching hianime:", error.message);
     return [];
   }
 }
@@ -37,7 +46,7 @@ async function fetchEpisodeMeta(id, available = false) {
     const res = await fetch(
       `https://api.ani.zip/mappings?anilist_id=${id}`
     );
-const data = await res.json()
+    const data = await res.json();
     const episodesArray = Object.values(data?.episodes);
 
     if (!episodesArray) {
@@ -70,8 +79,8 @@ const fetchAndCacheData = async (id, meta, redis, cacheTime, refresh) => {
       ) {
         subEpisodes = await fetchGogoEpisodes(
           mappings?.gogoanime?.uncensored ||
-            mappings.gogoanime.sub ||
-            mappings?.gogoanime?.tv
+          mappings.gogoanime.sub ||
+          mappings?.gogoanime?.tv
         );
       }
 
@@ -108,15 +117,42 @@ const fetchAndCacheData = async (id, meta, redis, cacheTime, refresh) => {
           ...episode,
           id: transformEpisodeId(episode.id)
         }));
-      
+
         allepisodes.push({
           episodes: transformedEpisodes,
           providerId: "zoro",
         });
       }
     }
-  } 
-  const cover = await fetchEpisodeMeta(id, !refresh)
+    if (mappings.hianime && Object.keys(mappings.hianime).length >= 1) { // Add Hianime mapping
+      let subEpisodes = [];
+
+      // Fetch sub episodes if available
+      if (
+        mappings?.hianime?.uncensored ||
+        mappings?.hianime?.sub ||
+        mappings?.hianime?.tv
+      ) {
+        subEpisodes = await fetchHianimeEpisodes(
+          mappings?.hianime?.uncensored
+            ? mappings?.hianime?.uncensored
+            : mappings.hianime.sub
+        );
+      }
+      if (subEpisodes?.length > 0) {
+        const transformedEpisodes = subEpisodes.map(episode => ({
+          ...episode,
+          id: transformEpisodeId(episode.id)
+        }));
+
+        allepisodes.push({
+          episodes: transformedEpisodes,
+          providerId: "hianime",
+        });
+      }
+    }
+  }
+  const cover = await fetchEpisodeMeta(id, !refresh);
 
   // Check if redis is available
   if (redis) {
@@ -164,14 +200,6 @@ export const getEpisodes = async (id, status, refresh = false) => {
 
   if (redis) {
     try {
-      // // Find keys matching the pattern "meta:*"
-      // const keys = await redis.keys("meta:*");
-
-      // // Delete keys matching the pattern "meta:*"
-      // if (keys.length > 0) {
-      //   await redis.del(keys);
-      //   console.log(`Deleted ${keys.length} keys matching the pattern "meta:*"`);
-      // }
       meta = await redis.get(`meta:${id}`);
       if (JSON.parse(meta)?.length === 0) {
         await redis.del(`meta:${id}`);
@@ -219,7 +247,6 @@ export const getEpisodes = async (id, status, refresh = false) => {
     return fetchdata;
   }
 };
-
 
 function transformEpisodeId(episodeId) {
   const regex = /^([^$]*)\$episode\$([^$]*)/;
