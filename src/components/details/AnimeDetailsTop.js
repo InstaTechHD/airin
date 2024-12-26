@@ -15,26 +15,17 @@ async function fetchMangaDexData(mangaId) {
   return response.data;
 }
 
-async function fetchMangaPages(mangaId) {
-  const response = await axios.get(`https://api.mangadex.org/manga/${mangaId}/feed`);
-  return response.data;
-}
-
 function AnimeDetailsTop({ data, list, session, setList, url }) {
   const animetitle = useStore(useTitle, (state) => state.animetitle);
   const [openlist, setOpenlist] = useState(false);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [mangaData, setMangaData] = useState(null);
-  const [pages, setPages] = useState([]);
 
   const isAnime = data?.type === 'ANIME';
 
   useEffect(() => {
     if (!isAnime) {
       fetchMangaDexData(data.id).then(setMangaData);
-      fetchMangaPages(data.id).then((response) => {
-        setPages(response.data);
-      });
     }
   }, [data, isAnime]);
 
@@ -84,16 +75,14 @@ function AnimeDetailsTop({ data, list, session, setList, url }) {
           </h4>
           <p className={styles.scores}>
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-[17px] h-[17px] mr-[2px]">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182[...]
+              <path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
             </svg>
             {data?.averageScore / 10} | <span className={`${data?.status === 'RELEASING' ? styles.activestatus : styles.notactive}`}> {data?.status}</span>
           </p>
           <div className='flex'>
             {isAnime ? (
               <Link className={`${styles.detailswatch} ${!url && 'opacity-50 bg-black pointer-events-none'} hover:opacity-80 transition-all`} href={url ?? ''}>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className="w-5 h-5 mr-1">
-                  <path fillRule="evenodd" d="M4.5 5.653c0-1.426 1.529-2.33 2.779-1.643l11.54 6.348c1.295.712 1.295 2.573 0 3.285L7.28 19.991c-1.25.687-2.779-.217-2.779-1.643V5.653z" clipRule="evenodd"></path>
-                </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className="w-5 h-5 mr-1"><path fillRule="evenodd" d="M4.5 5.653c0-1.426 1.529-2.33 2.779-1.643l11.54 6.348c1.295.712 1.295 2.573 0 3.285L7.28 19.991c-1.25.687-2.779-.217-2.779-1.643V5.653z" clipRule="evenodd"></path></svg>
                 {list !== null && list?.status === 'COMPLETED' ? 'Rewatch' : list !== null && list?.progress > 0 ? `Watch Ep ${list?.progress+1}` : `Play Now`}
               </Link>
             ) : (
@@ -153,26 +142,10 @@ function AnimeDetailsTop({ data, list, session, setList, url }) {
               </Modal>
             )}
           </div>
-          {!isAnime && pages.length > 0 && (
-            <div className={styles.episodes}>
-              <h2 className="text-xl font-semibold mb-4">Pages</h2>
-              <ul className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-                {pages.map((page, index) => (
-                  <li key={index} className="bg-gray-200 rounded-md p-2">
-                    <Link href={`/manga/read/${data.id}?page=${index + 1}`}>
-                      <button className="w-full h-full text-center text-sm font-semibold text-black hover:text-white hover:bg-gray-600 rounded-md transition-all">
-                        Read Page {index + 1}
-                      </button>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
         </div>
       </div>
     </div>
-  );
+  )
 }
 
 export default AnimeDetailsTop;
