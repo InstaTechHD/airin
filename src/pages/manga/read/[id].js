@@ -7,6 +7,7 @@ const MangaRead = () => {
   const router = useRouter();
   const { id } = router.query;
   const [manga, setManga] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     if (id) {
@@ -40,6 +41,18 @@ const MangaRead = () => {
     }
   }, [id]);
 
+  const handleNextPage = () => {
+    setCurrentPage(prevPage => prevPage + 1);
+    // Logic to fetch and display the next page of manga
+  };
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(prevPage => prevPage - 1);
+      // Logic to fetch and display the previous page of manga
+    }
+  };
+
   if (!manga) return <div>Loading...</div>;
 
   return (
@@ -47,6 +60,10 @@ const MangaRead = () => {
       <h1>{manga.title.english || manga.title.romaji}</h1>
       <img src={manga.coverImage.extraLarge} alt={manga.title.english || manga.title.romaji} />
       <p>{manga.description}</p>
+      <div className={styles.navigationButtons}>
+        <button onClick={handlePreviousPage} disabled={currentPage === 1}>Previous</button>
+        <button onClick={handleNextPage}>Next</button>
+      </div>
     </div>
   );
 };
