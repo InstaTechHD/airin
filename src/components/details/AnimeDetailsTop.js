@@ -156,16 +156,13 @@ function AnimeDetailsTop({ data, list, session, setList, url }) {
           {!isAnime && pages.length > 0 && (
             <div className={styles.episodes}>
               <h2 className="text-xl font-semibold mb-4">Pages</h2>
-              <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <ul className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
                 {pages.map((page, index) => (
-                  <li key={page.id} className={styles.episode}>
-                    <Link href={`/manga/read/${data.id}/page/${index + 1}`} className="block p-4 bg-gray-800 rounded-md hover:bg-gray-700 transition">
-                      <div className="flex items-center">
-                        <Image src={page.attributes.fileName} alt={`Page ${index + 1}`} width={50} height={70} className="rounded-md" />
-                        <div className="ml-4">
-                          <h3 className="text-lg font-medium">Page {index + 1}</h3>
-                        </div>
-                      </div>
+                  <li key={index} className="bg-gray-200 rounded-md p-2">
+                    <Link href={`/manga/read/${data.id}?page=${index + 1}`}>
+                      <button className="w-full h-full text-center text-sm font-semibold text-black hover:text-white hover:bg-gray-600 rounded-md transition-all">
+                        Read Page {index + 1}
+                      </button>
                     </Link>
                   </li>
                 ))}
@@ -175,7 +172,7 @@ function AnimeDetailsTop({ data, list, session, setList, url }) {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 export default AnimeDetailsTop;
