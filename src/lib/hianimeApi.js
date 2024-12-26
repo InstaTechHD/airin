@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export async function fetchHianimeData(query) {
   try {
-    const response = await axios.get(`https://aniwatch-api-flax.vercel.app/search`, {
+    const response = await axios.get(`/api/v2/hianime/search`, { // Update with correct endpoint if known
       params: { q: query }
     });
     return response.data.results;
