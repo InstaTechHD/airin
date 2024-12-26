@@ -5,8 +5,7 @@ import { redis } from "@/lib/rediscache";
 import { getMappings } from "./mappings";
 
 const gogo = new ANIME.Gogoanime();
-const zoro = new ANIME.Zoro();
-const hianime = new ANIME.Hianime(); // Import Hianime
+const hianime = new ANIME.Hianime(); // Corrected initialization
 
 export async function fetchGogoEpisodes(id) {
   try {
@@ -14,16 +13,6 @@ export async function fetchGogoEpisodes(id) {
     return data?.episodes || [];
   } catch (error) {
     console.error("Error fetching gogoanime:", error.message);
-    return [];
-  }
-}
-
-export async function fetchZoroEpisodes(id) {
-  try {
-    const data = await zoro.fetchAnimeInfo(id);
-    return data?.episodes || [];
-  } catch (error) {
-    console.error("Error fetching zoro:", error.message);
     return [];
   }
 }
@@ -44,7 +33,7 @@ async function fetchEpisodeMeta(id, available = false) {
       return null;
     }
     const res = await fetch(
-      `https://api.ani.zip/mappings?anilist_id=${id}`
+      `https://aniwatch-api-flax.vercel.app/api/v2/hianime/anime/${id}`
     );
     const data = await res.json();
     const episodesArray = Object.values(data?.episodes);
@@ -71,7 +60,6 @@ const fetchAndCacheData = async (id, meta, redis, cacheTime, refresh) => {
 
   if (mappings) {
     if (mappings.gogoanime && Object.keys(mappings.gogoanime).length >= 1) {
-      // Fetch sub episodes if available
       if (
         mappings?.gogoanime?.uncensored ||
         mappings?.gogoanime?.sub ||
@@ -84,7 +72,6 @@ const fetchAndCacheData = async (id, meta, redis, cacheTime, refresh) => {
         );
       }
 
-      // Fetch dub episodes if available
       if (mappings?.gogoanime?.dub) {
         dubEpisodes = await fetchGogoEpisodes(mappings?.gogoanime?.dub);
       }
@@ -97,37 +84,9 @@ const fetchAndCacheData = async (id, meta, redis, cacheTime, refresh) => {
         });
       }
     }
-    if (mappings?.zoro && Object.keys(mappings.zoro).length >= 1) {
-      let subEpisodes = [];
-
-      // Fetch sub episodes if available
-      if (
-        mappings?.zoro?.uncensored ||
-        mappings?.zoro?.sub ||
-        mappings?.zoro?.tv
-      ) {
-        subEpisodes = await fetchZoroEpisodes(
-          mappings?.zoro?.uncensored
-            ? mappings?.zoro?.uncensored
-            : mappings.zoro.sub
-        );
-      }
-      if (subEpisodes?.length > 0) {
-        const transformedEpisodes = subEpisodes.map(episode => ({
-          ...episode,
-          id: transformEpisodeId(episode.id)
-        }));
-
-        allepisodes.push({
-          episodes: transformedEpisodes,
-          providerId: "zoro",
-        });
-      }
-    }
     if (mappings.hianime && Object.keys(mappings.hianime).length >= 1) { // Add Hianime mapping
       let subEpisodes = [];
 
-      // Fetch sub episodes if available
       if (
         mappings?.hianime?.uncensored ||
         mappings?.hianime?.sub ||
@@ -154,7 +113,6 @@ const fetchAndCacheData = async (id, meta, redis, cacheTime, refresh) => {
   }
   const cover = await fetchEpisodeMeta(id, !refresh);
 
-  // Check if redis is available
   if (redis) {
     if (allepisodes) {
       await redis.setex(
@@ -253,7 +211,7 @@ function transformEpisodeId(episodeId) {
   const match = episodeId.match(regex);
 
   if (match && match[1] && match[2]) {
-    return `${match[1]}?ep=${match[2]}`; // Construct the desired output with the episode number
+    return `${match[1]}?ep=${match[2]}`;
   }
-  return episodeId; // Return original ID if no match is found
+  return episodeId;
 }
