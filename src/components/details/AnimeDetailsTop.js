@@ -130,7 +130,7 @@ function AnimeDetailsTop({ data, list, session, setList, url }) {
                       <Addtolist session={session} setList={setList} list={list}
                         id={data?.id} eplength={data?.episodes || data?.nextAiringEpisode?.episode - 1 || 24} Handlelist={Handlelist} />
                     </div>
-                  </Body>
+                  </ModalBody>
                 </ModalContent>
               </Modal>
             ) : (
