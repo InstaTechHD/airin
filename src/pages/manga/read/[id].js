@@ -8,7 +8,7 @@ const MangaRead = () => {
   const { id } = router.query;
   const [manga, setManga] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1); // Assume you have a way to get total pages
+  const [totalPages, setTotalPages] = useState(1); // Set a default value for total pages
 
   useEffect(() => {
     if (id) {
@@ -16,7 +16,7 @@ const MangaRead = () => {
         try {
           const response = await axios.post('https://graphql.anilist.co', {
             query: `
-              query ($id: Int, $page: Int) {
+              query ($id: Int) {
                 Media(id: $id, type: MANGA) {
                   id
                   title {
@@ -27,19 +27,15 @@ const MangaRead = () => {
                   coverImage {
                     extraLarge
                   }
-                  chapters(page: $page) {
-                    currentPage
-                    totalPages
-                    // other manga page data
-                  }
+                  chapters
                 }
               }
             `,
-            variables: { id: parseInt(id, 10), page: currentPage }
+            variables: { id: parseInt(id, 10) }
           });
           const mangaData = response.data.data.Media;
           setManga(mangaData);
-          setTotalPages(mangaData.chapters.totalPages);
+          setTotalPages(mangaData.chapters.length); // Assuming chapters is an array
         } catch (error) {
           console.error('Error fetching manga data:', error);
         }
@@ -47,7 +43,7 @@ const MangaRead = () => {
 
       fetchManga();
     }
-  }, [id, currentPage]);
+  }, [id]);
 
   const handleNextPage = () => {
     if (currentPage < totalPages) {
