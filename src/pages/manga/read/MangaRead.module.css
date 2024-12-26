@@ -2,7 +2,7 @@
   padding: 20px;
   background-color: #1a1a1a; /* Dark background for dark mode */
   color: #f0f0f0; /* Light text color for dark mode */
-  border-radius: 10px;
+  border-radius: none;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
