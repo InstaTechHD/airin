@@ -43,22 +43,18 @@ function AnimeDetailsTop({ data, list, session, setList, url }) {
       <Button className={styles.detailstrailer} onPress={onOpen}>Watch Trailer</Button>
       <Modal backdrop='blur' isOpen={isOpen} onOpenChange={onOpenChange} size={"2xl"} placement="center">
         <ModalContent>
-          {(onClose) => (
-            <>
-              <ModalHeader className="flex flex-col gap-0">{data.title?.[animetitle] || data?.title?.romaji}</ModalHeader>
-              <ModalBody>
-                <div>
-                  <iframe
-                    title="Trailer"
-                    className='w-[620px] h-[350px] mb-4'
-                    src={`https://www.youtube.com/embed/${data?.trailer?.id}`}
-                    frameBorder="0"
-                    allowFullScreen
-                  ></iframe>
-                </div>
-              </ModalBody>
-            </>
-          )}
+          <ModalHeader className="flex flex-col gap-0">{data.title?.[animetitle] || data?.title?.romaji}</ModalHeader>
+          <ModalBody>
+            <div>
+              <iframe
+                title="Trailer"
+                className='w-[620px] h-[350px] mb-4'
+                src={`https://www.youtube.com/embed/${data?.trailer?.id}`}
+                frameBorder="0"
+                allowFullScreen
+              ></iframe>
+            </div>
+          </ModalBody>
         </ModalContent>
       </Modal>
       <div className={styles.detailsinfo}>
@@ -89,37 +85,31 @@ function AnimeDetailsTop({ data, list, session, setList, url }) {
                 Read Now
               </Link>
             )}
-            <Button className={styles.detailsaddlist} onClick={Handlelist}>{
-              list && list?.status !== null
-                ? 'Edit List'
-                : 'Add to List'
-            }</Button>
+            <Button className={styles.detailsaddlist} onClick={Handlelist}>
+              {list && list?.status !== null ? 'Edit List' : 'Add to List'}
+            </Button>
             {session?.user ? (
               <Modal isOpen={openlist} onOpenChange={Handlelist} size={"3xl"} backdrop="opaque" hideCloseButton={true} placement="center" radius="sm" scrollBehavior="outside"
                 classNames={{
                   body: "p-0",
                 }}>
                 <ModalContent>
-                  {(onClose) => (
-                    <>
-                      <ModalBody className=''>
-                        <div className='relative'>
-                          <div
-                            className="w-full !h-40 brightness-50 rounded-t-md"
-                            style={{ backgroundImage: `url(${data?.bannerImage || data?.coverImage.extraLarge || null})`, backgroundPosition: "center", backgroundSize: "cover", height: "100%", }}
-                          ></div>
-                          <div className='absolute z-10 bottom-1 sm:bottom-0 sm:top-[65%] left-0 sm:left-3 md:left-10 flex flex-row items-center'>
-                            <Image src={data?.coverImage?.extraLarge} alt='Image' width={120} height={120} className="hidden sm:flex rounded-md" priority={true}/>
-                            <div className='px-2 sm:px-4 mb-4 font-medium !text-xl text-white max-w-full line-clamp-2'>{data?.title?.[animetitle] || data?.title?.romaji}</div>
-                          </div>
-                        </div>
-                        <div className='mt-2 sm:mt-20 md:px-[5%] px-[2%] mb-2'>
-                          <Addtolist session={session} setList={setList} list={list}
-                            id={data?.id} eplength={data?.episodes || data?.nextAiringEpisode?.episode - 1 || 24} Handlelist={Handlelist} />
-                        </div>
-                      </ModalBody>
-                    </>
-                  )}
+                  <ModalBody className=''>
+                    <div className='relative'>
+                      <div
+                        className="w-full !h-40 brightness-50 rounded-t-md"
+                        style={{ backgroundImage: `url(${data?.bannerImage || data?.coverImage.extraLarge || null})`, backgroundPosition: "center", backgroundSize: "cover", height: "100%", }}
+                      ></div>
+                      <div className='absolute z-10 bottom-1 sm:bottom-0 sm:top-[65%] left-0 sm:left-3 md:left-10 flex flex-row items-center'>
+                        <Image src={data?.coverImage?.extraLarge} alt='Image' width={120} height={120} className="hidden sm:flex rounded-md" priority={true}/>
+                        <div className='px-2 sm:px-4 mb-4 font-medium !text-xl text-white max-w-full line-clamp-2'>{data?.title?.[animetitle] || data?.title?.romaji}</div>
+                      </div>
+                    </div>
+                    <div className='mt-2 sm:mt-20 md:px-[5%] px-[2%] mb-2'>
+                      <Addtolist session={session} setList={setList} list={list}
+                        id={data?.id} eplength={data?.episodes || data?.nextAiringEpisode?.episode - 1 || 24} Handlelist={Handlelist} />
+                    </div>
+                  </ModalBody>
                 </ModalContent>
               </Modal>
             ) : (
@@ -129,18 +119,15 @@ function AnimeDetailsTop({ data, list, session, setList, url }) {
                 }}
               >
                 <ModalContent>
-                  {(onClose) => (
-                    <>
-                      <ModalBody className=''>
-                        <div className="text-center flex flex-col justify-center items-center">
-                          <p className="text-lg mb-3">Login to edit your list.</p>
-                          <button className="font-semibold outline-none border-none py-2 px-4 bg-[#4d148c] rounded-md flex items-center" onClick={() => signIn('AniListProvider')}>
-                            <Image alt="anilist-icon" loading="lazy" width="25" height="25" src="/anilist.svg" className='mr-2' />
-                            Login With Anilist</button>
-                        </div>
-                      </ModalBody>
-                    </>
-                  )}
+                  <ModalBody className=''>
+                    <div className="text-center flex flex-col justify-center items-center">
+                      <p className="text-lg mb-3">Login to edit your list.</p>
+                      <button className="font-semibold outline-none border-none py-2 px-4 bg-[#4d148c] rounded-md flex items-center" onClick={() => signIn('AniListProvider')}>
+                        <Image alt="anilist-icon" loading="lazy" width="25" height="25" src="/anilist.svg" className='mr-2' />
+                        Login With Anilist
+                      </button>
+                    </div>
+                  </ModalBody>
                 </ModalContent>
               </Modal>
             )}
