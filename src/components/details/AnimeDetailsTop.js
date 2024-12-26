@@ -159,6 +159,14 @@ function AnimeDetailsTop({ data, list, session, setList, url }) {
               </Link>
             )}
           </div>
+          <Addtolist
+            Handlelist={Handlelist}
+            openlist={openlist}
+            session={session}
+            list={list}
+            data={data}
+            setList={setList}
+          />
         </div>
       </div>
     </div>
