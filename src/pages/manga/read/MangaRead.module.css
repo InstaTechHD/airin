@@ -1,22 +1,30 @@
 .mangaRead {
   padding: 20px;
+  background-color: #1a1a1a; /* Dark background for dark mode */
+  color: #f0f0f0; /* Light text color for dark mode */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .mangaRead img {
   max-width: 100%;
   height: auto;
-  border-radius: 8px;
+  border-radius: 10px;
+  margin-bottom: 20px;
 }
 
 .mangaRead h1 {
-  font-size: 2em;
-  margin-bottom: 10px;
+  font-size: 2.5em;
+  margin-bottom: 15px;
+  color: #ff6f61; /* Highlight title color */
 }
 
 .mangaRead p {
   font-size: 1.2em;
-  line-height: 1.5;
+  line-height: 1.6;
+  margin-bottom: 20px;
 }
+
 .navigationButtons {
   display: flex;
   justify-content: space-between;
@@ -24,12 +32,22 @@
 }
 
 .navigationButtons button {
-  padding: 10px 20px;
+  padding: 12px 24px;
   font-size: 16px;
   cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  background-color: #ff6f61; /* Button background color */
+  color: #fff; /* Button text color */
+  transition: background-color 0.3s ease;
+}
+
+.navigationButtons button:hover:not(:disabled) {
+  background-color: #ff3b2e; /* Darker shade on hover */
 }
 
 .navigationButtons button:disabled {
   cursor: not-allowed;
   opacity: 0.5;
+  background-color: #888; /* Disabled button color */
 }
