@@ -1,4 +1,4 @@
-"use client";
+"use client;
 import React, { useState } from "react";
 import styles from "../../styles/AnimeDetailsBottom.module.css";
 import Animecards from "../CardComponent/Animecards";
