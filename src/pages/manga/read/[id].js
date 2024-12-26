@@ -8,6 +8,7 @@ const MangaRead = () => {
   const { id } = router.query;
   const [manga, setManga] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1); // Assume you have a way to get total pages
 
   useEffect(() => {
     if (id) {
@@ -15,7 +16,7 @@ const MangaRead = () => {
         try {
           const response = await axios.post('https://graphql.anilist.co', {
             query: `
-              query ($id: Int) {
+              query ($id: Int, $page: Int) {
                 Media(id: $id, type: MANGA) {
                   id
                   title {
@@ -26,12 +27,19 @@ const MangaRead = () => {
                   coverImage {
                     extraLarge
                   }
+                  chapters(page: $page) {
+                    currentPage
+                    totalPages
+                    // other manga page data
+                  }
                 }
               }
             `,
-            variables: { id: parseInt(id, 10) }
+            variables: { id: parseInt(id, 10), page: currentPage }
           });
-          setManga(response.data.data.Media);
+          const mangaData = response.data.data.Media;
+          setManga(mangaData);
+          setTotalPages(mangaData.chapters.totalPages);
         } catch (error) {
           console.error('Error fetching manga data:', error);
         }
@@ -39,17 +47,17 @@ const MangaRead = () => {
 
       fetchManga();
     }
-  }, [id]);
+  }, [id, currentPage]);
 
   const handleNextPage = () => {
-    setCurrentPage(prevPage => prevPage + 1);
-    // Logic to fetch and display the next page of manga
+    if (currentPage < totalPages) {
+      setCurrentPage(prevPage => prevPage + 1);
+    }
   };
 
   const handlePreviousPage = () => {
     if (currentPage > 1) {
       setCurrentPage(prevPage => prevPage - 1);
-      // Logic to fetch and display the previous page of manga
     }
   };
 
@@ -62,7 +70,7 @@ const MangaRead = () => {
       <p>{manga.description}</p>
       <div className={styles.navigationButtons}>
         <button onClick={handlePreviousPage} disabled={currentPage === 1}>Previous</button>
-        <button onClick={handleNextPage}>Next</button>
+        <button onClick={handleNextPage} disabled={currentPage === totalPages}>Next</button>
       </div>
     </div>
   );
