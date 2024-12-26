@@ -16,7 +16,7 @@ const MangaRead = () => {
     try {
       const response = await axios.post('https://graphql.anilist.co', {
         query: `
-          query ($id: Int, $page: Int) {
+          query ($id: Int) {
             Media(id: $id, type: MANGA) {
               id
               title {
@@ -27,21 +27,24 @@ const MangaRead = () => {
               coverImage {
                 extraLarge
               }
-              chapters
-              pages(page: $page) {
-                id
-                page
-                imageUrl
+              chapters {
+                pageInfo {
+                  total
+                }
+                nodes {
+                  page
+                  imageUrl
+                }
               }
             }
           }
         `,
-        variables: { id: parseInt(id, 10), page }
+        variables: { id: parseInt(id, 10) }
       });
       const mangaData = response.data.data.Media;
       setManga(mangaData);
-      setTotalPages(mangaData.chapters.length);
-      setPages(prevPages => [...prevPages, ...mangaData.pages]);
+      setTotalPages(mangaData.chapters.pageInfo.total);
+      setPages(mangaData.chapters.nodes);
     } catch (error) {
       console.error('Error fetching manga pages:', error);
     }
