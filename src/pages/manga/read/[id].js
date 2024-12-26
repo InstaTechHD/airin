@@ -60,13 +60,13 @@ const MangaRead = () => {
   if (!manga) return <div>Loading...</div>;
 
   return (
-    <div className={styles.mangaRead}>
-      <h1>{manga.title.english || manga.title.romaji}</h1>
-      <img src={manga.coverImage.extraLarge} alt={manga.title.english || manga.title.romaji} />
-      <p>{manga.description}</p>
-      <div className={styles.navigationButtons}>
-        <button onClick={handlePreviousPage} disabled={currentPage === 1}>Previous</button>
-        <button onClick={handleNextPage} disabled={currentPage === totalPages}>Next</button>
+    <div className={`${styles.mangaRead} dark:bg-gray-900 dark:text-white`}>
+      <h1 className="text-3xl font-bold mb-4">{manga.title.english || manga.title.romaji}</h1>
+      <img className="mb-4 rounded-lg" src={manga.coverImage.extraLarge} alt={manga.title.english || manga.title.romaji} />
+      <p className="mb-6">{manga.description}</p>
+      <div className="flex justify-between">
+        <button onClick={handlePreviousPage} disabled={currentPage === 1} className="bg-blue-500 text-white py-2 px-4 rounded disabled:bg-gray-500">Previous</button>
+        <button onClick={handleNextPage} disabled={currentPage === totalPages} className="bg-blue-500 text-white py-2 px-4 rounded disabled:bg-gray-500">Next</button>
       </div>
     </div>
   );
