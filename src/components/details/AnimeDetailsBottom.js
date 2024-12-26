@@ -5,6 +5,7 @@ import Animecards from "../CardComponent/Animecards";
 import { AnimatePresence, motion } from "framer-motion";
 import Characters from "./Characters";
 import Overview from "./tabs/Overview";
+import Staff from "./Staff"; // Import the new Staff component
 
 function AnimeDetailsBottom({ data }) {
   const tabs = [
@@ -85,7 +86,10 @@ function AnimeDetailsBottom({ data }) {
               </div>
             )}
             {activeTab.name === "Staff" && (
-              <div className={styles.detailscard}>Coming Soon</div>
+              <div className={styles.characters}>
+                <h3 className={styles.relationsheading}>Anime Staff</h3>
+                <Staff data={data?.staff?.edges} />
+              </div>
             )}
           </motion.div>
         </AnimatePresence>
