@@ -5,8 +5,9 @@ import styles from './MangaRead.module.css';
 
 const MangaRead = () => {
   const router = useRouter();
-  const { id } = router.query;
+  const { id, chapter } = router.query; // Add chapter to query
   const [manga, setManga] = useState(null);
+  const [chapterData, setChapterData] = useState(null); // State to manage chapter data
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
 
@@ -27,12 +28,19 @@ const MangaRead = () => {
                   coverImage {
                     extraLarge
                   }
+                  chapters {
+                    id
+                    title
+                    description
+                  }
                 }
               }
             `,
             variables: { id: parseInt(id, 10) }
           });
           setManga(response.data.data.Media);
+          // Set initial chapter data
+          setChapterData(response.data.data.Media.chapters[0]);
         } catch (error) {
           console.error('Error fetching manga data:', error);
         }
@@ -43,14 +51,16 @@ const MangaRead = () => {
   }, [id]);
 
   const handleNextChapter = () => {
-    const nextId = parseInt(id, 10) + 1; // Assuming next chapter has the next numerical ID
-    router.push(`/manga/read/${nextId}`);
+    const nextChapterIndex = chapterData ? chapterData.id + 1 : 1; // Logic for next chapter
+    setChapterData(manga.chapters[nextChapterIndex]);
+    router.push(`/manga/read/${id}?chapter=${nextChapterIndex}`);
   };
 
   const handlePreviousChapter = () => {
-    const prevId = parseInt(id, 10) - 1; // Assuming previous chapter has the previous numerical ID
-    if (prevId > 0) {
-      router.push(`/manga/read/${prevId}`);
+    const prevChapterIndex = chapterData ? chapterData.id - 1 : 1; // Logic for previous chapter
+    if (prevChapterIndex > 0) {
+      setChapterData(manga.chapters[prevChapterIndex]);
+      router.push(`/manga/read/${id}?chapter=${prevChapterIndex}`);
     }
   };
 
@@ -79,9 +89,15 @@ const MangaRead = () => {
       <h1>{manga.title.english || manga.title.romaji}</h1>
       <img src={manga.coverImage.extraLarge} alt={manga.title.english || manga.title.romaji} />
       <p>{manga.description}</p>
+      {chapterData && (
+        <div>
+          <h2>{chapterData.title}</h2>
+          <p>{chapterData.description}</p>
+        </div>
+      )}
       <div className={styles.navigationButtons}>
-        <button onClick={handlePreviousChapter} disabled={parseInt(id, 10) <= 1}>Previous Chapter</button>
-        <button onClick={handleNextChapter}>Next Chapter</button>
+        <button onClick={handlePreviousChapter} disabled={!chapterData || chapterData.id <= 1}>Previous Chapter</button>
+        <button onClick={handleNextChapter} disabled={!chapterData || chapterData.id >= manga.chapters.length}>Next Chapter</button>
       </div>
     </div>
   );
