@@ -249,7 +249,7 @@ function Catalog({ searchParams }) {
                             </Select>
                         </div>
                         <div className={styles.yearmobil}>
-                            <h3 className={styles.searchlabel}>Airing Status</h3>
+                            <h3 className={styles.searchlabel}>Status</h3>
                             <Select
                                 label=""
                                 aria-label='airing'
