@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import styles from '../../styles/Catalog.module.css';
 import { Accordion, AccordionItem, Select, SelectItem, RadioGroup, Radio, Input } from "@nextui-org/react";
-import { seasonOptions, genreOptions, tagsOptions, formatOptions, yearOptions, sortbyOptions, airingOptions } from './options';
+import { seasonOptions, genreOptions, tagsOptions, formatOptions, yearOptions, sortbyOptions, airingOptions, mangaOptions, animeOptions } from './options';
 import { Combobox, Transition } from '@headlessui/react'
 import Searchcard from './Searchcard';
 
@@ -17,6 +17,8 @@ function Catalog({ searchParams }) {
     const [airingvalue, setAiringvalue] = useState(null);
     const [searchvalue, setSearchvalue] = useState("");
     const [showTopBottom, setShowTopBottom] = useState(true);
+    const [mangavalue, setMangaValue] = useState(null); // Add state for manga dropdown
+    const [animevalue, setAnimeValue] = useState(null); // Add state for anime dropdown
 
     useEffect(() => {
         setSelectedYear(year || null);
