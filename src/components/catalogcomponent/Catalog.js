@@ -153,23 +153,20 @@ function Catalog({ searchParams }) {
                                                     <Combobox.Option
                                                         key={item.value}
                                                         className={({ active }) =>
-                                                            `relative cursor-pointer select-none py-2 pl-4 pr-4 ${active ? 'bg-[#27272a] text-white' : 'text-[#b2b2b2]'
-                                                            }`
+                                                            `relative cursor-pointer select-none py-2 pl-4 pr-4 ${active ? 'bg-[#27272a] text-white' : 'text-[#b2b2b2]'}`
                                                         }
                                                         value={item}
                                                     >
                                                         {({ selected, active }) => (
                                                             <>
                                                                 <span
-                                                                    className={`block truncate ${selected ? 'font-medium text-white' : 'font-normal'
-                                                                        }`}
+                                                                    className={`block truncate ${selected ? 'font-medium text-white' : 'font-normal'}`}
                                                                 >
                                                                     {item.name}
                                                                 </span>
                                                                 {selected ? (
                                                                     <span
-                                                                        className={`absolute inset-y-0 right-4 flex items-center pl-3 ${active ? 'text-white' : ''
-                                                                            }`}
+                                                                        className={`absolute inset-y-0 right-4 flex items-center pl-3 ${active ? 'text-white' : ''}`}
                                                                     >
                                                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon" className="h-5 w-5 text-gray-400"><path fill[...]
                                                                     </span>
@@ -182,23 +179,20 @@ function Catalog({ searchParams }) {
                                                     <Combobox.Option
                                                         key={item.value}
                                                         className={({ active }) =>
-                                                            `relative cursor-pointer select-none py-2 pl-4 pr-4 ${active ? 'bg-[#27272a] text-white' : 'text-[#b2b2b2]'
-                                                            }`
+                                                            `relative cursor-pointer select-none py-2 pl-4 pr-4 ${active ? 'bg-[#27272a] text-white' : 'text-[#b2b2b2]'}`
                                                         }
                                                         value={item}
                                                     >
                                                         {({ selected, active }) => (
                                                             <>
                                                                 <span
-                                                                    className={`block truncate ${selected ? 'font-medium text-white' : 'font-normal'
-                                                                        }`}
+                                                                    className={`block truncate ${selected ? 'font-medium text-white' : 'font-normal'}`}
                                                                 >
                                                                     {item.name}
                                                                 </span>
                                                                 {selected ? (
                                                                     <span
-                                                                        className={`absolute inset-y-0 right-4 flex items-center pl-3 ${active ? 'text-white' : ''
-                                                                            }`}
+                                                                        className={`absolute inset-y-0 right-4 flex items-center pl-3 ${active ? 'text-white' : ''}`}
                                                                     >
                                                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon" className="h-5 w-5 text-gray-400"><path fill[...]
                                                                     </span>
