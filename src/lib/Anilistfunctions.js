@@ -1,6 +1,5 @@
 "use server"
-import axios from 'axios';
-import { trending, animeinfo, advancedsearch, top100anime, seasonal, popular } from "./anilistqueries";
+import { trending, animeinfo, advancedsearch, top100anime, seasonal, popular, upcoming } from "./anilistqueries";
 
 export const TrendingAnilist = async () => {
     try {
@@ -24,7 +23,7 @@ export const TrendingAnilist = async () => {
     } catch (error) {
         console.error('Error fetching data from AniList:', error);
     }
-};
+}
 
 export const PopularAnilist = async () => {
     try {
@@ -48,7 +47,7 @@ export const PopularAnilist = async () => {
     } catch (error) {
         console.error('Error fetching popular data from AniList:', error);
     }
-};
+}
 
 export const Top100Anilist = async () => {
     try {
@@ -72,7 +71,7 @@ export const Top100Anilist = async () => {
     } catch (error) {
         console.error('Error fetching data from AniList:', error);
     }
-};
+}
 
 export const SeasonalAnilist = async () => {
     try {
@@ -96,7 +95,7 @@ export const SeasonalAnilist = async () => {
     } catch (error) {
         console.error('Error fetching data from AniList:', error);
     }
-};
+}
 
 export const AnimeInfoAnilist = async (animeid) => {
     try {
@@ -119,7 +118,7 @@ export const AnimeInfoAnilist = async (animeid) => {
     } catch (error) {
         console.error('Error fetching data from AniList:', error);
     }
-};
+}
 
 export const AdvancedSearch = async (searchvalue, searchType = "ANIME", selectedYear = null, seasonvalue = null, formatvalue = null, genrevalue = [], sortbyvalue = null, currentPage = 1) => {
     const types = {};
@@ -163,16 +162,33 @@ export const AdvancedSearch = async (searchvalue, searchType = "ANIME", selected
 
         const data = await response.json();
         return data.data.Page;
+
     } catch (error) {
         console.error('Error fetching search data from AniList:', error);
     }
 };
 
-export async function getAnimeByYear(startYear, endYear) {
-    const allAnime = [];
-    for (let year = startYear; year <= endYear; year++) {
-        const response = await axios.get(`https://api.jikan.moe/v3/season/${year}/spring`);
-        allAnime.push(...response.data.anime);
+export const UpcomingAnilist = async () => {
+    try {
+        const response = await fetch('https://graphql.anilist.co', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+            },
+            body: JSON.stringify({
+                query: upcoming,
+                variables: {
+                    page: 1,
+                    perPage: 15,
+                },
+            }),
+        });
+
+        const data = await response.json();
+        return data.data.Page.media;
+    } catch (error) {
+        console.error('Error fetching upcoming data from AniList:', error);
+        return [];
     }
-    return allAnime;
-}
+};
