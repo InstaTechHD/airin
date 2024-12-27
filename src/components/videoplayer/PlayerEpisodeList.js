@@ -159,8 +159,11 @@ function PlayerEpisodeList({ id, data, onprovider, setwatchepdata, epnum }) {
             {suboptions?.includes('sub') && (
               <div className={styles.episodesub}>
                 <span className={styles.episodetypes}>
-                  <svg viewBox="0 0 32 32" className="w-5 h-5" fill="none" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" clipRule="evenodd" d="M[...]
-                  SUB: </span>
+  <svg viewBox="0 0 32 32" className="w-5 h-5" fill="none" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+    <path fillRule="evenodd" clipRule="evenodd" d="M..." />
+  </svg>
+  SUB:
+</span>
                 {episodeData?.map((item, index) => (
                   <div key={item.providerId} value={item.providerId} className={item.providerId === defaultProvider && subtype === 'sub' ? styles.providerselected : styles.provider} onClick={() =[...]
                     {item.providerId}
