@@ -144,4 +144,24 @@
         font-size: 19px;
     }
 }
+.video-responsive-mobile {
+  display: none; /* Hide by default */
+}
 
+@media (max-width: 768px) {
+  .video-responsive-mobile {
+    display: block; /* Show on mobile devices */
+    overflow: hidden;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+    position: relative;
+    height: 0;
+  }
+
+  .video-responsive-mobile iframe {
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+  }
+}
