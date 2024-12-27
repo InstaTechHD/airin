@@ -1,11 +1,11 @@
-"use client";
+"use client"
 import React, { useRef, useState } from 'react';
 import styles from '../../styles/Animecard.module.css';
 import { useDraggable } from 'react-use-draggable-scroll';
 import Link from 'next/link';
 import ItemContent from './ItemContent';
 
-function Animecards({ data, cardid, show = true }) {
+function Animecards({ data, cardid, show=true }) {
   const containerRef = useRef();
   const { events } = useDraggable(containerRef);
   const [isLeftArrowActive, setIsLeftArrowActive] = useState(false);
@@ -34,6 +34,7 @@ function Animecards({ data, cardid, show = true }) {
     }
   };
 
+
   function scrollLeft() {
     smoothScroll(-500);
   }
@@ -44,18 +45,18 @@ function Animecards({ data, cardid, show = true }) {
 
   return (
     <div className={styles.animecard}>
-      {show && (
+    {show && (
         <div className={styles.cardhead}>
-          <span className={styles.bar}></span>
-          <h1 className={styles.headtitle}>{cardid}</h1>
-        </div>
-      )}
+        <span className={styles.bar}></span>
+        <h1 className={styles.headtitle}>{cardid}</h1>
+      </div>
+    )}
       <div className={styles.animeitems}>
         <span className={`${styles.leftarrow} ${isLeftArrowActive ? styles.active : styles.notactive}`}>
-          <svg onClick={scrollLeft} xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="feather feather-chevron-left"><polyline points="15 18 9 12 15 6"></polyline></svg>
+          <svg onClick={scrollLeft} xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="mb-4"><path d="m15 18-6-6 6-6"></path></svg>
         </span>
         <span className={`${styles.rightarrow} ${isRightArrowActive ? styles.active : styles.notactive}`}>
-          <svg onClick={scrollRight} xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          <svg onClick={scrollRight} xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="mb-4"><path d="m9 18 6-6-6-6"></path></svg>
         </span>
         <div className={styles.cardcontainer} id={cardid} {...events} ref={containerRef} onScroll={handleScroll}>
           {cardid === 'Recent Episodes' ? (
@@ -76,21 +77,10 @@ function Animecards({ data, cardid, show = true }) {
               const currentEpisode = gogoEpisodes?.episodes?.find(
                 (x) => x.number === item.currentEpisode
               );
-              const hianimeEpisodes = item?.episodes?.data?.find(
-                (x) => x.providerId === "hianime"
-              );
-              const currentHianimeEpisode = hianimeEpisodes?.episodes?.find(
-                (x) => x.number === item.currentEpisode
-              );
               return (
-                <>
-                  <Link href={`/anime/watch/${anime.id}/gogoanime/${item?.currentEpisode}?epid=${encodeURIComponent(currentEpisode?.id)}&type=sub`} key={`${anime.id}-gogoanime`}>
-                    <ItemContent anime={anime} cardid={cardid} />
-                  </Link>
-                  <Link href={`/anime/watch/${anime.id}/hianime/${item?.currentEpisode}?epid=${encodeURIComponent(currentHianimeEpisode?.id)}&type=sub`} key={`${anime.id}-hianime`}>
-                    <ItemContent anime={anime} cardid={cardid} />
-                  </Link>
-                </>
+                <Link href={`/anime/watch/${anime.id}/gogoanime/${item?.currentEpisode}?epid=${encodeURIComponent(currentEpisode?.id)}&type=sub`} key={anime.id}>
+                  <ItemContent anime={anime} cardid={cardid} />
+                </Link>
               );
             })
           ) : (
@@ -112,42 +102,42 @@ function Animecards({ data, cardid, show = true }) {
                 );
               })
             ) : (
-              cardid === 'Related Anime' ? (
-                data?.map((item) => {
-                  const anime = {
-                    id: item?.node?.id || '',
-                    coverImage: item?.node?.coverImage?.extraLarge || '',
-                    title: item?.node?.title || '',
-                    status: item?.node?.status || '',
-                    format: item?.node?.format || '',
-                    episodes: item?.node?.episodes || '',
-                    nextAiringEpisode: item?.node?.nextAiringEpisode || '',
-                    relationType: item?.relationType || ''
-                  };
-                  return (
-                    <Link href={`/anime/info/${anime.id}`} key={anime.id}>
-                      <ItemContent anime={anime} cardid={cardid} />
-                    </Link>
-                  );
-                })
-              ) : (
-                data?.map((item) => {
-                  const anime = {
-                    id: item.id || '',
-                    coverImage: item?.coverImage?.extraLarge || item?.coverImage?.large || '',
-                    title: item.title || '',
-                    status: item.status || '',
-                    format: item.format || '',
-                    episodes: item?.episodes || '',
-                    nextAiringEpisode: item?.nextAiringEpisode || '',
-                  };
-                  return (
-                    <Link href={`/anime/info/${anime.id}`} key={anime.id}>
-                      <ItemContent anime={anime} cardid={cardid} />
-                    </Link>
-                  );
-                })
-              )
+            cardid === 'Related Anime' ? (
+              data?.map((item) => {
+                const anime = {
+                  id: item?.node?.id || '',
+                  coverImage: item?.node?.coverImage?.extraLarge || '',
+                  title: item?.node?.title || '',
+                  status: item?.node?.status || '',
+                  format: item?.node?.format || '',
+                  episodes: item?.node?.episodes || '',
+                  nextAiringEpisode: item?.node?.nextAiringEpisode || '',
+                  relationType : item?.relationType || ''
+                };
+                return (
+                  <Link href={`/anime/info/${anime.id}`} key={anime.id}>
+                    <ItemContent anime={anime} cardid={cardid} />
+                  </Link>
+                );
+              })
+            ) : (
+              data?.map((item) => {
+                const anime = {
+                  id: item.id || '',
+                  coverImage: item?.coverImage?.extraLarge || item?.coverImage?.large || '',
+                  title: item.title || '',
+                  status: item.status || '',
+                  format: item.format || '',
+                  episodes: item?.episodes || '',
+                  nextAiringEpisode: item?.nextAiringEpisode || '',
+                };
+                return (
+                  <Link href={`/anime/info/${anime.id}`} key={anime.id}>
+                    <ItemContent anime={anime} cardid={cardid} />
+                  </Link>
+                );
+              })
+            )
             )
           )}
           {!data?.length && (
