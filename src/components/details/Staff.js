@@ -1,15 +1,58 @@
-"use client";
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styles from '../../styles/Animecard.module.css';
 import { useDraggable } from 'react-use-draggable-scroll';
 import Image from 'next/image';
+import fetch from 'node-fetch';
 
-function Staff({ data }) {
+function Staff({ animeId }) {
+    const [staffData, setStaffData] = useState([]);
     const containerRef = useRef();
     const { events } = useDraggable(containerRef);
     const [isLeftArrowActive, setIsLeftArrowActive] = useState(false);
     const [isRightArrowActive, setIsRightArrowActive] = useState(false);
     const [hoveredIndex, setHoveredIndex] = useState(null);
+
+    useEffect(() => {
+        const fetchStaffData = async () => {
+            const query = `
+                query ($id: Int) {
+                    Media(id: $id) {
+                        staff {
+                            edges {
+                                node {
+                                    name {
+                                        full
+                                    }
+                                    image {
+                                        large
+                                    }
+                                }
+                                role
+                            }
+                        }
+                    }
+                }
+            `;
+            const variables = { id: animeId };
+
+            const response = await fetch('https://graphql.anilist.co', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                },
+                body: JSON.stringify({
+                    query: query,
+                    variables: variables
+                })
+            });
+
+            const data = await response.json();
+            setStaffData(data.data.Media.staff.edges);
+        };
+
+        fetchStaffData();
+    }, [animeId]);
 
     function handleScroll() {
         const container = containerRef.current;
@@ -56,7 +99,7 @@ function Staff({ data }) {
                     </svg>
                 </span>
                 <div className={styles.cardcontainer} id="cardid" {...events} ref={containerRef} onScroll={handleScroll}>
-                    {data?.map((staff, index) => (
+                    {staffData?.map((staff, index) => (
                         <div className='h-full' key={index}>
                             <div
                                 className="w-[135px] md:w-[155px] xl:w-[175px] h-[200px] md:h-[230px] xl:h-[265px] relative rounded-lg cursor-pointer"
