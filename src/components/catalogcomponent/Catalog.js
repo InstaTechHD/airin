@@ -11,7 +11,7 @@ function Catalog({ searchParams }) {
     const [selectedYear, setSelectedYear] = useState(null);
     const [seasonvalue, setSeasonvalue] = useState(null);
     const [formatvalue, setFormatvalue] = useState(null);
-    const [genrevalue, setGenrevalue] = useState(null);
+    const [genrevalue, setGenrevalue] = useState([]);
     const [query, setQuery] = useState('');
     const [sortbyvalue, setSortbyvalue] = useState(null);
     const [airingvalue, setAiringvalue] = useState(null);
