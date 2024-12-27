@@ -5,9 +5,10 @@ import styles from './MangaRead.module.css';
 
 const MangaRead = () => {
   const router = useRouter();
-  const { id, chapter } = router.query; // Add chapter to query
+  const { id, chapter } = router.query;
   const [manga, setManga] = useState(null);
-  const [chapterData, setChapterData] = useState(null); // State to manage chapter data
+  const [chapterData, setChapterData] = useState(null);
+  const [loading, setLoading] = useState(true);
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
 
@@ -28,21 +29,16 @@ const MangaRead = () => {
                   coverImage {
                     extraLarge
                   }
-                  chapters {
-                    id
-                    title
-                    description
-                  }
                 }
               }
             `,
             variables: { id: parseInt(id, 10) }
           });
           setManga(response.data.data.Media);
-          // Set initial chapter data
-          setChapterData(response.data.data.Media.chapters[0]);
+          setLoading(false);
         } catch (error) {
           console.error('Error fetching manga data:', error);
+          setLoading(false);
         }
       };
 
@@ -50,17 +46,31 @@ const MangaRead = () => {
     }
   }, [id]);
 
+  useEffect(() => {
+    if (id && chapter) {
+      const fetchChapter = async () => {
+        try {
+          // Replace with the actual API endpoint to fetch chapter data
+          const response = await axios.get(`/api/manga/${id}/chapter/${chapter}`);
+          setChapterData(response.data);
+        } catch (error) {
+          console.error('Error fetching chapter data:', error);
+        }
+      };
+
+      fetchChapter();
+    }
+  }, [id, chapter]);
+
   const handleNextChapter = () => {
-    const nextChapterIndex = chapterData ? chapterData.id + 1 : 1; // Logic for next chapter
-    setChapterData(manga.chapters[nextChapterIndex]);
-    router.push(`/manga/read/${id}?chapter=${nextChapterIndex}`);
+    const nextChapter = parseInt(chapter, 10) + 1;
+    router.push(`/manga/read/${id}?chapter=${nextChapter}`);
   };
 
   const handlePreviousChapter = () => {
-    const prevChapterIndex = chapterData ? chapterData.id - 1 : 1; // Logic for previous chapter
-    if (prevChapterIndex > 0) {
-      setChapterData(manga.chapters[prevChapterIndex]);
-      router.push(`/manga/read/${id}?chapter=${prevChapterIndex}`);
+    const prevChapter = parseInt(chapter, 10) - 1;
+    if (prevChapter > 0) {
+      router.push(`/manga/read/${id}?chapter=${prevChapter}`);
     }
   };
 
@@ -82,7 +92,9 @@ const MangaRead = () => {
     }
   };
 
-  if (!manga) return <div>Loading...</div>;
+  if (loading) return <div>Loading...</div>;
+
+  if (!manga) return <div>Error loading manga data.</div>;
 
   return (
     <div className={styles.mangaRead} onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
@@ -96,8 +108,8 @@ const MangaRead = () => {
         </div>
       )}
       <div className={styles.navigationButtons}>
-        <button onClick={handlePreviousChapter} disabled={!chapterData || chapterData.id <= 1}>Previous Chapter</button>
-        <button onClick={handleNextChapter} disabled={!chapterData || chapterData.id >= manga.chapters.length}>Next Chapter</button>
+        <button onClick={handlePreviousChapter} disabled={parseInt(chapter, 10) <= 1}>Previous Chapter</button>
+        <button onClick={handleNextChapter}>Next Chapter</button>
       </div>
     </div>
   );
