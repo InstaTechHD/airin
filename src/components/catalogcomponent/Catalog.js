@@ -359,6 +359,7 @@ function Catalog({ searchParams }) {
 </div>
 </div>
 </div>
+</div>
 <div className={styles.catalogbottom}>
     <div className={styles.catalogleft}>
         <div className={styles.accordion}>
