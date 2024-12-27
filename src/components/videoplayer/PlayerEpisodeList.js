@@ -1,6 +1,6 @@
-"use client"
+"use client";
 import React, { useEffect, useState } from "react";
-import styles from '../../styles/PlayerEpisodeList.module.css'
+import styles from '../../styles/PlayerEpisodeList.module.css';
 import { getEpisodes } from "@/actions/episode";
 import { ProvidersMap } from "@/utils/EpisodeFunctions";
 import { useRouter } from 'next-nprogress-bar';
@@ -41,7 +41,7 @@ function PlayerEpisodeList({ id, data, onprovider, setwatchepdata, epnum }) {
       const calculatedPage = Math.ceil(epnum / itemsPerPage);
       setCurrentPage(calculatedPage <= 0 ? 1 : calculatedPage);
     }
-  }, [epnum])
+  }, [epnum]);
 
   useEffect(() => {
     const listtype = localStorage.getItem('eplisttype');
@@ -53,7 +53,6 @@ function PlayerEpisodeList({ id, data, onprovider, setwatchepdata, epnum }) {
       }
     }
   }, []);
-
 
   const handleOptionClick = (option) => {
     setEplistType(option);
@@ -72,10 +71,10 @@ function PlayerEpisodeList({ id, data, onprovider, setwatchepdata, epnum }) {
         }
         setloading(false);
       } catch (error) {
-        console.log(error)
-        setloading(false)
+        console.log(error);
+        setloading(false);
       }
-    }
+    };
     fetchepisodes();
   }, [id]);
 
@@ -88,8 +87,7 @@ function PlayerEpisodeList({ id, data, onprovider, setwatchepdata, epnum }) {
   useEffect(() => {
     setdefaultProvider(onprovider);
     setProviderChanged(true);
-  }, [])
-
+  }, [onprovider]);
 
   useEffect(() => {
     const provider = episodeData?.find((i) => i.providerId === defaultProvider);
@@ -105,14 +103,11 @@ function PlayerEpisodeList({ id, data, onprovider, setwatchepdata, epnum }) {
     }
   }, [episodeData, subtype, defaultProvider]);
 
-
   useEffect(() => {
     if (!providerChanged && (currentEpisodes?.[epnum - 1]?.id || currentEpisodes?.[epnum - 1]?.episodeId)) {
       const episodeId = encodeURIComponent(currentEpisodes?.[epnum - 1]?.id || currentEpisodes?.[epnum - 1]?.episodeId);
       router.push(`/anime/watch?id=${id}&host=${defaultProvider}&epid=${episodeId}&ep=${epnum}&type=${subtype}`);
     }
-  //   setTimeout(() => {
-  // }, 0);
   }, [providerChanged]);
 
   const refreshEpisodes = async () => {
@@ -133,9 +128,9 @@ function PlayerEpisodeList({ id, data, onprovider, setwatchepdata, epnum }) {
   };
 
   const reversetoggle = () => {
-    setCurrentPage(1)
+    setCurrentPage(1);
     setCurrentEpisodes((prev) => [...prev].reverse());
-  }
+  };
 
   return (
     <div className={styles.episodelist}>
@@ -159,13 +154,13 @@ function PlayerEpisodeList({ id, data, onprovider, setwatchepdata, epnum }) {
             {suboptions?.includes('sub') && (
               <div className={styles.episodesub}>
                 <span className={styles.episodetypes}>
-  <svg viewBox="0 0 32 32" className="w-5 h-5" fill="none" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
-    <path fillRule="evenodd" clipRule="evenodd" d="M..." />
-  </svg>
-  SUB:
-</span>
-                {episodeData?.map((item, index) => (
-                  <div key={item.providerId} value={item.providerId} className={item.providerId === defaultProvider && subtype === 'sub' ? styles.providerselected : styles.provider} onClick={() =[...]
+                  <svg viewBox="0 0 32 32" className="w-5 h-5" fill="none" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+                    <path fillRule="evenodd" clipRule="evenodd" d="M12.293 4.707l5 5a1 1 0 001.414-1.414L13.414 3.293a1 1 0 00-1.414 0l-5 5a1 1 0 001.414 1.414l5-5zM4.5 8.5a1 1 0 100 2h7a1 1 0 100-2h-7zM12.293 15.707l5 5a1 1 0 001.414-1.414l-5-5a1 1 0 00-1.414 0l-5 5a1 1 0 001.414 1.414l5-5zM4.5 19.5a1 1 0 100 2h7a1 1 0 100-2h-7z" />
+                  </svg>
+                  SUB:
+                </span>
+                {episodeData?.map((item) => (
+                  <div key={item.providerId} value={item.providerId} className={item.providerId === defaultProvider && subtype === 'sub' ? styles.providerselected : styles.provider} onClick={() => handleProviderChange(item.providerId, 'sub')}>
                     {item.providerId}
                   </div>
                 ))}
@@ -174,11 +169,14 @@ function PlayerEpisodeList({ id, data, onprovider, setwatchepdata, epnum }) {
             {suboptions?.includes('dub') && (
               <div className={styles.episodedub}>
                 <span className={styles.episodetypes}>
-                  <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2a3 3 0 0 1 3 3v6a3 3 0 0 1-3 3a3 3 0 0 1-3-3V5a3 3 0 0 1 3-3m7 [...]
-                  DUB: </span>
-                {episodeData?.map((item, index) => (
-                  <div key={item.providerId} value={item.providerId} className={item.providerId === defaultProvider && subtype === 'dub' ? styles.providerselected : styles.provider} onClick={() =[...]
-                  {item.providerId}
+                  <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24">
+                    <path fill="currentColor" d="M12 2a3 3 0 0 1 3 3v6a3 3 0 0 1-3 3a3 3 0 0 1-3-3V5a3 3 0 0 1 3-3m7 9c0 3.87-3.13 7-7 7s-7-3.13-7-7s3.13-7 7-7s7 3.13 7 7m-7 10c4.42 0 8 2.24 8 5v2H4v-2c0-2.76 3.58-5 8-5Z" />
+                  </svg>
+                  DUB:
+                </span>
+                {episodeData?.map((item) => (
+                  <div key={item.providerId} value={item.providerId} className={item.providerId === defaultProvider && subtype === 'dub' ? styles.providerselected : styles.provider} onClick={() => handleProviderChange(item.providerId, 'dub')}>
+                    {item.providerId}
                   </div>
                 ))}
               </div>
@@ -207,8 +205,8 @@ function PlayerEpisodeList({ id, data, onprovider, setwatchepdata, epnum }) {
                     <h3 className={styles.epheading}>Episodes</h3>
                     <Tooltip content="Refresh Episodes">
                       <button className={styles.refresh} onClick={refreshEpisodes}>
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className={`w-[22px] h-[22px] ${refreshloading ? "animate-s[...]
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8[...]
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className={`w-[22px] h-[22px] ${refreshloading ? "animate-spin" : ""}`}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 01-3.7 13.803" />
                         </svg>
                       </button>
                     </Tooltip>
@@ -251,7 +249,7 @@ function PlayerEpisodeList({ id, data, onprovider, setwatchepdata, epnum }) {
                       onClick={() => handleOptionClick(2)}
                     >
                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke={`${eplisttype === 2 ? '#ca1313' : 'currentColor'}`} className="w-6 h-6">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M6 6.878V6a2.25 2.25 0 0 1 2.25-2.25h7.5A2.25 2.25 0 0 1 18 6v.878m-12 0c.235-.083.487-.128.75-.128h10.5c.263 0 .515.045.751.128m0 0V6a2.25 2.25 0 0 1 2.25-2.25h7.5A2.25 2.25 0 0 1 18 6v.878m0 10.244V18a2.25 2.25 0 0 1-2.25 2.25h-7.5A2.25 2.25 0 0 1 6 18v-.878m12 0c-.235.083-.487.128-.75.128H6.75c-.263 0-.515-.045-.751-.128m0 0V18a2.25 2.25 0 0 1-2.25-2.25v-7.5A2.25 2.25 0 0 1 6 6v.878m12 0c.235-.083.487-.128.75-.128h10.5c.263 0 .515.045.751.128m0 0V6a2.25 2.25 0 0 1 2.25-2.25h7.5A2.25 2.25 0 0 1 18 6v.878" />
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M6 6.878V6a2.25 2.25 0 0 1 2.25-2.25h7.5A2.25 2.25 0 0 1 18 6v.878m-12 0c.235-.083.487-.128.75-.128h10.5c.263 0 .515.045.751.128m0 0V6a2.25 2.25 0 0 1 2.25-2.25h7.5A2.25 2.25 0 0 1 18 6v.878" />
                       </svg>
                     </span>
                     <span
