@@ -701,3 +701,24 @@ query($page: Int, $perPage: Int, $from: Int, $to: Int){
     }
   }
 }`
+export const upcoming = `
+query ($page: Int, $perPage: Int) {
+  Page(page: $page, perPage: $perPage) {
+    media(status: NOT_YET_RELEASED, sort: [START_DATE_DESC]) {
+      id
+      title {
+        romaji
+        english
+      }
+      coverImage {
+        large
+      }
+      startDate {
+        year
+        month
+        day
+      }
+    }
+  }
+}
+`;
