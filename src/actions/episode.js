@@ -8,6 +8,7 @@ const gogo = new ANIME.Gogoanime();
 const zoro = new ANIME.Zoro();
 const hianime = new ANIME.Hianime();
 
+// Fetch episodes from Gogoanime
 export async function fetchGogoEpisodes(id) {
   try {
     const data = await gogo.fetchAnimeInfo(id);
@@ -18,6 +19,7 @@ export async function fetchGogoEpisodes(id) {
   }
 }
 
+// Fetch episodes from Zoro
 export async function fetchZoroEpisodes(id) {
   try {
     const data = await zoro.fetchAnimeInfo(id);
@@ -28,6 +30,7 @@ export async function fetchZoroEpisodes(id) {
   }
 }
 
+// Fetch episodes from Hianime
 export async function fetchHianimeEpisodes(id) {
   try {
     const data = await hianime.fetchAnimeInfo(id);
@@ -38,14 +41,13 @@ export async function fetchHianimeEpisodes(id) {
   }
 }
 
+// Fetch and cache episode metadata
 async function fetchEpisodeMeta(id, available = false) {
+  if (available) {
+    return null;
+  }
   try {
-    if (available) {
-      return null;
-    }
-    const res = await fetch(
-      `https://api.ani.zip/mappings?anilist_id=${id}`
-    );
+    const res = await fetch(`https://api.ani.zip/mappings?anilist_id=${id}`);
     const data = await res.json();
     const episodesArray = Object.values(data?.episodes);
     if (!episodesArray) {
