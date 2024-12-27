@@ -87,6 +87,48 @@ function Catalog({ searchParams }) {
     return (
         <div className={styles.catalog}>
             <div className={styles.catalogtop}>
+        <div className={styles.catalogsort}>
+    <h3 className={styles.searchlabel}>Manga</h3>
+    <Select
+        label=""
+        aria-label='manga'
+        labelPlacement='outside'
+        placeholder="Select Manga"
+        className="w-full"
+        selectedKeys={mangavalue}
+        onSelectionChange={setMangaValue}
+    >
+        {mangaOptions.map((manga) => (
+            <SelectItem
+                key={manga.value}
+                value={manga.value}
+            >
+                {manga.name}
+            </SelectItem>
+        ))}
+    </Select>
+</div>
+<div className={styles.catalogsort}>
+    <h3 className={styles.searchlabel}>Anime</h3>
+    <Select
+        label=""
+        aria-label='anime'
+        labelPlacement='outside'
+        placeholder="Select Anime"
+        className="w-full"
+        selectedKeys={animevalue}
+        onSelectionChange={setAnimeValue}
+    >
+        {animeOptions.map((anime) => (
+            <SelectItem
+                key={anime.value}
+                value={anime.value}
+            >
+                {anime.name}
+            </SelectItem>
+        ))}
+    </Select>
+</div>
                 <div className={styles.searchmobil}>
                     <div className={styles.search}>
                         <h3 className={styles.searchlabel}>Search</h3>
