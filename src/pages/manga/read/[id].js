@@ -35,8 +35,10 @@ const MangaRead = () => {
             variables: { id: parseInt(id, 10) }
           });
           setManga(response.data.data.Media);
+          setLoading(false);
         } catch (error) {
           console.error('Error fetching manga data:', error);
+          setLoading(false);
         }
       };
 
@@ -50,8 +52,10 @@ const MangaRead = () => {
         try {
           const response = await axios.get(`https://api.mangadex.org/manga/${id}/feed?translatedLanguage[]=en&limit=1&offset=${chapter - 1}`);
           setChapterData(response.data.data[0]);
+          setLoading(false);
         } catch (error) {
           console.error('Error fetching chapter data:', error);
+          setLoading(false);
         }
       };
 
