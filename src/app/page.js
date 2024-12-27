@@ -1,4 +1,4 @@
-"use server"
+"use client"
 import React, { useState, useEffect } from 'react';
 import Animecard from '@/components/CardComponent/Animecards'
 import Herosection from '@/components/home/Herosection'
