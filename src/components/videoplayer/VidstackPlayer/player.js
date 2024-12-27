@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useEffect, useRef, useState } from "react";
 import "@vidstack/react/player/styles/base.css";
 import styles from "./player.module.css";
@@ -264,19 +264,19 @@ function Player({ dataInfo, id, groupedEp, src, session, savedep, subtitles, thu
             Play: null,
             Pause: null,
             Mute: null,
-            VolumeUp: VolumeUpIcon, // Add Volume Up icon
-            VolumeDown: VolumeDownIcon, // Add Volume Down icon
+            VolumeUp: VolumeUpIcon,
+            VolumeDown: VolumeDownIcon,
             EnterFullscreen: null,
             ExitFullscreen: null,
-            EnterPiP: null,
-            ExitPiP: null,
+            EnterPiP: EnterPiPIcon,
+            ExitPiP: ExitPiPIcon,
             CaptionsOn: null,
             CaptionsOff: null,
             SeekForward: FastForwardIcon,
             SeekBackward: FastBackwardIcon,
-            Cast: CastIcon, // Add Cast icon
-            Library: LibraryIcon, // Add Library icon
-            Settings: SettingsIcon // Add Settings icon
+            Cast: CastIcon,
+            Library: LibraryIcon,
+            Settings: SettingsIcon
           }}
         />
       </MediaPlayer>
@@ -284,4 +284,4 @@ function Player({ dataInfo, id, groupedEp, src, session, savedep, subtitles, thu
   )
 }
 
-export default Player
+export default Player;
