@@ -51,6 +51,7 @@ function Catalog({ searchParams }) {
         setSeasonvalue(null);
         setFormatvalue(null);
         setGenrevalue([]);
+
         setQuery('');
         setSortbyvalue(null);
         setAiringvalue(null);
@@ -102,6 +103,7 @@ function Catalog({ searchParams }) {
                             autoComplete="off"
                             startContent={<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-5 h-5 text-2xl text-default-400 pointer-events-none flex-shrink-0">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+
                             </svg>}
                         />
                     </div>
@@ -132,6 +134,7 @@ function Catalog({ searchParams }) {
                                     <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-2">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon" className="h-5 w-5 text-gray-400"><path fillRule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clipRule="evenodd"></path></svg>
                                     </Combobox.Button>
+
                                 </div>
                                 <Transition
                                     enter="transition duration-100 ease-out"
@@ -176,6 +179,7 @@ function Catalog({ searchParams }) {
                                                     </Combobox.Option>
                                                 ))}
                                                 {filteredTags.map((item) => (
+
                                                     <Combobox.Option
                                                         key={item.value}
                                                         className={({ active }) =>
@@ -224,6 +228,7 @@ function Catalog({ searchParams }) {
             </SelectItem>
         ))}
     </Select>
+
 </div>
 <div className={styles.yearmobil}>
     <h3 className={styles.searchlabel}>Year</h3>
@@ -279,6 +284,7 @@ function Catalog({ searchParams }) {
             {formatOptions.map((format) => (
                 <SelectItem
                     key={format.value}
+
                     value={format.value}
                 >
                     {format.name}
@@ -287,26 +293,25 @@ function Catalog({ searchParams }) {
         </Select>
     </div>
     <div className={styles.yearmobil}>
-    <h3 className={styles.searchlabel}>Season</h3>
-    <Select
-        label=""
-        aria-label='season'
-        labelPlacement='outside'
-        placeholder="Select Season"
-        className="w-full"
-        selectedKeys={seasonvalue}
-        onSelectionChange={setSeasonvalue}
-    >
-        {seasonOptions.map((season) => (
-            <SelectItem
-                key={season.value}
-                value={season.value}
-            >
-                {season.name}
-            </SelectItem>
-        ))}
-    </Select>
-</div>
+        <h3 className={styles.searchlabel}>Season</h3>
+        <Select
+            label=""
+            aria-label='season'
+            labelPlacement='outside'
+            placeholder="Select Season"
+            className="w-full"
+            selectedKeys={seasonvalue}
+            onSelectionChange={setSeasonvalue}
+        >
+            {seasonOptions.map((season) => (
+                <SelectItem
+                    key={season.value}
+                    value={season.value}
+                >
+                    {season.name}
+                </SelectItem>
+            ))}
+        </Select>
     </div>
 </div>
 </>}
@@ -334,6 +339,7 @@ function Catalog({ searchParams }) {
                 <AccordionItem key="3" aria-label="Accordion 1" title="Format">
                     <RadioGroup
                         color="secondary"
+
                         value={formatvalue}
                         onValueChange={setFormatvalue}
                     >
@@ -385,6 +391,7 @@ function Catalog({ searchParams }) {
                         onValueChange={setSortbyvalue}
                     >
                         {sortbyOptions.map((option) => (
+
                             <Radio value={option.value} key={option.value}>{option.name}</Radio>
                         ))}
                     </RadioGroup>
