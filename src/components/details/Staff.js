@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import styles from '../../styles/Animecard.module.css';
 import { useDraggable } from 'react-use-draggable-scroll';
 import Image from 'next/image';
-import fetch from 'node-fetch';
 
 function Staff({ animeId }) {
     const [staffData, setStaffData] = useState([]);
