@@ -170,23 +170,32 @@ export const AdvancedSearch = async (searchvalue, searchType = "ANIME", selected
 
 export const UpcomingAnilist = async () => {
     try {
-        const response = await fetch('https://graphql.anilist.co', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-            },
-            body: JSON.stringify({
-                query: upcoming,
-                variables: {
-                    page: 1,
-                    perPage: 15,
-                },
-            }),
-        });
+        const currentYear = new Date().getFullYear();
+        const futureYears = Array.from({ length: 2030 - currentYear + 1 }, (_, i) => currentYear + i);
 
-        const data = await response.json();
-        return data.data.Page.media;
+        const allUpcomingAnime = [];
+        for (const year of futureYears) {
+            const response = await fetch('https://graphql.anilist.co', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json',
+                },
+                body: JSON.stringify({
+                    query: upcoming,
+                    variables: {
+                        page: 1,
+                        perPage: 15,
+                        seasonYear: year,
+                    },
+                }),
+            });
+
+            const data = await response.json();
+            allUpcomingAnime.push(...data.data.Page.media);
+        }
+
+        return allUpcomingAnime;
     } catch (error) {
         console.error('Error fetching upcoming data from AniList:', error);
         return [];
