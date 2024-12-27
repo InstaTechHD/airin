@@ -42,6 +42,7 @@ async function getHomePage() {
       if (redis) {
         await redis.set(`homepage`, JSON.stringify({ herodata, populardata, top100data, seasonaldata, upcomingdata }), "EX", cacheTime);
       }
+      console.log("Fetched upcoming data:", upcomingdata); // Debugging statement
       return { herodata, populardata, top100data, seasonaldata, upcomingdata };
     }
   } catch (error) {
@@ -53,8 +54,7 @@ async function getHomePage() {
 async function Home() {
   const session = await getAuthSession();
   const { herodata = [], populardata = [], top100data = [], seasonaldata = [], upcomingdata = [] } = await getHomePage();
-  // const history = await getWatchHistory();
-  // console.log(history)
+  console.log("Upcoming data in Home component:", upcomingdata); // Debugging statement
 
   return (
     <div>
