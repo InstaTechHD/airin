@@ -22,7 +22,7 @@ import { useSettings, useTitle, useNowPlaying } from '@/lib/store';
 import { useStore } from "zustand";
 import { toast } from 'sonner';
 
-import { FaChromecast as CastIcon, FaBook as LibraryIcon, FaVolumeUp as VolumeUpIcon, FaVolumeDown as VolumeDownIcon, FaCog as SettingsIcon } from 'react-icons/fa'; // Import icons from react-icons
+import { VolumeUpIcon, VolumeDownIcon, FastForwardIcon, FastBackwardIcon, CastIcon, LibraryIcon, SettingsIcon } from 'path-to-your-icons';
 
 function Player({ dataInfo, id, groupedEp, src, session, savedep, subtitles, thumbnails, skiptimes }) {
   const settings = useStore(useSettings, (state) => state.settings);
