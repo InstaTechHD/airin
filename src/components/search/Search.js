@@ -9,9 +9,6 @@ import { useRouter } from 'next/navigation';
 import { useTitle, useSearchbar } from '@/lib/store';
 import { useStore } from 'zustand';
 
-// Import Hianime API
-import { fetchHianimeData } from "@/lib/hianimeApi"; // Make sure to create this function in your hianimeApi.js
-
 function Search() {
     const router = useRouter();
     const animetitle = useStore(useTitle, (state) => state.animetitle);
@@ -28,12 +25,8 @@ function Search() {
     async function searchdata() {
         setLoading(true);
         const anilistData = await AdvancedSearch(debouncedSearch, searchType); // Pass searchType for correct API filtering
-        const hianimeData = await fetchHianimeData(debouncedSearch); // Fetch data from Hianime API
 
-        // Combine the data from different sources
-        const combinedData = [...(anilistData?.media || []), ...(hianimeData || [])];
-
-        setData(combinedData);
+        setData(anilistData?.media || []);
         setNextPage(anilistData?.pageInfo?.hasNextPage);
         setLoading(false);
     }
@@ -143,7 +136,7 @@ function Search() {
                                                             className={({ active }) =>
                                                                 `flex items-center gap-3 py-[8px] px-5 border-b border-solid border-gray-800 ${active ? "bg-black/20 cursor-pointer" : ""}`
                                                             }>
-                                                            <Link href={`/${searchType === 'anime' ? 'anime/info' : 'manga/read'}/${item.id}`} onClick={() => { useSearchbar.setState({ Isopen: false })
+                                                            <Link href={`/${searchType === 'anime' ? 'anime/info' : 'manga/read'}/${item.id}`} onClick={() => { useSearchbar.setState({ Isopen: false }); }}>
                                                                 <div className="shrink-0">
                                                                     <img
                                                                         src={item.image || item.coverImage.large}
@@ -154,18 +147,18 @@ function Search() {
                                                                     />
                                                                 </div>
                                                             </Link>
-                                                            <Link href={`/${searchType === 'anime' ? 'anime/info' : 'manga/read'}/${item.id}`} onClick={() => { useSearchbar.setState({ Isopen: fal[...]
+                                                            <Link href={`/${searchType === 'anime' ? 'anime/info' : 'manga/read'}/${item.id}`} onClick={() => { useSearchbar.setState({ Isopen: false }); }}>
                                                                 <div className="flex flex-col overflow-hidden">
                                                                     <p className="line-clamp-2 text-base">
                                                                         {item.title[animetitle] || item.title.romaji}
                                                                     </p>
                                                                     <span className="my-1 text-xs text-gray-400">
-                                                                        {searchType === 'anime' ? `Episodes - ${item?.episodes || item?.nextAiringEpisode?.episode - 1 || "?"}` : `Chapters - ${ite[...]
+                                                                        {searchType === 'anime' ? `Episodes - ${item?.episodes || item?.nextAiringEpisode?.episode - 1 || "?"}` : `Chapters - ${item?.chapters || "?"}`}
                                                                     </span>
                                                                     <div className="flex items-center text-gray-400 text-xs">
                                                                         <span className="flex gap-1">
                                                                             <svg xmlns="http://www.w3.org/2000/svg" className="w-3 h-3 mt-[1px]" viewBox="0 0 1664 1600">
-                                                                                <path fill="currentColor" d="M1664 615q0 22-26 48l-363 354l86 500q1 7 1 20q0 21-10.5 35.5T1321 1587q-19 0-40-12l-44[...]
+                                                                                <path fill="currentColor" d="M1664 615q0 22-26 48l-363 354l86 500q1 7 1 20q0 21-10.5 35.5T1321 1587q-19 0-40-12l-449-236q-21-10-41 0l-448 236q-21 12-40 12q-15 0-26.5-10.5T256 1469q0-13 2-20l86-500L-19 663q-26-26-26-48q0-30 43-44l502-73L837 37q18-39 63-39t63 39l224 454l502 73q43 7 43 44z"/>
                                                                             </svg>
                                                                             {item.averageScore / 10 || "0"}
                                                                         </span>
@@ -193,7 +186,7 @@ function Search() {
                                                                 useSearchbar.setState({ Isopen: false });
                                                                 setQuery("");
                                                             }}
-                                                            className="flex w-full items-center justify-center gap-2 py-4 transition duration-300 ease-in-out cursor-pointer border-none bg-[#4d148[...]
+                                                            className="flex w-full items-center justify-center gap-2 py-4 transition duration-300 ease-in-out cursor-pointer border-none bg-[#4d148c] text-white"
                                                         >
                                                             <span>See more results</span>
                                                         </button>
