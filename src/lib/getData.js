@@ -9,7 +9,7 @@ export async function getRecentEpisodes() {
         const data = await res.json();
         const mappedData = data.map((i) => {
             const episodesData = i?.episodes?.data;
-            const getEpisodes = episodesData ? episodesData.find((x) => x.providerId === "gogoanime") || episodesData.find((x) => x.providerId === "hianime") || episodesData[0] : [];
+            const getEpisodes = episodesData ? episodesData.find((x) => x.providerId === "gogoanime") || episodesData[0] : [];
             const getEpisode = getEpisodes?.episodes?.find(
                 (x) => x.number === i.currentEpisode
             );
