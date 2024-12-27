@@ -10,7 +10,6 @@ import { WatchPageInfo } from "@/lib/AnilistUser";
 import { getAuthSession } from "../../../api/auth/[...nextauth]/route";
 import { redis } from '@/lib/rediscache';
 
-
 async function getInfo(id) {
   try {
     let cachedData;
@@ -80,12 +79,10 @@ async function AnimeWatch({ params, searchParams }) {
   const subdub = searchParams.type;
   const data = await getInfo(id);
   const savedep = await Ephistory(session, id, epNum);
-  // console.log(savedep)
-  // console.log(data)
 
   return (
     <>
-        <Navbarcomponent />
+      <Navbarcomponent />
       <div className=" w-full flex flex-col lg:flex-row lg:max-w-[98%] mx-auto xl:max-w-[94%] lg:gap-[6px] mt-[70px]">
         <div className="flex-grow w-full h-full">
           <PlayerComponent id={id} epId={epId} provider={provider} epNum={epNum} data={data} subdub={subdub} session={session} savedep={savedep}/>
@@ -94,7 +91,7 @@ async function AnimeWatch({ params, searchParams }) {
           }
         </div>
         <div className="h-full lg:flex lg:flex-col md:max-lg:w-full gap-10">
-        <div className="rounded-lg hidden lg:block lg:max-w-[280px] xl:max-w-[380px] w-[100%] xl:overflow-y-scroll xl:overflow-x-hidden overflow-hidden scrollbar-hide overflow-y-hidden">
+          <div className="rounded-lg hidden lg:block lg:max-w-[280px] xl:max-w-[380px] w-[100%] xl:overflow-y-scroll xl:overflow-x-hidden overflow-hidden scrollbar-hide overflow-y-hidden">
             <PlayerAnimeCard data={data?.relations?.edges} id="Related Anime"/>
           </div>
           <div className="rounded-lg hidden lg:block lg:max-w-[280px] xl:max-w-[380px] w-[100%] xl:overflow-y-scroll xl:overflow-x-hidden overflow-hidden scrollbar-hide overflow-y-hidden">
@@ -102,10 +99,10 @@ async function AnimeWatch({ params, searchParams }) {
           </div>
         </div>
         <div className="lg:hidden">
-        <Animecards data={data?.relations?.edges} cardid="Related Anime"/>
+          <Animecards data={data?.relations?.edges} cardid="Related Anime"/>
         </div>
         <div className="lg:hidden">
-        <Animecards data={data?.recommendations?.nodes} cardid={"Recommendations"}/>
+          <Animecards data={data?.recommendations?.nodes} cardid={"Recommendations"}/>
         </div>
       </div>
     </>
