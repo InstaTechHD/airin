@@ -348,17 +348,16 @@ function Catalog({ searchParams }) {
             onSelectionChange={setSeasonvalue}
         >
             {seasonOptions.map((season) => (
-                <SelectItem
-                    key={season.value}
-                    value={season.value}
-                >
-                    {season.name}
-                </SelectItem>
-            ))}
-        </Select>
-    </div>
+    <SelectItem
+        key={season.value}
+        value={season.value}
+    >
+        {season.name}
+    </SelectItem>
+))}
+</Select>
 </div>
-</>}
+</div>
 </div>
 <div className={styles.catalogbottom}>
     <div className={styles.catalogleft}>
