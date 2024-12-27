@@ -12,6 +12,7 @@ import { useSubtype } from '@/lib/store';
 import { useStore } from 'zustand';
 // Other imports...
 import RandomTextComponent from './RandomTextComponent';
+import YouTube from 'react-youtube';
 
 function Episodesection({ data, id, progress, setUrl }) {
   const subtype = useStore(useSubtype, (state) => state.subtype);
@@ -116,10 +117,10 @@ function Episodesection({ data, id, progress, setUrl }) {
     
 // Add the RandomTextComponent here    
 <RandomTextComponent />
-
-// YouTube Embed
-    <div className="video-responsive">
-        <YouTube videoId={anime.trailerUrl.split('v=')[1]} opts={opts} />
+    
+{/* Add YouTube embed below RandomTextComponent for mobile devices */}
+      <div className="video-responsive-mobile">
+        <YouTube videoId={data?.trailerUrl?.split('v=')[1]} opts={opts} />
       </div>
 
   const refreshEpisodes = async () => {
