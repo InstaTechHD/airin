@@ -207,7 +207,7 @@ function Catalog({ searchParams }) {
                                 </Transition>
                             </Combobox>
                         </div>
-                        <div className={styles.catalogsort}>
+                      <div className={styles.catalogsort}>
     <h3 className={styles.searchlabel}>Sort by</h3>
     <Select
         labelPlacement={"outside"}
