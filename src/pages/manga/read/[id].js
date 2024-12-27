@@ -35,10 +35,8 @@ const MangaRead = () => {
             variables: { id: parseInt(id, 10) }
           });
           setManga(response.data.data.Media);
-          setLoading(false);
         } catch (error) {
           console.error('Error fetching manga data:', error);
-          setLoading(false);
         }
       };
 
@@ -50,9 +48,8 @@ const MangaRead = () => {
     if (id && chapter) {
       const fetchChapter = async () => {
         try {
-          // Replace with the actual API endpoint to fetch chapter data
-          const response = await axios.get(`/api/manga/${id}/chapter/${chapter}`);
-          setChapterData(response.data);
+          const response = await axios.get(`https://api.mangadex.org/manga/${id}/feed?translatedLanguage[]=en&limit=1&offset=${chapter - 1}`);
+          setChapterData(response.data.data[0]);
         } catch (error) {
           console.error('Error fetching chapter data:', error);
         }
@@ -103,8 +100,8 @@ const MangaRead = () => {
       <p>{manga.description}</p>
       {chapterData && (
         <div>
-          <h2>{chapterData.title}</h2>
-          <p>{chapterData.description}</p>
+          <h2>Chapter {chapterData.attributes.chapter}</h2>
+          <p>{chapterData.attributes.title}</p>
         </div>
       )}
       <div className={styles.navigationButtons}>
