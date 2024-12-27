@@ -8,6 +8,7 @@ import { MotionDiv } from '@/utils/MotionDiv'
 import VerticalList from '@/components/home/VerticalList'
 import ContinueWatching from '@/components/home/ContinueWatching'
 import RecentEpisodes from '@/components/home/RecentEpisodes'
+import NotYetReleasedEpisodes from '@/components/home/NotYetReleasedEpisodes';
 import { getAuthSession } from './api/auth/[...nextauth]/route'
 import { redis } from '@/lib/rediscache'
 import RandomTextComponent from '@/components/RandomTextComponent';
@@ -74,7 +75,7 @@ async function Home() {
           <Animecard data={populardata} cardid="All Time Popular" />
         </div>
         <div>
-          <Animecard data={upcomingdata} cardid="Upcoming Releases" />
+          <NotYetReleasedEpisodes data={upcomingdata} />
         </div>
         <div>
           <div className='lg:flex lg:flex-row justify-between lg:gap-20'>
