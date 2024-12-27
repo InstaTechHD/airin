@@ -116,7 +116,12 @@ function Episodesection({ data, id, progress, setUrl }) {
     
 // Add the RandomTextComponent here    
 <RandomTextComponent />
-    
+
+// YouTube Embed
+    <div className="video-responsive">
+        <YouTube videoId={anime.trailerUrl.split('v=')[1]} opts={opts} />
+      </div>
+
   const refreshEpisodes = async () => {
     setloading(true);
     try {
