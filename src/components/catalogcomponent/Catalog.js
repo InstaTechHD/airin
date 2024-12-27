@@ -287,25 +287,26 @@ function Catalog({ searchParams }) {
         </Select>
     </div>
     <div className={styles.yearmobil}>
-        <h3 className={styles.searchlabel}>Season</h3>
-        <Select
-            label=""
-            aria-label='season'
-            labelPlacement='outside'
-            placeholder="Select Season"
-            className="w-full"
-            selectedKeys={seasonvalue}
-            onSelectionChange={setSeasonvalue}
-        >
-            {seasonOptions.map((season) => (
-                <SelectItem
-                    key={season.value}
-                    value={season.value}
-                >
-                    {season.name}
-                </SelectItem>
-            ))}
-        </Select>
+    <h3 className={styles.searchlabel}>Season</h3>
+    <Select
+        label=""
+        aria-label='season'
+        labelPlacement='outside'
+        placeholder="Select Season"
+        className="w-full"
+        selectedKeys={seasonvalue}
+        onSelectionChange={setSeasonvalue}
+    >
+        {seasonOptions.map((season) => (
+            <SelectItem
+                key={season.value}
+                value={season.value}
+            >
+                {season.name}
+            </SelectItem>
+        ))}
+    </Select>
+</div>
     </div>
 </div>
 </>}
