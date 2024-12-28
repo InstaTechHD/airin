@@ -1,5 +1,4 @@
-
- "use client"
+"use client"
 import React, { useState, useEffect } from 'react';
 import styles from '../../styles/Catalog.module.css';
 import { Accordion, AccordionItem, Select, SelectItem, RadioGroup, Radio, Input } from "@nextui-org/react";
@@ -21,7 +20,7 @@ function Catalog({ searchParams }) {
     const [mangavalue, setMangaValue] = useState(null); // Add state for manga dropdown
     const [animevalue, setAnimeValue] = useState(null); // Add state for anime dropdown
 
-    useEffect(() =&gt; {
+    useEffect(() => {
         setSelectedYear(year || null);
         setSeasonvalue(season || null);
         setFormatvalue(format || null);
@@ -31,25 +30,25 @@ function Catalog({ searchParams }) {
         setSearchvalue(search || "");
     }, [year, season, format, genre, search, sortby, airing]);
 
-    const handleResize = () =&gt; {
-        if (window.innerWidth &lt;= 1024) {
+    const handleResize = () => {
+        if (window.innerWidth <= 1024) {
             setShowTopBottom(false);
         } else {
             setShowTopBottom(true);
         }
     };
 
-    useEffect(() =&gt; {
+    useEffect(() => {
         handleResize();
         window.addEventListener('resize', handleResize);
-        return () =&gt; window.removeEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
     }, []);
 
-    const toggleTopBottom = () =&gt; {
+    const toggleTopBottom = () => {
         setShowTopBottom(!showTopBottom);
     };
 
-    const resetValues = () =&gt; {
+    const resetValues = () => {
         setSelectedYear(null);
         setSeasonvalue(null);
         setFormatvalue(null);
@@ -61,14 +60,14 @@ function Catalog({ searchParams }) {
         setSearchvalue("");
     };
 
-    const handleYearClick = (yearId) =&gt; {
+    const handleYearClick = (yearId) => {
         setSelectedYear(yearId);
     };
 
     const filteredGenre =
         query === ""
             ? genreOptions
-            : genreOptions.filter((item) =&gt;
+            : genreOptions.filter((item) =>
                 item.name
                     .toLowerCase()
                     .replace(/\s+/g, "")
@@ -78,294 +77,308 @@ function Catalog({ searchParams }) {
     const filteredTags =
         query === ""
             ? tagsOptions
-            : tagsOptions.filter((item) =&gt;
+            : tagsOptions.filter((item) =>
                 item.name
                     .toLowerCase()
                     .replace(/\s+/g, "")
                     .includes(query.toLowerCase().replace(/\s+/g, ""))
             );
 
-    const isFormEmpty = !selectedYear &amp;&amp; !seasonvalue &amp;&amp; !formatvalue &amp;&amp; genrevalue.length === 0 &amp;&amp; !query &amp;&amp; !sortbyvalue &amp;&amp; !airingvalue &amp;&amp; !searchvalue;
+    const isFormEmpty = !selectedYear && !seasonvalue && !formatvalue && genrevalue.length === 0 && !query && !sortbyvalue && !airingvalue && !searchvalue;
 
     return (
- <div classname="{styles.catalog}">
-  <div classname="{styles.catalogtop}">
-   <div classname="{styles.catalogsort}">
-    <h3 classname="{styles.searchlabel}">
-     Manga
-    </h3>
-    <select aria-label="manga" classname="w-full" label labelplacement="outside" onselectionchange="{setMangaValue}" placeholder="Select Manga" selectedkeys="{mangavalue}">
-     {mangaOptions.map((manga) =&gt; (
-     <selectitem key="{manga.value}" value="{manga.value}">
-      {manga.name}
-     </selectitem>
-     ))}
-    </select>
-   </div>
-   <div classname="{styles.catalogsort}">
-    <h3 classname="{styles.searchlabel}">
-     Anime
-    </h3>
-    <select aria-label="anime" classname="w-full" label labelplacement="outside" onselectionchange="{setAnimeValue}" placeholder="Select Anime" selectedkeys="{animevalue}">
-     {animeOptions.map((anime) =&gt; (
-     <selectitem key="{anime.value}" value="{anime.value}">
-      {anime.name}
-     </selectitem>
-     ))}
-    </select>
-   </div>
-   <div classname="{styles.searchmobil}">
-    <div classname="{styles.search}">
-     <h3 classname="{styles.searchlabel}">
-      Search
-     </h3>
-     <input aria-label="Search" autocomplete="off" classname="w-5 h-5 text-2xl text-default-400 pointer-events-none flex-shrink-0" fill="none" isclearable key='{"outside"}' label labelplacement='{"outside"}' onvaluechange="{setSearchvalue}" placeholder="Search Anime" startcontent="{&lt;svg" stroke="currentColor" strokewidth="1.5" type="text" value="{searchvalue}" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-     <path d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" strokelinecap="round" strokelinejoin="round">
-     </path>
-     }
-                        /&gt;
-    </div>
-    <button classname="flex lg:hidden items-end cursor-default" onclick="{toggleTopBottom}">
-     <svg classname="w-6 h-6 mb-2 cursor-pointer" fill="none" stroke="currentColor" strokewidth="1.5" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-      <path d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0ZM3.75 12h.007v.008H3.75V12Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm-.375 5.25h.007v.008H3.75v-.008Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" strokelinecap="round" strokelinejoin="round">
-      </path>
-     </svg>
-    </button>
-    <button classname="flex lg:hidden items-end cursor-default" disabled="{isFormEmpty}" onclick="{resetValues}">
-     <svg classname="w-6 h-6 mb-2 cursor-pointer" fill="none" stroke="currentColor" strokewidth="1.5" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-      <path d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" strokelinecap="round" strokelinejoin="round">
-      </path>
-     </svg>
-    </button>
-   </div>
-   {showTopBottom &amp;&amp; (
-    &lt;&gt;
-   <div classname="{styles.toptwo}">
-    <div classname="{styles.genres}">
-     <h3 classname="{styles.searchlabel}">
-      Genres
-     </h3>
-     <combobox multiple onchange="{setGenrevalue}" value="{genrevalue}">
-      <div classname="relative w-full cursor-default overflow-hidden rounded-[0.6rem] text-left shadow-md focus:outline-none sm:text-sm">
-       <combobox.input = classname="w-full border-none py-[9px] pl-3 pr-10 text-sm leading-5 bg-[#27272a] text-[#b2b2b2] focus:ring-0 outline-none" displayvalue="{(item)">
-        item?.map((item) =&gt; item?.name).join(", ")}
-                            placeholder="Select Genres"
-                            onChange={(event) =&gt; setQuery(event.target.value)}
+        <div className={styles.catalog}>
+            <div className={styles.catalogtop}>
+                <div className={styles.catalogsort}>
+                    <h3 className={styles.searchlabel}>
+                        Manga
+                    </h3>
+                    <select aria-label="manga" className="w-full" onChange={(e) => setMangaValue(e.target.value)} value={mangavalue}>
+                        {mangaOptions.map((manga) => (
+                            <option key={manga.value} value={manga.value}>
+                                {manga.name}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+                <div className={styles.catalogsort}>
+                    <h3 className={styles.searchlabel}>
+                        Anime
+                    </h3>
+                    <select aria-label="anime" className="w-full" onChange={(e) => setAnimeValue(e.target.value)} value={animevalue}>
+                        {animeOptions.map((anime) => (
+                            <option key={anime.value} value={anime.value}>
+                                {anime.name}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+                <div className={styles.searchmobil}>
+                    <div className={styles.search}>
+                        <h3 className={styles.searchlabel}>
+                            Search
+                        </h3>
+                        <input
+                            aria-label="Search"
                             autoComplete="off"
-                        /&gt;
-       </combobox.input>
-      </div>
-     </combobox>
-    </div>
-   </div>
-   )}
-   <combobox.button classname="absolute inset-y-0 right-0 flex items-center pr-2">
-    <svg aria-hidden="true" classname="h-5 w-5 text-gray-400" data-slot="icon" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-     <path cliprule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" fillrule="evenodd">
-     </path>
-    </svg>
-   </combobox.button>
-  </div>
-  <transition = afterleave="{()" enter="transition duration-100 ease-out" enterfrom="transform scale-95 opacity-0" enterto="transform scale-100 opacity-100" leave="transition duration-75 ease-out" leavefrom="transform scale-100 opacity-100" leaveto="transform scale-95 opacity-0">
-   setQuery("")}
-                                &gt;
-   <combobox.options classname="absolute z-50 mt-1 max-h-[220px] overflow-auto !rounded-lg bg-[#18181b] py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-    {filteredGenre.length === 0 &amp;&amp; filteredTags.length === 0 &amp;&amp; query !== '' ? (
-    <div classname="relative cursor-default select-none px-4 py-2 text-white">
-     No Such Genre.
-    </div>
-    ) : (
-                                            &lt;&gt;
-                                                {filteredGenre.map((item) =&gt; (
-    <combobox.option active classname="{({" key="{item.value}" })>
-     `relative cursor-pointer select-none py-2 pl-4 pr-4 ${active ? 'bg-[#27272a] text-white' : 'text-[#b2b2b2]'}`
-                                                        }
-                                                        value={item}
-                                                    &gt;
-                                                        {({ selected, active }) =&gt; (
-                                                            &lt;&gt;
-     <span ${selected 'font-medium 'font-normal'}`} : ? classname="{`block" text-white' truncate>
-      {item.name}
-     </span>
-     {selected ? (
-     <span ${active ''}`} 'text-white' : ? classname="{`absolute" flex inset-y-0 items-center pl-3 right-4>
-      <svg aria-hidden="true" classname="h-5 w-5" data-slot="icon" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-       <path cliprule="evenodd" d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z" fillrule="evenodd">
-       </path>
-      </svg>
-     </span>
-     ) : null}
-                                                            
-                                                        )}
-    </combobox.option>
-    ))}
-                                                {filteredTags.map((item) =&gt; (
-    <combobox.option active classname="{({" key="{item.value}" })>
-     `relative cursor-pointer select-none py-2 pl-4 pr-4 ${active ? 'bg-[#27272a] text-white' : 'text-[#b2b2b2]'}`
-                                                        }
-                                                        value={item}
-                                                    &gt;
-                                                        {({ selected, active }) =&gt; (
-                                                            &lt;&gt;
-     <span ${selected 'font-medium 'font-normal'}`} : ? classname="{`block" text-white' truncate>
-      {item.name}
-     </span>
-     {selected ? (
-     <span ${active ''}`} 'text-white' : ? classname="{`absolute" flex inset-y-0 items-center pl-3 right-4>
-      <svg aria-hidden="true" classname="h-5 w-5" data-slot="icon" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-       <path cliprule="evenodd" d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z" fillrule="evenodd">
-       </path>
-      </svg>
-     </span>
-     ) : null}
-                                                            
-                                                        )}
-    </combobox.option>
-    ))}
-                                            
-                                        )}
-   </combobox.options>
-  </transition>
- </div>
- <div classname="{styles.catalogsort}">
-  <h3 classname="{styles.searchlabel}">
-   Sort by
-  </h3>
-  <select aria-label="Sort by" classname="max-w-xs" label labelplacement='{"outside"}' onselectionchange="{setSortbyvalue}" placeholder="Sort by" selectedkeys="{sortbyvalue}">
-   {sortbyOptions.map((item) =&gt; (
-   <selectitem key="{item.value}" value="{item.value}">
-    {item.name}
-   </selectitem>
-   ))}
-  </select>
- </div>
- <div classname="{styles.yearmobil}">
-  <h3 classname="{styles.searchlabel}">
-   Year
-  </h3>
-  <select aria-label="year" classname="w-full" label labelplacement="outside" placeholder="Select Year">
-   {yearOptions.map((year) =&gt; (
-   <selectitem = key="{year.value}" onclick="{()">
-    handleYearClick(year.value)}
-            &gt;
-                {year.name}
-   </selectitem>
-   ))}
-  </select>
- </div>
- <div classname="{styles.yearmobil}">
-  <h3 classname="{styles.searchlabel}">
-   Airing Status
-  </h3>
-  <select aria-label="airing" classname="w-full" label labelplacement="outside" onselectionchange="{setAiringvalue}" placeholder="Select Status" selectedkeys="{airingvalue}">
-   {airingOptions.map((status) =&gt; (
-   <selectitem key="{status.value}" value="{status.value}">
-    {status.name}
-   </selectitem>
-   ))}
-  </select>
- </div>
- <div classname="{styles.bottomtwo}">
-  <div classname="{styles.yearmobil}">
-   <h3 classname="{styles.searchlabel}">
-    Format
-   </h3>
-   <select aria-label="format" classname="w-full" label labelplacement="outside" onselectionchange="{setFormatvalue}" placeholder="Select Format" selectedkeys="{formatvalue}">
-    {formatOptions.map((format) =&gt; (
-    <selectitem key="{format.value}" value="{format.value}">
-     {format.name}
-    </selectitem>
-    ))}
-   </select>
-  </div>
-  <div classname="{styles.yearmobil}">
-   <h3 classname="{styles.searchlabel}">
-    Season
-   </h3>
-   <select aria-label="season" classname="w-full" label labelplacement="outside" onselectionchange="{setSeasonvalue}" placeholder="Select Season" selectedkeys="{seasonvalue}">
-    {seasonOptions.map((season) =&gt; (
-    <selectitem key="{season.value}" value="{season.value}">
-     {season.name}
-    </selectitem>
-    ))}
-   </select>
-  </div>
- </div>
+                            className="w-full"
+                            placeholder="Search"
+                            value={searchvalue}
+                            onChange={(e) => setSearchvalue(e.target.value)}
+                        />
+                    </div>
+                    <button className="flex lg:hidden items-end cursor-default" onClick={toggleTopBottom}>
+                        <svg className="w-6 h-6 mb-2 cursor-pointer" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0ZM3.75 12h.007v.008H3.75V12Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0ZM3.75 17.25h.007v.008H3.75V17.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+                        </svg>
+                    </button>
+                    <button className="flex lg:hidden items-end cursor-default" disabled={isFormEmpty} onClick={resetValues}>
+                        <svg className="w-6 h-6 mb-2 cursor-pointer" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 1-1.022-.165m-12.5 0c.34-.059.68-.114 1.022-.165m-1.022.165L5.84 19.673a2.25 2.25 0 0 0 2.244 2.077h7.832a2.25 2.25 0 0 0 2.244-2.077L19.228 5.79m-14.456 0a48.108 48.108 0 0 0 1.022-.165M9.197 4.63l.346-2.07a1.125 1.125 0 0 1 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.346 2.07M9.197 4.63h5.606" />
+                        </svg>
+                    </button>
+                </div>
+                {showTopBottom && (
+                    <>
+                        <div className={styles.toptwo}>
+                            <div className={styles.genres}>
+                                <h3 className={styles.searchlabel}>
+                                    Genres
+                                </h3>
+                                <Combobox multiple onChange={setGenrevalue} value={genrevalue}>
+                                    <div className="relative w-full cursor-default overflow-hidden rounded-[0.6rem] text-left shadow-md focus:outline-none sm:text-sm">
+                                        <Combobox.Input
+                                            className="w-full border-none py-[9px] pl-3 pr-10 text-sm leading-5 bg-[#27272a] text-[#b2b2b2] focus:ring-0 outline-none"
+                                            displayValue={(item) => item?.map((item) => item?.name).join(", ")}
+                                            placeholder="Select Genres"
+                                            onChange={(event) => setQuery(event.target.value)}
+                                            autoComplete="off"
+                                        />
+                                    </div>
+                                </Combobox>
+                            </div>
+                        </div>
+                    </>
+                )}
+                <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-2">
+                    <svg aria-hidden="true" className="h-5 w-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path clipRule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" fillRule="evenodd" />
+                    </svg>
+                </Combobox.Button>
+            </div>
+            <Transition
+                afterLeave={() => setQuery("")}
+                enter="transition duration-100 ease-out"
+                enterFrom="transform scale-95 opacity-0"
+                enterTo="transform scale-100 opacity-100"
+                leave="transition duration-75 ease-out"
+                leaveFrom="transform scale-100 opacity-100"
+                leaveTo="transform scale-95 opacity-0"
+            >
+                <Combobox.Options className="absolute z-50 mt-1 max-h-[220px] overflow-auto !rounded-lg bg-[#18181b] py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                    {filteredGenre.length === 0 && filteredTags.length === 0 && query !== '' ? (
+                        <div className="relative cursor-default select-none px-4 py-2 text-white">
+                            No Such Genre.
+                        </div>
+                    ) : (
+                        <>
+                            {filteredGenre.map((item) => (
+                                <Combobox.Option
+                                    key={item.value}
+                                    className={({ active }) =>
+                                        `relative cursor-pointer select-none py-2 pl-4 pr-4 ${active ? 'bg-[#27272a] text-white' : 'text-[#b2b2b2]'}`
+                                    }
+                                    value={item}
+                                >
+                                    {({ selected, active }) => (
+                                        <>
+                                            <span className={`block text-white truncate ${selected ? 'font-medium' : 'font-normal'}`}>
+                                                {item.name}
+                                            </span>
+                                            {selected ? (
+                                                <span className={`absolute inset-y-0 right-4 flex items-center pl-3 ${active ? 'text-white' : ''}`}>
+                                                    <svg aria-hidden="true" className="h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                                        <path clipRule="evenodd" d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z" fillRule="evenodd" />
+                                                    </svg>
+                                                </span>
+                                            ) : null}
+                                        </>
+                                    )}
+                                </Combobox.Option>
+                            ))}
+                            {filteredTags.map((item) => (
+                                <Combobox.Option
+                                    key={item.value}
+                                    className={({ active }) =>
+                                        `relative cursor-pointer select-none py-2 pl-4 pr-4 ${active ? 'bg-[#27272a] text-white' : 'text-[#b2b2b2]'}`
+                                    }
+                                    value={item}
+                                >
+                                    {({ selected, active }) => (
+                                        <>
+                                            <span className={`block text-white truncate ${selected ? 'font-medium' : 'font-normal'}`}>
+                                                {item.name}
+                                            </span>
+                                            {selected ? (
+                                                <span className={`absolute inset-y-0 right-4 flex items-center pl-3 ${active ? 'text-white' : ''}`}>
+                                                    <svg aria-hidden="true" className="h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                                        <path clipRule="evenodd" d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z" fillRule="evenodd" />
+                                                    </svg>
+                                                </span>
+                                            ) : null}
+                                        </>
+                                    )}
+                                </Combobox.Option>
+                            ))}
+                        </>
+                    )}
+                </Combobox.Options>
+            </Transition>
+            <div className={styles.catalogsort}>
+                <h3 className={styles.searchlabel}>
+                    Sort by
+                </h3>
+                <select aria-label="Sort by" className="max-w-xs" onChange={(e) => setSortbyvalue(e.target.value)} value={sortbyvalue}>
+                    {sortbyOptions.map((item) => (
+                        <option key={item.value} value={item.value}>
+                            {item.name}
+                        </option>
+                    ))}
+                </select>
+            </div>
+            <div className={styles.yearmobil}>
+                <h3 className={styles.searchlabel}>
+                    Year
+                </h3>
+                <select aria-label="year" className="w-full" onChange={(e) => handleYearClick(e.target.value)} value={selectedYear}>
+                    {yearOptions.map((year) => (
+                        <option key={year.value} value={year.value}>
+                            {year.name}
+                        </option>
+                    ))}
+                </select>
+            </div>
+            <div className={styles.yearmobil}>
+                <h3 className={styles.searchlabel}>
+                    Airing Status
+                </h3>
+                <select aria-label="airing" className="w-full" onChange={(e) => setAiringvalue(e.target.value)} value={airingvalue}>
+                    {airingOptions.map((status) => (
+                        <option key={status.value} value={status.value}>
+                            {status.name}
+                        </option>
+                    ))}
+                </select>
+            </div>
+            <div className={styles.bottomtwo}>
+                <div className={styles.yearmobil}>
+                    <h3 className={styles.searchlabel}>
+                        Format
+                    </h3>
+                    <select aria-label="format" className="w-full" onChange={(e) => setFormatvalue(e.target.value)} value={formatvalue}>
+                        {formatOptions.map((format) => (
+                            <option key={format.value} value={format.value}>
+                                {format.name}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+                <div className={styles.yearmobil}>
+                    <h3 className={styles.searchlabel}>
+                        Season
+                    </h3>
+                    <select aria-label="season" className="w-full" onChange={(e) => setSeasonvalue(e.target.value)} value={seasonvalue}>
+                        {seasonOptions.map((season) => (
+                            <option key={season.value} value={season.value}>
+                                {season.name}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+            </div>
+            <div className={styles.catalogbottom}>
+                <div className={styles.catalogleft}>
+                    <div className={styles.accordion}>
+                        <Accordion defaultExpandedKeys={["2"]} isCompact variant="splitted">
+                            <AccordionItem aria-label="Accordion 1" key="2" title="Season">
+                                <RadioGroup color="secondary" onValueChange={setSeasonvalue} rounded="lg" value={seasonvalue}>
+                                    {seasonOptions.map((season) => (
+                                        <Radio key={season.value} value={season.value}>
+                                            {season.name}
+                                        </Radio>
+                                    ))}
+                                </RadioGroup>
+                            </AccordionItem>
+                        </Accordion>
+                    </div>
+                    <div className={styles.accordion}>
+                        <Accordion defaultExpandedKeys={["3"]} isCompact variant="splitted">
+                            <AccordionItem aria-label="Accordion 1" key="3" title="Format">
+                                <RadioGroup color="secondary" onValueChange={setFormatvalue} value={formatvalue}>
+                                    {formatOptions.map((format) => (
+                                        <Radio key={format.value} value={format.value}>
+                                            {format.name}
+                                        </Radio>
+                                    ))}
+                                </RadioGroup>
+                            </AccordionItem>
+                        </Accordion>
+                    </div>
+                    <div className={styles.accordion}>
+    <Accordion defaultExpandedKeys={["1"]} isCompact variant="splitted">
+        <AccordionItem aria-label="Accordion 1" key="1" title="Year">
+            <div className={styles.year}>
+                {yearOptions.map((year) => (
+                    <div
+                        key={year.value}
+                        className={`${styles.yearItem} ${selectedYear === year.value ? styles.selectedYear : styles.hoverYear}`}
+                        onClick={() => handleYearClick(year.value)}
+                    >
+                        {year.name}
+                    </div>
+                ))}
+            </div>
+        </AccordionItem>
+    </Accordion>
 </div>
-<div classname="{styles.catalogbottom}">
- <div classname="{styles.catalogleft}">
-  <div classname="{styles.accordion}">
-   <accordion defaultexpandedkeys='{["2"]}' iscompact variant="splitted">
-    <accordionitem aria-label="Accordion 1" key="2" title="Season">
-     <radiogroup color="secondary" onvaluechange="{setSeasonvalue}" rounded="lg" value="{seasonvalue}">
-      {seasonOptions.map((season) =&gt; (
-      <radio key="{season.value}" value="{season.value}">
-       {season.name}
-      </radio>
-      ))}
-     </radiogroup>
-    </accordionitem>
-   </accordion>
-  </div>
-  <div classname="{styles.accordion}">
-   <accordion defaultexpandedkeys='{["3"]}' iscompact variant="splitted">
-    <accordionitem aria-label="Accordion 1" key="3" title="Format">
-     <radiogroup color="secondary" onvaluechange="{setFormatvalue}" value="{formatvalue}">
-      {formatOptions.map((format) =&gt; (
-      <radio key="{format.value}" value="{format.value}">
-       {format.name}
-      </radio>
-      ))}
-     </radiogroup>
-    </accordionitem>
-   </accordion>
-  </div>
-  <div classname="{styles.accordion}">
-   <accordion defaultexpandedkeys='{["1"]}' iscompact variant="splitted">
-    <accordionitem aria-label="Accordion 1" key="1" title="Year">
-     <div classname="{styles.year}">
-      {yearOptions.map((year) =&gt; (
-      <div ${selectedyear="year.value" : = ? classname="{`${styles.yearItem}" key="{year.value}" onclick="{()" styles.hoveryear}`} styles.selectedyear>
-       handleYearClick(year.value)}
-                            &gt;
-                                {year.name}
-      </div>
-      ))}
-     </div>
-    </accordionitem>
-   </accordion>
-  </div>
-  <div classname="{styles.accordion}">
-   <accordion defaultexpandedkeys='{["4"]}' iscompact variant="splitted">
-    <accordionitem aria-label="Accordion 1" key="4" title="Airing Status">
-     <radiogroup color="secondary" onvaluechange="{setAiringvalue}" value="{airingvalue}">
-      {airingOptions.map((status) =&gt; (
-      <radio key="{status.value}" value="{status.value}">
-       {status.name}
-      </radio>
-      ))}
-     </radiogroup>
-    </accordionitem>
-   </accordion>
-  </div>
-  <div classname="{styles.accordion}">
-   <accordion defaultexpandedkeys='{["5"]}' iscompact variant="splitted">
-    <accordionitem aria-label="Accordion 1" key="5" title="Sort by">
-     <radiogroup color="secondary" onvaluechange="{setSortbyvalue}" value="{sortbyvalue}">
-      {sortbyOptions.map((option) =&gt; (
-      <radio key="{option.value}" value="{option.value}">
-       {option.name}
-      </radio>
-      ))}
-     </radiogroup>
-    </accordionitem>
-   </accordion>
-  </div>
- </div>
- <div classname="{styles.catalogright}">
-  <searchcard airingvalue="{airingvalue}" formatvalue="{formatvalue}" genrevalue="{genrevalue}" searchvalue="{searchvalue}" seasonvalue="{seasonvalue}" selectedyear="{selectedYear}" sortbyvalue="{sortbyvalue}">
-  </searchcard>
- </div>
+<div className={styles.accordion}>
+    <Accordion defaultExpandedKeys={["4"]} isCompact variant="splitted">
+        <AccordionItem aria-label="Accordion 1" key="4" title="Airing Status">
+            <RadioGroup color="secondary" onValueChange={setAiringvalue} value={airingvalue}>
+                {airingOptions.map((status) => (
+                    <Radio key={status.value} value={status.value}>
+                        {status.name}
+                    </Radio>
+                ))}
+            </RadioGroup>
+        </AccordionItem>
+    </Accordion>
+</div>
+<div className={styles.accordion}>
+    <Accordion defaultExpandedKeys={["5"]} isCompact variant="splitted">
+        <AccordionItem aria-label="Accordion 1" key="5" title="Sort by">
+            <RadioGroup color="secondary" onValueChange={setSortbyvalue} value={sortbyvalue}>
+                {sortbyOptions.map((option) => (
+                    <Radio key={option.value} value={option.value}>
+                        {option.name}
+                    </Radio>
+                ))}
+            </RadioGroup>
+        </AccordionItem>
+    </Accordion>
+</div>
+</div>
+<div className={styles.catalogright}>
+    <Searchcard
+        airingvalue={airingvalue}
+        formatvalue={formatvalue}
+        genrevalue={genrevalue}
+        searchvalue={searchvalue}
+        seasonvalue={seasonvalue}
+        selectedyear={selectedYear}
+        sortbyvalue={sortbyvalue}
+    />
+</div>
 </div>
 );
 }
