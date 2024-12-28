@@ -183,34 +183,6 @@ query ($page: Int, $perPage: Int, $seasonYear: Int) {
 }
 `;
 
-export const fetchUpcomingReleases2025 = async () => {
-    try {
-        const response = await fetch('https://graphql.anilist.co', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-            },
-            body: JSON.stringify({
-                query: upcoming,
-                variables: {
-                    page: 1,
-                    perPage: 50, // Adjust the number as needed
-                    seasonYear: 2025,
-                },
-            }),
-        });
-
-        const data = await response.json();
-        return data.data.Page.media;
-    } catch (error) {
-        console.error('Error fetching upcoming data from AniList:', error);
-        return [];
-    }
-};
-
-// Other existing functions in the file
-
 export const UpcomingAnilist = async () => {
     try {
         const currentYear = new Date().getFullYear();
