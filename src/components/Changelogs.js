@@ -55,14 +55,24 @@ const releaseLogs = [
     //         "Fixed Some Bugs",
     //     ],
     // },
+    // {
+    //    version: "V3.2.2",
+    //    changes: [
+    //        "Fixed new anime not showing.",
+    //        "Fixed anime not found issue.",
+    //        "Fixed recent episodes",
+    //        "Fixed Player Not Working Properly",
+    //        "Fixed Some Bugs",
+    //    ],
+    // },
     {
-        version: "V3.2.2",
+        version: "V3.2.7",
         changes: [
-            "Fixed new anime not showing.",
-            "Fixed anime not found issue.",
-            "Fixed recent episodes",
-            "Fixed Player Not Working Properly",
-            "Fixed Some Bugs",
+            "Added proxy for gogoanime server.",
+            "Added filter options such as status, format, season etc...",
+            "Added manga seach options [Needs Refining]",
+            "Implementing anime music search",
+            "Added upcoming releases category to home",
         ],
     },
 ];
