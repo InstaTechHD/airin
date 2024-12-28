@@ -70,7 +70,7 @@ const releaseLogs = [
         changes: [
             "Added proxy for gogoanime server.",
             "Added filter options such as status, format, season etc...",
-            "Added manga seach options [Needs Refining]",
+            "Added manga seach options *Needs Refining*",
             "Implementing anime music search",
             "Added upcoming releases category to home",
         ],
