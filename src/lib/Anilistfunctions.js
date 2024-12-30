@@ -168,49 +168,25 @@ export const AdvancedSearch = async (searchvalue, searchType = "ANIME", selected
     }
 };
 
-const upcoming = `
-query ($page: Int, $perPage: Int, $seasonYear: Int) {
-    Page(page: $page, perPage: $perPage) {
-        media(seasonYear: $seasonYear) {
-            id
-            title {
-                romaji
-                english
-            }
-            releaseDate
-        }
-    }
-}
-`;
-
 export const UpcomingAnilist = async () => {
     try {
-        const currentYear = new Date().getFullYear();
-        const futureYears = Array.from({ length: 2030 - currentYear + 1 }, (_, i) => currentYear + i);
-
-        const allUpcomingAnime = [];
-        for (const year of futureYears) {
-            const response = await fetch('https://graphql.anilist.co', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Accept: 'application/json',
+        const response = await fetch('https://graphql.anilist.co', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+            },
+            body: JSON.stringify({
+                query: upcoming,
+                variables: {
+                    page: 1,
+                    perPage: 15,
                 },
-                body: JSON.stringify({
-                    query: upcoming,
-                    variables: {
-                        page: 1,
-                        perPage: 15,
-                        seasonYear: year,
-                    },
-                }),
-            });
+            }),
+        });
 
-            const data = await response.json();
-            allUpcomingAnime.push(...data.data.Page.media);
-        }
-
-        return allUpcomingAnime;
+        const data = await response.json();
+        return data.data.Page.media;
     } catch (error) {
         console.error('Error fetching upcoming data from AniList:', error);
         return [];
