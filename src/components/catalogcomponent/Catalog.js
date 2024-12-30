@@ -443,7 +443,6 @@ function Catalog({ searchParams }) {
         </AccordionItem>
     </Accordion>
 </div>
-</div>
 <div className={styles.catalogright}>
     <Searchcard
         airingvalue={airingvalue}
