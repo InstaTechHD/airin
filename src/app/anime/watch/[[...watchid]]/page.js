@@ -97,9 +97,6 @@ async function AnimeWatch({ params, searchParams }) {
           {data?.status === 'RELEASING' &&
             <NextAiringDate nextAiringEpisode={data?.nextAiringEpisode} />
           }
-          <button onClick={handleCreateRoom} className="mt-4 px-4 py-2 bg-blue-500 text-white rounded">
-            Create Watch2Gether Rooms
-          </button>
         </div>
         <div className="h-full lg:flex lg:flex-col md:max-lg:w-full gap-10">
           <div className="rounded-lg hidden lg:block lg:max-w-[280px] xl:max-w-[380px] w-[100%] xl:overflow-y-scroll xl:overflow-x-hidden overflow-hidden scrollbar-hide overflow-y-hidden">
