@@ -424,3 +424,4 @@ function Catalog({ searchParams }) {
 }
 
 export default Catalog;
+  
