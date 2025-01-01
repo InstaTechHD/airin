@@ -1,13 +1,14 @@
-import Episodesection from '@/components/Episodesection'
-import { AnimeInfoAnilist } from '@/lib/Anilistfunctions'
-import React from 'react'
-import AnimeDetailsTop from '@/components/details/AnimeDetailsTop'
-import AnimeDetailsBottom from '@/components/details/AnimeDetailsBottom'
-import Navbarcomponent from '@/components/navbar/Navbar'
-import Animecards from '@/components/CardComponent/Animecards'
-import { getAuthSession } from '@/app/api/auth/[...nextauth]/route'
-import { redis } from '@/lib/rediscache'
-import DetailsContainer from './DetailsContainer'
+import Episodesection from '@/components/Episodesection';
+import { AnimeInfoAnilist } from '@/lib/Anilistfunctions';
+import React from 'react';
+import AnimeDetailsTop from '@/components/details/AnimeDetailsTop';
+import AnimeDetailsBottom from '@/components/details/AnimeDetailsBottom';
+import Navbarcomponent from '@/components/navbar/Navbar';
+import Animecards from '@/components/CardComponent/Animecards';
+import { getAuthSession } from '@/app/api/auth/[...nextauth]/route';
+import { redis } from '@/lib/rediscache';
+import DetailsContainer from './DetailsContainer';
+import { createWatch2GetherRoom } from '@/lib/Watch2Gether'; // Adjust the import path as needed
 
 async function getInfo(id) {
   try {
@@ -62,12 +63,30 @@ async function AnimeDetails({ params }) {
   // const data = await getInfo(id);
   const data = await AnimeInfoAnilist(id);
 
+  const handleCreateRoom = async () => {
+    try {
+      const room = await createWatch2GetherRoom(id, data?.nextAiringEpisode?.episode || 1);
+      if (room?.url) {
+        window.open(room.url, '_blank');
+      } else {
+        alert('Failed to create Watch2Gether room. Please try again later.');
+      }
+    } catch (error) {
+      console.error('Error creating Watch2Gether room:', error);
+      alert('An error occurred while creating the Watch2Gether room.');
+    }
+  };
+
   return (
     <div className="">
       <Navbarcomponent />
-     <DetailsContainer data={data} id={id} session={session}/>
+      <DetailsContainer data={data} id={id} session={session}/>
+      {/* Add the button below the player */}
+      <div className="watch2gether-button">
+        <button onClick={handleCreateRoom}>Watch Together</button>
+      </div>
     </div>
   )
 }
 
-export default AnimeDetails
+export default AnimeDetails;
