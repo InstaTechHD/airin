@@ -260,6 +260,7 @@ function Catalog({ searchParams }) {
                                     </Combobox.Options>
                                 </Transition>
                             </Combobox>
+                         </div>
                         </div>
                       <div className={styles.catalogsort}>
     <h3 className={styles.searchlabel}>Sort by</h3>
