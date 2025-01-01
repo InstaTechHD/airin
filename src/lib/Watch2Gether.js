@@ -7,7 +7,7 @@ export async function createWatch2GetherRoom(id, epNum) {
   try {
     const response = await axios.post(url, {
       w2g_api_key: apiKey,
-      share: `https://example.com/anime/${id}/episode/${epNum}` // Adjust the URL as needed
+      share: `https://makima.xyz/anime/${id}/episode/${epNum}` // Use your actual website's URL
     });
 
     return response.data;
