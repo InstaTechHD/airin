@@ -98,7 +98,7 @@ async function AnimeWatch({ params, searchParams }) {
             <NextAiringDate nextAiringEpisode={data?.nextAiringEpisode} />
           }
           <button onClick={handleCreateRoom} className="mt-4 px-4 py-2 bg-blue-500 text-white rounded">
-            Create Watch2Gether Room
+            Create Watch2Gether Rooms
           </button>
         </div>
         <div className="h-full lg:flex lg:flex-col md:max-lg:w-full gap-10">
