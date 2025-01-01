@@ -241,190 +241,188 @@ function Catalog({ searchParams }) {
         )}
       </div>
     </div>
-  );
-}
-<div className={styles.catalogsort}>
-          <h3 className={styles.searchlabel}>Sort by</h3>
-          <Select
-            labelPlacement={"outside"}
-            label=""
-            aria-label="Sort by"
-            placeholder="Sort by"
-            selectedKeys={sortbyvalue}
-            className="max-w-xs"
-            onSelectionChange={setSortbyvalue}
-          >
-            {sortbyOptions.map((item) => (
-              <SelectItem key={item.value} value={item.value}>
-                {item.name}
-              </SelectItem>
-            ))}
-          </Select>
-        </div>
-        <div className={styles.yearmobil}>
-          <h3 className={styles.searchlabel}>Year</h3>
-          <Select
-            label=""
-            aria-label='year'
-            labelPlacement='outside'
-            placeholder="Select Year"
-            className="w-full"
-          >
-            {yearOptions.map((year) => (
-              <SelectItem key={year.value} onClick={() => handleYearClick(year.value)}>
-                {year.name}
-              </SelectItem>
-            ))}
-          </Select>
-        </div>
-        <div className={styles.yearmobil}>
-          <h3 className={styles.searchlabel}>Airing Status</h3>
-          <Select
-            label=""
-            aria-label='airing'
-            labelPlacement='outside'
-            placeholder="Select Status"
-            className="w-full"
-            selectedKeys={airingvalue}
-            onSelectionChange={setAiringvalue}
-          >
-            {airingOptions.map((status) => (
-              <SelectItem key={status.value} value={status.value}>
-                {status.name}
-              </SelectItem>
-            ))}
-          </Select>
-        </div>
-        <div className={styles.bottomtwo}>
-          <div className={styles.yearmobil}>
-            <h3 className={styles.searchlabel}>Format</h3>
-            <Select
-              label=""
-              aria-label='format'
-              labelPlacement='outside'
-              placeholder="Select Format"
-              className="w-full"
-              selectedKeys={formatvalue}
-              onSelectionChange={setFormatvalue}
-            >
-              {formatOptions.map((format) => (
-                <SelectItem key={format.value} value={format.value}>
-                  {format.name}
-                </SelectItem>
-              ))}
-            </Select>
-          </div>
-          <div className={styles.yearmobil}>
-            <h3 className={styles.searchlabel}>Season</h3>
-            <Select
-              label=""
-              aria-label='season'
-              labelPlacement='outside'
-              placeholder="Select Season"
-              className="w-full"
-              selectedKeys={seasonvalue}
-              onSelectionChange={setSeasonvalue}
-            >
-              {seasonOptions.map((season) => (
-                <SelectItem key={season.value} value={season.value}>
-                  {season.name}
-                </SelectItem>
-              ))}
-            </Select>
-          </div>
-        </div>
+    <div className={styles.catalogsort}>
+      <h3 className={styles.searchlabel}>Sort by</h3>
+      <Select
+        labelPlacement={"outside"}
+        label=""
+        aria-label="Sort by"
+        placeholder="Sort by"
+        selectedKeys={sortbyvalue}
+        className="max-w-xs"
+        onSelectionChange={setSortbyvalue}
+      >
+        {sortbyOptions.map((item) => (
+          <SelectItem key={item.value} value={item.value}>
+            {item.name}
+          </SelectItem>
+        ))}
+      </Select>
+    </div>
+    <div className={styles.yearmobil}>
+      <h3 className={styles.searchlabel}>Year</h3>
+      <Select
+        label=""
+        aria-label='year'
+        labelPlacement='outside'
+        placeholder="Select Year"
+        className="w-full"
+      >
+        {yearOptions.map((year) => (
+          <SelectItem key={year.value} onClick={() => handleYearClick(year.value)}>
+            {year.name}
+          </SelectItem>
+        ))}
+      </Select>
+    </div>
+    <div className={styles.yearmobil}>
+      <h3 className={styles.searchlabel}>Airing Status</h3>
+      <Select
+        label=""
+        aria-label='airing'
+        labelPlacement='outside'
+        placeholder="Select Status"
+        className="w-full"
+        selectedKeys={airingvalue}
+        onSelectionChange={setAiringvalue}
+      >
+        {airingOptions.map((status) => (
+          <SelectItem key={status.value} value={status.value}>
+            {status.name}
+          </SelectItem>
+        ))}
+      </Select>
+    </div>
+    <div className={styles.bottomtwo}>
+      <div className={styles.yearmobil}>
+        <h3 className={styles.searchlabel}>Format</h3>
+        <Select
+          label=""
+          aria-label='format'
+          labelPlacement='outside'
+          placeholder="Select Format"
+          className="w-full"
+          selectedKeys={formatvalue}
+          onSelectionChange={setFormatvalue}
+        >
+          {formatOptions.map((format) => (
+            <SelectItem key={format.value} value={format.value}>
+              {format.name}
+            </SelectItem>
+          ))}
+        </Select>
       </div>
-      <div className={styles.catalogbottom}>
-        <div className={styles.catalogleft}>
-          <div className={styles.accordion}>
-            <Accordion isCompact variant="splitted" defaultExpandedKeys={["2"]}>
-              <AccordionItem key="2" aria-label="Accordion 1" title="Season">
-                <RadioGroup
-                  color="secondary"
-                  rounded="lg"
-                  value={seasonvalue}
-                  onValueChange={setSeasonvalue}
-                >
-                  {seasonOptions.map((season) => (
-                    <Radio value={season.value} key={season.value}>{season.name}</Radio>
-                  ))}
-                </RadioGroup>
-              </AccordionItem>
-            </Accordion>
-          </div>
-          <div className={styles.accordion}>
-            <Accordion isCompact variant="splitted" defaultExpandedKeys={["3"]}>
-              <AccordionItem key="3" aria-label="Accordion 1" title="Format">
-                <RadioGroup
-                  color="secondary"
-                  value={formatvalue}
-                  onValueChange={setFormatvalue}
-                >
-                  {formatOptions.map((format) => (
-                    <Radio value={format.value} key={format.value}>{format.name}</Radio>
-                  ))}
-                </RadioGroup>
-              </AccordionItem>
-            </Accordion>
-          </div>
-          <div className={styles.accordion}>
-            <Accordion defaultExpandedKeys={["1"]} isCompact variant="splitted">
-              <AccordionItem aria-label="Accordion 1" key="1" title="Year">
-                <div className={styles.year}>
-                  {yearOptions.map((year) => (
-                    <div
-                      key={year.value}
-                      className={`${styles.yearItem} ${selectedYear === year.value ? styles.selectedYear : styles.hoverYear}`}
-                      onClick={() => handleYearClick(year.value)}
-                    >
-                      {year.name}
-                    </div>
-                  ))}
-                </div>
-              </AccordionItem>
-            </Accordion>
-          </div>
-          <div className={styles.accordion}>
-            <Accordion defaultExpandedKeys={["4"]} isCompact variant="splitted">
-              <AccordionItem aria-label="Accordion 1" key="4" title="Airing Status">
-                <RadioGroup color="secondary" onValueChange={setAiringvalue} value={airingvalue}>
-                  {airingOptions.map((status) => (
-                    <Radio key={status.value} value={status.value}>
-                      {status.name}
-                    </Radio>
-                  ))}
-                </RadioGroup>
-              </AccordionItem>
-            </Accordion>
-          </div>
-          <div className={styles.accordion}>
-            <Accordion defaultExpandedKeys={["5"]} isCompact variant="splitted">
-              <AccordionItem aria-label="Accordion 1" key="5" title="Sort by">
-                <RadioGroup color="secondary" onValueChange={setSortbyvalue} value={sortbyvalue}>
-                  {sortbyOptions.map((option) => (
-                    <Radio key={option.value} value={option.value}>
-                      {option.name}
-                    </Radio>
-                  ))}
-                </RadioGroup>
-              </AccordionItem>
-            </Accordion>
-          </div>
-        </div>
-        <div className={styles.catalogright}>
-          <Searchcard
-            airingvalue={airingvalue}
-            formatvalue={formatvalue}
-            genrevalue={genrevalue}
-            searchvalue={searchvalue}
-            seasonvalue={seasonvalue}
-            selectedyear={selectedYear}
-            sortbyvalue={sortbyvalue}
-          />
-        </div>
+      <div className={styles.yearmobil}>
+        <h3 className={styles.searchlabel}>Season</h3>
+        <Select
+          label=""
+          aria-label='season'
+          labelPlacement='outside'
+          placeholder="Select Season"
+          className="w-full"
+          selectedKeys={seasonvalue}
+          onSelectionChange={setSeasonvalue}
+        >
+          {seasonOptions.map((season) => (
+            <SelectItem key={season.value} value={season.value}>
+              {season.name}
+            </SelectItem>
+          ))}
+        </Select>
       </div>
     </div>
-  );
+  </div>
+  <div className={styles.catalogbottom}>
+    <div className={styles.catalogleft}>
+      <div className={styles.accordion}>
+        <Accordion isCompact variant="splitted" defaultExpandedKeys={["2"]}>
+          <AccordionItem key="2" aria-label="Accordion 1" title="Season">
+            <RadioGroup
+              color="secondary"
+              rounded="lg"
+              value={seasonvalue}
+              onValueChange={setSeasonvalue}
+            >
+              {seasonOptions.map((season) => (
+                <Radio value={season.value} key={season.value}>{season.name}</Radio>
+              ))}
+            </RadioGroup>
+          </AccordionItem>
+        </Accordion>
+      </div>
+      <div className={styles.accordion}>
+        <Accordion isCompact variant="splitted" defaultExpandedKeys={["3"]}>
+          <AccordionItem key="3" aria-label="Accordion 1" title="Format">
+            <RadioGroup
+              color="secondary"
+              value={formatvalue}
+              onValueChange={setFormatvalue}
+            >
+              {formatOptions.map((format) => (
+                <Radio value={format.value} key={format.value}>{format.name}</Radio>
+              ))}
+            </RadioGroup>
+          </AccordionItem>
+        </Accordion>
+      </div>
+      <div className={styles.accordion}>
+        <Accordion defaultExpandedKeys={["1"]} isCompact variant="splitted">
+          <AccordionItem aria-label="Accordion 1" key="1" title="Year">
+            <div className={styles.year}>
+              {yearOptions.map((year) => (
+                <div
+                  key={year.value}
+                  className={`${styles.yearItem} ${selectedYear === year.value ? styles.selectedYear : styles.hoverYear}`}
+                  onClick={() => handleYearClick(year.value)}
+                >
+                  {year.name}
+                </div>
+              ))}
+            </div>
+          </AccordionItem>
+        </Accordion>
+      </div>
+      <div className={styles.accordion}>
+        <Accordion defaultExpandedKeys={["4"]} isCompact variant="splitted">
+          <AccordionItem aria-label="Accordion 1" key="4" title="Airing Status">
+            <RadioGroup color="secondary" onValueChange={setAiringvalue} value={airingvalue}>
+              {airingOptions.map((status) => (
+                <Radio key={status.value} value={status.value}>
+                  {status.name}
+                </Radio>
+              ))}
+            </RadioGroup>
+          </AccordionItem>
+        </Accordion>
+      </div>
+      <div className={styles.accordion}>
+        <Accordion defaultExpandedKeys={["5"]} isCompact variant="splitted">
+          <AccordionItem aria-label="Accordion 1" key="5" title="Sort by">
+            <RadioGroup color="secondary" onValueChange={setSortbyvalue} value={sortbyvalue}>
+              {sortbyOptions.map((option) => (
+                <Radio key={option.value} value={option.value}>
+                  {option.name}
+                </Radio>
+              ))}
+            </RadioGroup>
+          </AccordionItem>
+        </Accordion>
+      </div>
+    </div>
+    <div className={styles.catalogright}>
+      <Searchcard
+        airingvalue={airingvalue}
+        formatvalue={formatvalue}
+        genrevalue={genrevalue}
+        searchvalue={searchvalue}
+        seasonvalue={seasonvalue}
+        selectedyear={selectedYear}
+        sortbyvalue={sortbyvalue}
+      />
+    </div>
+  </div>
+</div>
+);
 }
 
-export default Catalog;
+export default Catalog;}
