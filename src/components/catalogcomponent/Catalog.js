@@ -423,4 +423,4 @@ function Catalog({ searchParams }) {
 );
 }
 
-export default Catalog;}
+export default Catalog;
