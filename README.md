@@ -88,7 +88,7 @@ MONGODB_URI="Your Mongodb connection String"
 
 Clone the project
 ```bash
-  git clone https://github.com/Noname968/airin.git
+  git clone https://github.com/InstaTechHD/airin.git
 ```
 
 Go to the project directory
