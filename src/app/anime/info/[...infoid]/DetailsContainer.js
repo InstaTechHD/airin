@@ -39,12 +39,12 @@ function DetailsContainer({ data, id, session, type }) {
     <>
       <div className="h-[500px] ">
         <AnimeDetailsTop data={data} list={list} session={session} setList={setList} url={url} />
+          <div className="watch2gether-button">
+        <button onClick={handleCreateRoom}>Watch Together</button>
+      </div>
       </div>
       <AnimeDetailsBottom data={data} />
       <Episodesection data={data} id={id} setUrl={setUrl} progress={progress} />
-      <div className="watch2gether-button">
-        <button onClick={handleCreateRoom}>Watch Together</button>
-      </div>
       {data?.recommendations?.nodes?.length > 0 && (
         <div className="recommendationglobal">
           <Animecards data={data.recommendations.nodes} cardid={"Recommendations"} type={type} />
