@@ -58,6 +58,11 @@ async function Home() {
     <div>
       <Navbarcomponent home={true} />
       <Herosection data={herodata} />
+    <div className='sm:max-w-[97%] md:max-w-[95%] lg:max-w-[90%] xl:max-w-[85%] mx-auto flex flex-col md:gap-11 sm:gap-7 gap-5 mt-8'>
+        <a href="https://ko-fi.com/usemakima" target="_blank" rel="noopener noreferrer">
+          <img src="https://raw.githubusercontent.com/InstaTechHD/airin/refs/heads/master/public/kofi-support.png" alt="Support us on Ko-fi" className="w-full h-auto mb-4" />
+        </a>
+        <div>
       <div className='sm:max-w-[97%] md:max-w-[95%] lg:max-w-[90%] xl:max-w-[85%] mx-auto flex flex-col md:gap-11 sm:gap-7 gap-5 mt-8'>
         <div>
           <ContinueWatching session={session} />
