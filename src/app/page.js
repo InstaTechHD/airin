@@ -28,7 +28,7 @@ async function getHomePage() {
     }
     if (cachedData) {
       const { herodata, populardata, top100data, seasonaldata, upcomingdata } = JSON.parse(cachedData);
-      return { herodata, populardata, top100data, seasonaldata, upcomingdata: upcomingdata.filter(anime => new Date(anime.startDate.year).getFullYear() === 2025) };
+      return { herodata, populardata, top100data, seasonaldata, upcomingdata };
     } else {
       const [herodata, populardata, top100data, seasonaldata, upcomingdata] = await Promise.all([
         TrendingAnilist(),
@@ -37,13 +37,11 @@ async function getHomePage() {
         SeasonalAnilist(),
         UpcomingAnilist() // Fetch upcoming releases
       ]);
-      const filteredUpcomingData = upcomingdata.filter(anime => new Date(anime.startDate.year).getFullYear() === 2025);
       const cacheTime = 60 * 60 * 2;
       if (redis) {
-        await redis.set(`homepage`, JSON.stringify({ herodata, populardata, top100data, seasonaldata, upcomingdata: filteredUpcomingData }), "EX", cacheTime);
+        await redis.set(`homepage`, JSON.stringify({ herodata, populardata, top100data, seasonaldata, upcomingdata }), "EX", cacheTime);
       }
-      console.log("Fetched upcoming data:", filteredUpcomingData); // Debugging statement
-      return { herodata, populardata, top100data, seasonaldata, upcomingdata: filteredUpcomingData };
+      return { herodata, populardata, top100data, seasonaldata, upcomingdata };
     }
   } catch (error) {
     console.error("Error fetching homepage from anilist: ", error);
@@ -54,7 +52,6 @@ async function getHomePage() {
 async function Home() {
   const session = await getAuthSession();
   const { herodata = [], populardata = [], top100data = [], seasonaldata = [], upcomingdata = [] } = await getHomePage();
-  console.log("Upcoming data in Home component:", upcomingdata); // Debugging statement
 
   return (
     <div>
