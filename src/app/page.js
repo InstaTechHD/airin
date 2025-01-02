@@ -12,7 +12,6 @@ import NotYetReleasedEpisodes from '@/components/home/NotYetReleasedEpisodes';
 import { getAuthSession } from './api/auth/[...nextauth]/route'
 import { redis } from '@/lib/rediscache'
 import RandomTextComponent from '@/components/RandomTextComponent';
-import { FaArrowRight } from 'react-icons/fa'; // Importing an icon from react-icons
 
 async function getHomePage() {
   try {
@@ -74,13 +73,7 @@ async function Home() {
           <Animecard data={populardata} cardid="All Time Popular" />
         </div>
         <div>
-          <h2 className='text-xl font-bold'>Upcoming Releases <FaArrowRight /></h2>
-          {upcomingdata.map(anime => (
-            <div key={anime.id} className='flex items-center space-x-2'>
-              <span>{anime.title}</span>
-              <FaArrowRight className='text-blue-500 cursor-pointer' onClick={() => window.location.href = anime.url} />
-            </div>
-          ))}
+          <NotYetReleasedEpisodes data={upcomingdata} />
         </div>
         <div>
           <div className='lg:flex lg:flex-row justify-between lg:gap-20'>
