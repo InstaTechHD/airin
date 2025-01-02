@@ -28,7 +28,7 @@ async function getHomePage() {
     }
     if (cachedData) {
       const { herodata, populardata, top100data, seasonaldata, upcomingdata } = JSON.parse(cachedData);
-      return { herodata, populardata, top100data, seasonaldata, upcomingdata };
+      return { herodata, populardata, top100data, seasonaldata, upcomingdata: upcomingdata.sort((a, b) => new Date(a.startDate) - new Date(b.startDate)) };
     } else {
       const [herodata, populardata, top100data, seasonaldata, upcomingdata] = await Promise.all([
         TrendingAnilist(),
@@ -37,11 +37,12 @@ async function getHomePage() {
         SeasonalAnilist(),
         UpcomingAnilist() // Fetch upcoming releases
       ]);
+      const sortedUpcomingData = upcomingdata.sort((a, b) => new Date(a.startDate) - new Date(b.startDate));
       const cacheTime = 60 * 60 * 2;
       if (redis) {
-        await redis.set(`homepage`, JSON.stringify({ herodata, populardata, top100data, seasonaldata, upcomingdata }), "EX", cacheTime);
+        await redis.set(`homepage`, JSON.stringify({ herodata, populardata, top100data, seasonaldata, upcomingdata: sortedUpcomingData }), "EX", cacheTime);
       }
-      return { herodata, populardata, top100data, seasonaldata, upcomingdata };
+      return { herodata, populardata, top100data, seasonaldata, upcomingdata: sortedUpcomingData };
     }
   } catch (error) {
     console.error("Error fetching homepage from anilist: ", error);
