@@ -40,9 +40,9 @@ function DetailsContainer({ data, id, session, type }) {
       <div className="h-[500px] ">
         <AnimeDetailsTop data={data} list={list} session={session} setList={setList} url={url} />
       </div>
-    <div className="watch2gether-button">
+    /*<div className="watch2gether-button">
         <button onClick={handleCreateRoom}>Watch Together</button>
-      </div>
+      </div>*/
       <AnimeDetailsBottom data={data} />
       <Episodesection data={data} id={id} setUrl={setUrl} progress={progress} />
       {data?.recommendations?.nodes?.length > 0 && (
