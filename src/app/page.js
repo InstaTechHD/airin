@@ -12,7 +12,6 @@ import NotYetReleasedEpisodes from '@/components/home/NotYetReleasedEpisodes';
 import { getAuthSession } from './api/auth/[...nextauth]/route'
 import { redis } from '@/lib/rediscache'
 import RandomTextComponent from '@/components/RandomTextComponent';
-// import { getWatchHistory } from '@/lib/EpHistoryfunctions'
 
 async function getHomePage() {
   try {
@@ -29,7 +28,7 @@ async function getHomePage() {
     }
     if (cachedData) {
       const { herodata, populardata, top100data, seasonaldata, upcomingdata } = JSON.parse(cachedData);
-      return { herodata, populardata, top100data, seasonaldata, upcomingdata };
+      return { herodata, populardata, top100data, seasonaldata, upcomingdata: upcomingdata.filter(anime => new Date(anime.startDate.year).getFullYear() === 2025) };
     } else {
       const [herodata, populardata, top100data, seasonaldata, upcomingdata] = await Promise.all([
         TrendingAnilist(),
@@ -38,12 +37,13 @@ async function getHomePage() {
         SeasonalAnilist(),
         UpcomingAnilist() // Fetch upcoming releases
       ]);
+      const filteredUpcomingData = upcomingdata.filter(anime => new Date(anime.startDate.year).getFullYear() === 2025);
       const cacheTime = 60 * 60 * 2;
       if (redis) {
-        await redis.set(`homepage`, JSON.stringify({ herodata, populardata, top100data, seasonaldata, upcomingdata }), "EX", cacheTime);
+        await redis.set(`homepage`, JSON.stringify({ herodata, populardata, top100data, seasonaldata, upcomingdata: filteredUpcomingData }), "EX", cacheTime);
       }
-      console.log("Fetched upcoming data:", upcomingdata); // Debugging statement
-      return { herodata, populardata, top100data, seasonaldata, upcomingdata };
+      console.log("Fetched upcoming data:", filteredUpcomingData); // Debugging statement
+      return { herodata, populardata, top100data, seasonaldata, upcomingdata: filteredUpcomingData };
     }
   } catch (error) {
     console.error("Error fetching homepage from anilist: ", error);
