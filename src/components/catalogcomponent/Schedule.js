@@ -41,11 +41,14 @@ function Schedule() {
     useEffect(() => {
         fetchSchedule()
             .then(data => {
-                const sortedData = data.sort((a, b) => {
-                    const dateA = new Date(a.startDate.year, a.startDate.month - 1, a.startDate.day);
-                    const dateB = new Date(b.startDate.year, b.startDate.month - 1, b.startDate.day);
-                    return dateA - dateB;
-                }).slice(0, 5);  // Limit to 5 upcoming anime
+                const sortedData = data
+                    .filter(item => item.startDate.year >= 2025) // Filter to only include anime starting from 2025
+                    .sort((a, b) => {
+                        const dateA = new Date(a.startDate.year, a.startDate.month - 1, a.startDate.day);
+                        const dateB = new Date(b.startDate.year, b.startDate.month - 1, b.startDate.day);
+                        return dateA - dateB;
+                    })
+                    .slice(0, 5);  // Limit to 5 upcoming anime
                 setSchedule(sortedData);
                 setLoading(false);
             })
