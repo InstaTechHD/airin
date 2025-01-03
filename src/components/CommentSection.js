@@ -1,5 +1,23 @@
 import React, { useState } from 'react';
 
+const styles = {
+  commentSection: {
+    marginBottom: '20px',
+  },
+  comment: {
+    marginBottom: '10px',
+    padding: '10px',
+    border: '1px solid #ccc',
+    borderRadius: '5px',
+  },
+  spoilerBlur: {
+    filter: 'blur(5px)',
+  },
+  button: {
+    marginTop: '5px',
+  },
+};
+
 const CommentSection = ({ comments }) => {
   const [visibleComments, setVisibleComments] = useState(5);
   const [spoilerBlur, setSpoilerBlur] = useState(true);
@@ -11,22 +29,22 @@ const CommentSection = ({ comments }) => {
   };
 
   return (
-    <div className="comment-section">
+    <div style={styles.commentSection}>
       <h3>Comments</h3>
       {comments.slice(0, visibleComments).map((comment, index) => (
-        <div key={index} className="comment">
-          <p className={comment.isSpoiler && spoilerBlur ? 'spoiler-blur' : ''}>
+        <div key={index} style={styles.comment}>
+          <p style={comment.isSpoiler && spoilerBlur ? styles.spoilerBlur : {}}>
             {comment.text}
           </p>
           {comment.isSpoiler && (
-            <button onClick={toggleSpoiler}>
+            <button style={styles.button} onClick={toggleSpoiler}>
               {spoilerBlur ? 'Show Spoiler' : 'Hide Spoiler'}
             </button>
           )}
         </div>
       ))}
       {visibleComments < comments.length && (
-        <button onClick={showMoreComments}>Show More Comments</button>
+        <button style={styles.button} onClick={showMoreComments}>Show More Comments</button>
       )}
     </div>
   );
