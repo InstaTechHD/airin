@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import styles from '../../styles/Catalog.module.css';
+import styles from '../../styles/Schedule.module.css';
 import { gql, request } from 'graphql-request';
 
 // Function to fetch the upcoming anime schedule from Anilist
