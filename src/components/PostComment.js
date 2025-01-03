@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
+import './CommentSection.css'; // Import the CSS file
 
 const PostComment = ({ onPost }) => {
   const [comment, setComment] = useState('');
@@ -14,61 +15,30 @@ const PostComment = ({ onPost }) => {
   };
 
   return (
-    <div style={styles.postComment}>
+    <div className="post-comment">
       <textarea
-        style={styles.textarea}
+        className="comment-textarea"
         placeholder="Discuss your favorite scene!"
         value={comment}
         onChange={(e) => setComment(e.target.value)}
+        style={{ borderRadius: '9px' }}
       />
-      <div style={styles.actions}>
-        <label style={styles.spoilerLabel}>
+      <div className="actions">
+        <label className="spoiler-label">
           <input
             type="checkbox"
-            style={styles.spoilerCheckbox}
+            className="spoiler-checkbox"
             checked={isSpoiler}
             onChange={() => setIsSpoiler(!isSpoiler)}
           />
           Spoiler
         </label>
-        <button style={styles.postButton} onClick={handlePost}>Add Comment</button>
+        <button className="post-button" onClick={handlePost} style={{ borderRadius: '9px' }}>
+          Add Comment
+        </button>
       </div>
     </div>
   );
-};
-
-const styles = {
-  postComment: {
-    marginBottom: '20px',
-  },
-  textarea: {
-    width: '100%',
-    height: '80px',
-    padding: '10px',
-    border: '1px solid #ccc',
-    borderRadius: '5px',
-    marginBottom: '10px',
-  },
-  actions: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  spoilerLabel: {
-    display: 'flex',
-    alignItems: 'center',
-  },
-  spoilerCheckbox: {
-    marginRight: '5px',
-  },
-  postButton: {
-    padding: '10px 20px',
-    backgroundColor: '#007bff',
-    color: '#fff',
-    border: 'none',
-    borderRadius: '5px',
-    cursor: 'pointer',
-  },
 };
 
 export default PostComment;
