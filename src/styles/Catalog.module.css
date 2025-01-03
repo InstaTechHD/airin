@@ -272,35 +272,50 @@
 }
 /* Add these styles to your Catalog.module.css */
 .schedule {
-    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
     padding: 1rem;
     background-color: rgba(26, 26, 26, 0.8); /* Transparent background */
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+.scheduleCard {
+    display: flex;
+    flex-direction: row;
+    background-color: #1a1a1a;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s;
+}
+
+.scheduleCard:hover {
+    transform: scale(1.05);
+}
+
+.scheduleImage {
+    width: 120px;
+    height: auto;
+    object-fit: cover;
+}
+
+.scheduleInfo {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 1rem;
+    color: #ffffff;
+}
+
 .scheduleTitle {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     font-weight: bold;
-    color: #ffffff;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
 }
 
-.viewAllSchedules {
-    margin-top: 2rem;
-    text-align: right;
-}
-
-.viewAllLink {
-    color: #ffffff;
-    text-decoration: none;
+.scheduleDate, .countdown {
     font-size: 1rem;
-}
-
-.viewAllText {
-    margin-right: 0.5rem;
-}
-
-.icon {
-    font-size: 1rem;
+    margin-bottom: 0.5rem;
 }
