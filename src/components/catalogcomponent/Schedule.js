@@ -19,11 +19,16 @@ function Schedule() {
     const [schedule, setSchedule] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [currentTime, setCurrentTime] = useState(Date.now());
 
     useEffect(() => {
         fetchSchedule()
             .then(data => {
-                setSchedule(data);
+                // Filter out past anime
+                const upcomingAnime = data.filter(item => new Date(item.aired.from) >= new Date());
+                // Sort by airing date
+                upcomingAnime.sort((a, b) => new Date(a.aired.from) - new Date(b.aired.from));
+                setSchedule(upcomingAnime);
                 setLoading(false);
             })
             .catch(error => {
@@ -31,10 +36,16 @@ function Schedule() {
                 setError(error);
                 setLoading(false);
             });
+
+        const interval = setInterval(() => {
+            setCurrentTime(Date.now());
+        }, 1000);
+
+        return () => clearInterval(interval);
     }, []);
 
     const getTimeRemaining = (airingAt) => {
-        const total = new Date(airingAt).getTime() - Date.now();
+        const total = new Date(airingAt).getTime() - currentTime;
         const seconds = Math.floor((total / 1000) % 60);
         const minutes = Math.floor((total / 1000 / 60) % 60);
         const hours = Math.floor((total / (1000 * 60 * 60)) % 24);
@@ -59,26 +70,31 @@ function Schedule() {
 
     return (
         <div className={styles.schedule}>
-            <h2 className={styles.scheduleTitle}>Anime Schedule</h2>
+            <h2 className={styles.scheduleTitle}>Upcoming Anime Schedule</h2>
             <div className={styles.scheduleContainer}>
                 {schedule.map((item, index) => {
                     const timeRemaining = getTimeRemaining(item.aired.from);
                     return (
                         <a
                             key={index}
-                            href={`https://myanimelist.net/anime/${item.mal_id}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
+                            href={`/anime/${item.mal_id}`}
                             className={styles.scheduleItem}
                         >
-                            <div className={styles.scheduleInfo}>
-                                <h3 className={styles.animeTitle}>{item.title}</h3>
-                                <p className={styles.airingAt}>
-                                    Airing at: {new Date(item.aired.from).toLocaleString()}
-                                </p>
-                                <p className={styles.countdown}>
-                                    Countdown: {timeRemaining.days}d {timeRemaining.hours}h {timeRemaining.minutes}m {timeRemaining.seconds}s
-                                </p>
+                            <div className={styles.scheduleItemContent}>
+                                <img
+                                    src={item.images.jpg.image_url}
+                                    alt={item.title}
+                                    className={styles.coverImage}
+                                />
+                                <div className={styles.scheduleInfo}>
+                                    <h3 className={styles.animeTitle}>{item.title}</h3>
+                                    <p className={styles.airingAt}>
+                                        Airing: {new Date(item.aired.from).toLocaleString()}
+                                    </p>
+                                    <p className={styles.countdown}>
+                                        Countdown: {timeRemaining.days}d {timeRemaining.hours}h {timeRemaining.minutes}m {timeRemaining.seconds}s
+                                    </p>
+                                </div>
                             </div>
                         </a>
                     );
