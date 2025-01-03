@@ -278,6 +278,7 @@
     background-color: #1a1a1a;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow-x: auto; /* Enable horizontal scrolling */
 }
 
 .scheduleTitle {
@@ -289,12 +290,12 @@
 
 .scheduleContainer {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap; /* Prevent wrapping to enable horizontal scrolling */
     gap: 1rem;
 }
 
 .scheduleItem {
-    flex: 1 1 calc(33.333% - 1rem);
+    flex: 0 0 auto; /* Prevent shrinking and growing */
     background-color: #27272a;
     border-radius: 8px;
     padding: 1rem;
@@ -304,13 +305,8 @@
     flex-direction: column;
     align-items: center;
     text-align: center;
-}
-
-.coverImage {
-    width: 100%;
-    height: auto;
-    border-radius: 8px;
-    margin-bottom: 1rem;
+    min-width: 200px; /* Set a minimum width for items */
+    text-decoration: none; /* Remove underline from links */
 }
 
 .scheduleInfo {
@@ -321,14 +317,15 @@
     font-size: 1.2rem;
     font-weight: bold;
     margin-bottom: 0.5rem;
+    color: #ffffff;
 }
 
-.episode {
+.airingAt {
     font-size: 1rem;
     margin-bottom: 0.5rem;
 }
 
-.airingAt {
+.countdown {
     font-size: 0.9rem;
     color: #b2b2b2;
 }
