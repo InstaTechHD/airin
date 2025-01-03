@@ -1,5 +1,3 @@
-"use client";
-
 import React from "react";
 import { AnimeInfoAnilist } from '@/lib/Anilistfunctions';
 import Navbarcomponent from "@/components/navbar/Navbar";
