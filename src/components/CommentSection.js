@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import PostComment from './PostComment'; // Ensure this path is correct
+import PostComment from './PostComment';
 import { fetchAniListUserData, fetchComments, postComment } from '@/lib/Anilistfunctions';
 
 const CommentSection = ({ animeId, episodeNumber, session }) => {
@@ -17,9 +17,16 @@ const CommentSection = ({ animeId, episodeNumber, session }) => {
   }, [animeId, episodeNumber, filter, session]);
 
   const handlePost = (comment, isSpoiler) => {
-    postComment(animeId, episodeNumber, comment, isSpoiler, session).then(newComment => {
-      setComments([newComment, ...comments]);
-    });
+    if (!session) {
+      // Prompt login if not logged in
+      alert("Please log in with AniList to post a comment.");
+      // Redirect to AniList login (adjust URL as necessary)
+      window.location.href = "/api/auth/login";
+    } else {
+      postComment(animeId, episodeNumber, comment, isSpoiler, session).then(newComment => {
+        setComments([newComment, ...comments]);
+      });
+    }
   };
 
   return (
@@ -28,9 +35,11 @@ const CommentSection = ({ animeId, episodeNumber, session }) => {
         <h3>Comments ({comments.length})</h3>
         <span>EP {episodeNumber}</span>
         <div style={styles.filter}>
-          <button onClick={() => setFilter('latest')}>Latest</button>
-          <button onClick={() => setFilter('top')}>Top</button>
-          <button onClick={() => setFilter('oldest')}>Oldest</button>
+          <select onChange={(e) => setFilter(e.target.value)} value={filter}>
+            <option value="latest">Latest</option>
+            <option value="top">Top</option>
+            <option value="oldest">Oldest</option>
+          </select>
         </div>
       </div>
       {session ? (
@@ -39,9 +48,9 @@ const CommentSection = ({ animeId, episodeNumber, session }) => {
           <span>{userData?.name}</span>
         </div>
       ) : (
-        <p>Login to comment</p>
+        <button onClick={() => window.location.href = "/api/auth/login"}>Login to comment</button>
       )}
-      {session && <PostComment onPost={handlePost} />}
+      <PostComment onPost={handlePost} />
       {comments.map((comment, index) => (
         <div key={index} style={styles.comment}>
           <p style={comment.isSpoiler ? styles.spoilerBlur : {}}>
