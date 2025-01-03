@@ -270,3 +270,11 @@
         margin: 3px 0;
     }
 }
+/* Ko-fi banner */
+.kofiBanner {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    background-color: transparent; /* Ensure the background remains transparent */
+}
