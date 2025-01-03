@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import styles from '../../styles/Catalog.module.css'; // Assuming you have this CSS file
+import styles from '../../styles/Catalog.module.css';
 import { gql, request } from 'graphql-request';
+import VerticalList from '@/components/home/VerticalList';
 
 async function fetchSchedule() {
     const query = gql`
         query {
             Page(page: 1, perPage: 50) {
-                media(type: ANIME, sort: START_DATE_DESC, status: NOT_YET_RELEASED) {
+                media(type: ANIME, sort: START_DATE, status: NOT_YET_RELEASED) {
                     id
                     title {
                         romaji
@@ -41,7 +42,12 @@ function Schedule() {
     useEffect(() => {
         fetchSchedule()
             .then(data => {
-                setSchedule(data);
+                const sortedData = data.sort((a, b) => {
+                    const dateA = new Date(a.startDate.year, a.startDate.month - 1, a.startDate.day);
+                    const dateB = new Date(b.startDate.year, b.startDate.month - 1, b.startDate.day);
+                    return dateA - dateB;
+                });
+                setSchedule(sortedData);
                 setLoading(false);
             })
             .catch(error => {
@@ -84,35 +90,7 @@ function Schedule() {
     return (
         <div className={styles.schedule}>
             <h2 className={styles.scheduleTitle}>Upcoming Anime Schedule</h2>
-            <div className={styles.categoriesContainer}>
-                {schedule.map((item, index) => {
-                    const timeRemaining = getTimeRemaining(item.startDate);
-                    return (
-                        <a
-                            key={index}
-                            href={`/anime/${item.id}`}
-                            className={styles.categoryCard}
-                        >
-                            <div className={styles.categoryCardContent}>
-                                <img
-                                    src={item.coverImage.large}
-                                    alt={item.title.romaji}
-                                    className={styles.categoryCardImage}
-                                />
-                                <div className={styles.categoryCardInfo}>
-                                    <h3 className={styles.categoryCardTitle}>{item.title.romaji}</h3>
-                                    <p className={styles.airingAt}>
-                                        Airing at: {new Date(item.startDate.year, item.startDate.month - 1, item.startDate.day).toLocaleString()}
-                                    </p>
-                                    <p className={styles.countdown}>
-                                        Countdown: {timeRemaining.days}d {timeRemaining.hours}h {timeRemaining.minutes}m {timeRemaining.seconds}s
-                                    </p>
-                                </div>
-                            </div>
-                        </a>
-                    );
-                })}
-            </div>
+            <VerticalList data={schedule} id="Upcoming Anime" />
             <div className={styles.viewAllSchedules}>
                 <a href="/schedules" className={styles.viewAllLink}>
                     <span className={styles.viewAllText}>View All Schedules</span>
