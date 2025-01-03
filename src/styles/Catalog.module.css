@@ -271,7 +271,6 @@
     }
 }
 /* Add these styles to your Catalog.module.css */
-
 .schedule {
     margin-top: 2rem;
     padding: 1rem;
@@ -287,13 +286,13 @@
     margin-bottom: 1rem;
 }
 
-.scheduleContainer {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+.categoriesContainer {
+    display: flex;
+    flex-wrap: wrap;
     gap: 1rem;
 }
 
-.scheduleItem {
+.categoryCard {
     background-color: #27272a;
     border-radius: 8px;
     padding: 1rem;
@@ -301,46 +300,56 @@
     color: #ffffff;
     display: flex;
     flex-direction: column;
+    cursor: pointer;
+    text-decoration: none;
+    width: calc(33.333% - 1rem);
+}
+
+.categoryCardContent {
+    display: flex;
+    flex-direction: column;
     align-items: center;
     text-align: center;
-    cursor: pointer;
-    transition: transform 0.2s ease; /* Add transition for hover effect */
 }
 
-.scheduleItem:hover {
-    transform: scale(1.05); /* Add a small zoom effect on hover */
-}
-
-.scheduleItemContent {
-    text-align: left; /* Align text to the left */
-    display: flex; /* Use flexbox for layout */
-    flex-direction: column;
-    gap: 0.5rem; /* Add some gap between elements */
-}
-
-.coverImage {
+.categoryCardImage {
     border-radius: 8px;
-    max-width: 100%; /* Make sure image doesn't overflow */
-    margin-bottom: 1rem; /* Add margin below the image */
+    width: 100%;
+    height: auto;
+    margin-bottom: 1rem;
 }
 
-.scheduleInfo {
+.categoryCardInfo {
     width: 100%;
 }
 
-.animeTitle {
+.categoryCardTitle {
     font-size: 1.2rem;
     font-weight: bold;
     margin-bottom: 0.5rem;
     color: #ffffff;
 }
 
-.airingAt {
+.airingAt, .countdown {
     font-size: 1rem;
     margin-bottom: 0.5rem;
 }
 
-.countdown {
-    font-size: 0.9rem;
-    color: #b2b2b2;
+.viewAllSchedules {
+    margin-top: 2rem;
+    text-align: right;
+}
+
+.viewAllLink {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 1rem;
+}
+
+.viewAllText {
+    margin-right: 0.5rem;
+}
+
+.icon {
+    font-size: 1rem;
 }
