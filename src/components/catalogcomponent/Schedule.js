@@ -15,6 +15,18 @@ async function fetchSchedule() {
     }
 }
 
+// Example mapping function
+const malIdToIdMapping = {
+    1: 101,
+    2: 102,
+    3: 103,
+    // Add more mappings as needed
+};
+
+function getIdFromMalId(malId) {
+    return malIdToIdMapping[malId] || malId; // Fallback to malId if no mapping is found
+}
+
 function Schedule() {
     const [schedule, setSchedule] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -28,7 +40,14 @@ function Schedule() {
                 const upcomingAnime = data.filter(item => new Date(item.aired.from) >= new Date());
                 // Sort by airing date
                 upcomingAnime.sort((a, b) => new Date(a.aired.from) - new Date(b.aired.from));
-                setSchedule(upcomingAnime);
+                
+                // Map mal_id to id
+                const animeWithId = upcomingAnime.map(item => ({
+                    ...item,
+                    id: getIdFromMalId(item.mal_id)
+                }));
+
+                setSchedule(animeWithId);
                 setLoading(false);
             })
             .catch(error => {
@@ -78,7 +97,7 @@ function Schedule() {
                         <div
                             key={index}
                             className={styles.scheduleItem}
-                            onClick={() => window.location.href = `/anime/${item.mal_id}`}
+                            onClick={() => window.location.href = `/anime/${item.id}`}
                         >
                             <div className={styles.scheduleItemContent}>
                                 <img
