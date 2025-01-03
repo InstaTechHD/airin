@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import styles from './Schedule.module.css'; // Import the CSS module
+import styles from '../../styles/Catalog.module.css'; // Assuming you have this CSS file
 
 async function fetchSchedule() {
     const response = await fetch('https://animeschedule.net/api/v3/anime');
