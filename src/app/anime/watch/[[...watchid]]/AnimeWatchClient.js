@@ -5,7 +5,7 @@ import NextAiringDate from "@/components/videoplayer/NextAiringDate";
 import PlayerAnimeCard from "@/components/videoplayer/PlayerAnimeCard";
 import PlayerComponent from "@/components/videoplayer/PlayerComponent";
 import Animecards from "@/components/CardComponent/Animecards";
-import CommentSection from "@/components/CommentSection"; // Import the new component
+import CommentSection from "@/components/CommentSection"; // Import the updated component
 
 const AnimeWatchClient = ({ id, epId, provider, epNum, data, subdub, session, savedep, comments }) => {
   return (
@@ -17,7 +17,7 @@ const AnimeWatchClient = ({ id, epId, provider, epNum, data, subdub, session, sa
             <NextAiringDate nextAiringEpisode={data?.nextAiringEpisode} />
           }
           {/* Comment section */}
-          <CommentSection comments={comments} />
+          <CommentSection animeId={id} episodeNumber={epNum} session={session} />
         </div>
         <div className="h-full lg:flex lg:flex-col md:max-lg:w-full gap-10">
           <div className="rounded-lg hidden lg:block lg:max-w-[280px] xl:max-w-[380px] w-[100%] xl:overflow-y-scroll xl:overflow-x-hidden overflow-hidden scrollbar-hide overflow-y-hidden">
