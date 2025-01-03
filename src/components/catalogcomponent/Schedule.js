@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styles from '../../styles/Schedule.module.css';
 import { gql, request } from 'graphql-request';
 
+// Function to fetch the upcoming anime schedule from Anilist
 async function fetchSchedule() {
     const query = gql`
         query {
@@ -39,9 +40,11 @@ function Schedule() {
     const [currentTime, setCurrentTime] = useState(Date.now());
 
     useEffect(() => {
+        // Fetch data
         fetchSchedule()
             .then(data => {
-                const sortedData = data
+                // Filter and sort data
+                const filteredSortedData = data
                     .filter(item => item.startDate.year >= 2025) // Filter to only include anime starting from 2025
                     .sort((a, b) => {
                         const dateA = new Date(a.startDate.year, a.startDate.month - 1, a.startDate.day);
@@ -49,7 +52,7 @@ function Schedule() {
                         return dateA - dateB;
                     })
                     .slice(0, 5);  // Limit to 5 upcoming anime
-                setSchedule(sortedData);
+                setSchedule(filteredSortedData);
                 setLoading(false);
             })
             .catch(error => {
@@ -58,6 +61,7 @@ function Schedule() {
                 setLoading(false);
             });
 
+        // Update current time every second
         const interval = setInterval(() => {
             setCurrentTime(Date.now());
         }, 1000);
@@ -67,6 +71,7 @@ function Schedule() {
 
     const getTimeRemaining = (startDate) => {
         const total = new Date(startDate.year, startDate.month - 1, startDate.day).getTime() - currentTime;
+        if (total < 0) return null; // If the date has passed, return null
         const seconds = Math.floor((total / 1000) % 60);
         const minutes = Math.floor((total / 1000 / 60) % 60);
         const hours = Math.floor((total / (1000 * 60 * 60)) % 24);
@@ -93,6 +98,7 @@ function Schedule() {
         <div className={styles.schedule}>
             {schedule.map((item, index) => {
                 const timeRemaining = getTimeRemaining(item.startDate);
+                if (!timeRemaining) return null; // Skip if the date has passed
                 return (
                     <div key={index} className={styles.scheduleCard}>
                         <img src={item.coverImage.large} alt={item.title.romaji} className={styles.scheduleImage} />
