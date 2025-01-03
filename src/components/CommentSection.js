@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import PostComment from './PostComment';
 import { fetchAniListUserData, fetchComments, postComment } from '@/lib/Anilistfunctions';
+import './CommentSection.css'; // Import the CSS file
 
 const CommentSection = ({ animeId, episodeNumber, session }) => {
   const [comments, setComments] = useState([]);
@@ -30,12 +31,12 @@ const CommentSection = ({ animeId, episodeNumber, session }) => {
   };
 
   return (
-    <div style={styles.commentSection}>
-      <div style={styles.header}>
+    <div className="comment-section">
+      <div className="header">
         <h3>Comments ({comments.length})</h3>
         <span>EP {episodeNumber}</span>
-        <div style={styles.filter}>
-          <select onChange={(e) => setFilter(e.target.value)} value={filter}>
+        <div className="filter">
+          <select onChange={(e) => setFilter(e.target.value)} value={filter} className="filter-dropdown">
             <option value="latest">Latest</option>
             <option value="top">Top</option>
             <option value="oldest">Oldest</option>
@@ -43,61 +44,27 @@ const CommentSection = ({ animeId, episodeNumber, session }) => {
         </div>
       </div>
       {session ? (
-        <div style={styles.userInfo}>
-          <img src={userData?.avatar} alt="User Avatar" style={styles.avatar} />
+        <div className="user-info">
+          <img src={userData?.avatar} alt="User Avatar" className="avatar" />
           <span>{userData?.name}</span>
         </div>
       ) : (
-        <button onClick={() => window.location.href = "/api/auth/login"}>Login to comment</button>
+        <button onClick={() => window.location.href = "/api/auth/login"} className="login-button">
+          Login to comment
+        </button>
       )}
       <PostComment onPost={handlePost} />
       {comments.map((comment, index) => (
-        <div key={index} style={styles.comment}>
-          <p style={comment.isSpoiler ? styles.spoilerBlur : {}}>
+        <div key={index} className="comment" style={{ borderRadius: '9px' }}>
+          <p className={comment.isSpoiler ? 'spoiler-blur' : ''}>
             {comment.text}
           </p>
-          <button onClick={() => {/* handle reply */}}>Reply</button>
-          <button onClick={() => {/* handle reaction */}}>React</button>
+          <button className="reply-button">Reply</button>
+          <button className="react-button">React</button>
         </div>
       ))}
     </div>
   );
-};
-
-const styles = {
-  commentSection: {
-    marginBottom: '20px',
-  },
-  header: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: '10px',
-  },
-  filter: {
-    display: 'flex',
-    gap: '10px',
-  },
-  userInfo: {
-    display: 'flex',
-    alignItems: 'center',
-    marginBottom: '10px',
-  },
-  avatar: {
-    width: '40px',
-    height: '40px',
-    borderRadius: '50%',
-    marginRight: '10px',
-  },
-  comment: {
-    marginBottom: '10px',
-    padding: '10px',
-    border: '1px solid #ccc',
-    borderRadius: '5px',
-  },
-  spoilerBlur: {
-    filter: 'blur(5px)',
-  },
 };
 
 export default CommentSection;
