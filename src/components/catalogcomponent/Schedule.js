@@ -46,7 +46,7 @@ function Schedule() {
                     const dateA = new Date(a.startDate.year, a.startDate.month - 1, a.startDate.day);
                     const dateB = new Date(b.startDate.year, b.startDate.month - 1, b.startDate.day);
                     return dateA - dateB;
-                });
+                }).slice(0, 5);  // Limit to 5 upcoming anime
                 setSchedule(sortedData);
                 setLoading(false);
             })
@@ -89,14 +89,7 @@ function Schedule() {
 
     return (
         <div className={styles.schedule}>
-            <h2 className={styles.scheduleTitle}>Upcoming Anime Schedule</h2>
-            <VerticalList data={schedule} id="Upcoming Anime" />
-            <div className={styles.viewAllSchedules}>
-                <a href="/schedules" className={styles.viewAllLink}>
-                    <span className={styles.viewAllText}>View All Schedules</span>
-                    <i className={`${styles.icon} fas fa-arrow-right`}></i>
-                </a>
-            </div>
+            <VerticalList data={schedule} id="Top 100 Anime" />
         </div>
     );
 }
