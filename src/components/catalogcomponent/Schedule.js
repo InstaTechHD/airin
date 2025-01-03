@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import styles from '../../styles/Catalog.module.css';
+import styles from '../../styles/Schedule.module.css';
 import { gql, request } from 'graphql-request';
-import VerticalList from '@/components/home/VerticalList';
 
 async function fetchSchedule() {
     const query = gql`
@@ -89,7 +88,23 @@ function Schedule() {
 
     return (
         <div className={styles.schedule}>
-            <VerticalList data={schedule} id="Schedule" />
+            {schedule.map((item, index) => {
+                const timeRemaining = getTimeRemaining(item.startDate);
+                return (
+                    <div key={index} className={styles.scheduleCard}>
+                        <img src={item.coverImage.large} alt={item.title.romaji} className={styles.scheduleImage} />
+                        <div className={styles.scheduleInfo}>
+                            <h3 className={styles.scheduleTitle}>{item.title.romaji}</h3>
+                            <p className={styles.scheduleDate}>
+                                Airing at: {new Date(item.startDate.year, item.startDate.month - 1, item.startDate.day).toLocaleString()}
+                            </p>
+                            <p className={styles.countdown}>
+                                Countdown: {timeRemaining.days}d {timeRemaining.hours}h {timeRemaining.minutes}m {timeRemaining.seconds}s
+                            </p>
+                        </div>
+                    </div>
+                );
+            })}
         </div>
     );
 }
