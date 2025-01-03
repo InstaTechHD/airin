@@ -2,13 +2,20 @@ import React, { useState, useEffect } from 'react';
 import styles from '../../styles/Catalog.module.css'; // Assuming you have this CSS file
 
 async function fetchSchedule() {
-    const response = await fetch('https://animeschedule.net/api/v3/anime');
-    if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+    try {
+        const response = await fetch('https://api.jikan.moe/v4/schedules');
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log('Fetched Schedule Data:', data); // Debugging log
+        return data.data; // Access the 'data' property that contains the schedule
+    } catch (error) {
+        console.error('Error fetching schedule:', error.message); // Log any errors
+        throw error; // Re-throw the error to handle it in the component
     }
-    const data = await response.json();
-    console.log('Fetched Schedule Data:', data); // Debugging log
-    return data;
 }
 
 function Schedule() {
@@ -23,7 +30,7 @@ function Schedule() {
                 setLoading(false);
             })
             .catch(error => {
-                console.error('Error fetching schedule:', error); // Log any errors
+                console.error('Error in useEffect:', error.message); // Log any errors
                 setError(error);
                 setLoading(false);
             });
@@ -44,15 +51,15 @@ function Schedule() {
                 {schedule.map((item, index) => (
                     <div key={index} className={styles.scheduleItem}>
                         <img
-                            src={item.image_url}
-                            alt={item.name}
+                            src={item.images.jpg.image_url}
+                            alt={item.title}
                             className={styles.coverImage}
                         />
                         <div className={styles.scheduleInfo}>
-                            <h3 className={styles.animeTitle}>{item.name}</h3>
-                            <p className={styles.episode}>Episode {item.episode}</p>
+                            <h3 className={styles.animeTitle}>{item.title}</h3>
+                            <p className={styles.episode}>Episode {item.episodes}</p>
                             <p className={styles.airingAt}>
-                                Airing at: {new Date(item.airing_time).toLocaleString()}
+                                Airing at: {new Date(item.aired.from).toLocaleString()}
                             </p>
                         </div>
                     </div>
