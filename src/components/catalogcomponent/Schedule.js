@@ -33,7 +33,9 @@ async function fetchSchedule() {
             query: query,
         }),
     });
+
     const data = await response.json();
+    console.log('Fetched Schedule Data:', data); // Debugging log
     return data.data.Page.airingSchedules.nodes;
 }
 
@@ -43,6 +45,10 @@ function Schedule() {
     useEffect(() => {
         fetchSchedule().then(setSchedule);
     }, []);
+
+    if (schedule.length === 0) {
+        return <div className={styles.schedule}>Loading schedule...</div>; // Show loading message
+    }
 
     return (
         <div className={styles.schedule}>
