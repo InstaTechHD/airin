@@ -66,7 +66,7 @@ function Schedule() {
                     return (
                         <a
                             key={index}
-                            href={`https://myanimelist.net/anime/${item.mal_id}`}
+                            href={`https://makima.xyz/anime/${item.mal_id}`}
                             target="_blank"
                             rel="noopener noreferrer"
                             className={styles.scheduleItem}
