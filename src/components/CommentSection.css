@@ -1,0 +1,98 @@
+/* CommentSection.css */
+.comment-section {
+  margin-bottom: 20px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.filter-dropdown {
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 9px;
+  background-color: #f9f9f9;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.login-button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 9px;
+  cursor: pointer;
+}
+
+.comment {
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 9px;
+}
+
+.spoiler-blur {
+  filter: blur(5px);
+}
+
+.reply-button, .react-button {
+  margin-right: 5px;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 9px;
+  cursor: pointer;
+  background-color: #007bff;
+  color: #fff;
+}
+
+.post-comment {
+  margin-bottom: 20px;
+}
+
+.comment-textarea {
+  width: 100%;
+  height: 80px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 9px;
+  margin-bottom: 10px;
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.spoiler-label {
+  display: flex;
+  align-items: center;
+}
+
+.spoiler-checkbox {
+  margin-right: 5px;
+}
+
+.post-button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 9px;
+  cursor: pointer;
+}
