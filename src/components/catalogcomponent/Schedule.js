@@ -84,29 +84,40 @@ function Schedule() {
     return (
         <div className={styles.schedule}>
             <h2 className={styles.scheduleTitle}>Upcoming Anime Schedule</h2>
-            <div className={styles.scheduleContainer}>
+            <div className={styles.categoriesContainer}>
                 {schedule.map((item, index) => {
                     const timeRemaining = getTimeRemaining(item.startDate);
                     return (
                         <a
                             key={index}
-                            href={`https://anilist.co/anime/${item.id}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className={styles.scheduleItem}
+                            href={`/anime/${item.id}`}
+                            className={styles.categoryCard}
                         >
-                            <div className={styles.scheduleInfo}>
-                                <h3 className={styles.animeTitle}>{item.title.romaji}</h3>
-                                <p className={styles.airingAt}>
-                                    Airing at: {new Date(item.startDate.year, item.startDate.month - 1, item.startDate.day).toLocaleString()}
-                                </p>
-                                <p className={styles.countdown}>
-                                    Countdown: {timeRemaining.days}d {timeRemaining.hours}h {timeRemaining.minutes}m {timeRemaining.seconds}s
-                                </p>
+                            <div className={styles.categoryCardContent}>
+                                <img
+                                    src={item.coverImage.large}
+                                    alt={item.title.romaji}
+                                    className={styles.categoryCardImage}
+                                />
+                                <div className={styles.categoryCardInfo}>
+                                    <h3 className={styles.categoryCardTitle}>{item.title.romaji}</h3>
+                                    <p className={styles.airingAt}>
+                                        Airing at: {new Date(item.startDate.year, item.startDate.month - 1, item.startDate.day).toLocaleString()}
+                                    </p>
+                                    <p className={styles.countdown}>
+                                        Countdown: {timeRemaining.days}d {timeRemaining.hours}h {timeRemaining.minutes}m {timeRemaining.seconds}s
+                                    </p>
+                                </div>
                             </div>
                         </a>
                     );
                 })}
+            </div>
+            <div className={styles.viewAllSchedules}>
+                <a href="/schedules" className={styles.viewAllLink}>
+                    <span className={styles.viewAllText}>View All Schedules</span>
+                    <i className={`${styles.icon} fas fa-arrow-right`}></i>
+                </a>
             </div>
         </div>
     );
