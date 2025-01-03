@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import PostComment from './PostComment';
+import PostComment from './PostComment'; // Ensure this path is correct
 import { fetchAniListUserData, fetchComments, postComment } from '@/lib/Anilistfunctions';
 
 const CommentSection = ({ animeId, episodeNumber, session }) => {
