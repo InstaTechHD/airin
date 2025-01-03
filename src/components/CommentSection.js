@@ -1,22 +1,6 @@
-import React, { useState } from 'react';
+"use client";
 
-const styles = {
-  commentSection: {
-    marginBottom: '20px',
-  },
-  comment: {
-    marginBottom: '10px',
-    padding: '10px',
-    border: '1px solid #ccc',
-    borderRadius: '5px',
-  },
-  spoilerBlur: {
-    filter: 'blur(5px)',
-  },
-  button: {
-    marginTop: '5px',
-  },
-};
+import React, { useState } from 'react';
 
 const CommentSection = ({ comments }) => {
   const [visibleComments, setVisibleComments] = useState(5);
@@ -26,6 +10,24 @@ const CommentSection = ({ comments }) => {
 
   const showMoreComments = () => {
     setVisibleComments((prev) => prev + 5);
+  };
+
+  const styles = {
+    commentSection: {
+      marginBottom: '20px',
+    },
+    comment: {
+      marginBottom: '10px',
+      padding: '10px',
+      border: '1px solid #ccc',
+      borderRadius: '5px',
+    },
+    spoilerBlur: {
+      filter: 'blur(5px)',
+    },
+    button: {
+      marginTop: '5px',
+    },
   };
 
   return (
