@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styles from '../../styles/Catalog.module.css'; // Assuming you have this CSS file
 
-async function fetchJikanSchedule() {
+async function fetchSchedule() {
     try {
         const response = await fetch('https://api.jikan.moe/v4/schedules');
         if (!response.ok) {
@@ -15,75 +15,22 @@ async function fetchJikanSchedule() {
     }
 }
 
-async function fetchAniListDetails(title) {
-    const query = `
-        query ($title: String) {
-            Media(search: $title, type: ANIME) {
-                id
-                title {
-                    romaji
-                }
-                coverImage {
-                    large
-                }
-            }
-        }
-    `;
-    try {
-        const response = await fetch('https://graphql.anilist.co', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-            },
-            body: JSON.stringify({
-                query: query,
-                variables: { title: title },
-            }),
-        });
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        return data.data.Media;
-    } catch (error) {
-        console.error('Error fetching details from AniList:', error.message);
-        throw error;
-    }
-}
-
 function Schedule() {
     const [schedule, setSchedule] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        async function fetchData() {
-            try {
-                const jikanSchedule = await fetchJikanSchedule();
-                const enrichedSchedule = await Promise.all(
-                    jikanSchedule.map(async (item) => {
-                        const aniListDetails = await fetchAniListDetails(item.title);
-                        return {
-                            ...item,
-                            aniListId: aniListDetails.id,
-                            aniListTitle: aniListDetails.title.romaji,
-                            aniListCoverImage: aniListDetails.coverImage.large,
-                        };
-                    })
-                );
-                setSchedule(enrichedSchedule);
+        fetchSchedule()
+            .then(data => {
+                setSchedule(data);
                 setLoading(false);
-            } catch (error) {
-                console.error('Error in fetchData:', error.message);
+            })
+            .catch(error => {
+                console.error('Error in useEffect:', error.message);
                 setError(error);
                 setLoading(false);
-            }
-        }
-
-        fetchData();
+            });
     }, []);
 
     const getTimeRemaining = (airingAt) => {
@@ -119,13 +66,13 @@ function Schedule() {
                     return (
                         <a
                             key={index}
-                            href={`https://anilist.co/anime/${item.aniListId}`}
+                            href={`https://myanimelist.net/anime/${item.mal_id}`}
                             target="_blank"
                             rel="noopener noreferrer"
                             className={styles.scheduleItem}
                         >
                             <div className={styles.scheduleInfo}>
-                                <h3 className={styles.animeTitle}>{item.aniListTitle || item.title}</h3>
+                                <h3 className={styles.animeTitle}>{item.title}</h3>
                                 <p className={styles.airingAt}>
                                     Airing at: {new Date(item.aired.from).toLocaleString()}
                                 </p>
