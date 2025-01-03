@@ -19,15 +19,11 @@ function Schedule() {
     const [schedule, setSchedule] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [currentTime, setCurrentTime] = useState(Date.now());
 
     useEffect(() => {
         fetchSchedule()
             .then(data => {
-                // Filter out past anime and sort by newest release date first
-                const upcomingAnime = data.filter(item => new Date(item.aired.from) >= new Date());
-                upcomingAnime.sort((a, b) => new Date(b.aired.from) - new Date(a.aired.from));
-                setSchedule(upcomingAnime);
+                setSchedule(data);
                 setLoading(false);
             })
             .catch(error => {
@@ -35,16 +31,10 @@ function Schedule() {
                 setError(error);
                 setLoading(false);
             });
-
-        const interval = setInterval(() => {
-            setCurrentTime(Date.now());
-        }, 1000);
-
-        return () => clearInterval(interval);
     }, []);
 
     const getTimeRemaining = (airingAt) => {
-        const total = new Date(airingAt).getTime() - currentTime;
+        const total = new Date(airingAt).getTime() - Date.now();
         const seconds = Math.floor((total / 1000) % 60);
         const minutes = Math.floor((total / 1000 / 60) % 60);
         const hours = Math.floor((total / (1000 * 60 * 60)) % 24);
@@ -76,7 +66,9 @@ function Schedule() {
                     return (
                         <a
                             key={index}
-                            href={`/anime/${item.mal_id}`} // Adjust this to your specific URL structure
+                            href={`https://myanimelist.net/anime/${item.mal_id}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
                             className={styles.scheduleItem}
                         >
                             <div className={styles.scheduleInfo}>
