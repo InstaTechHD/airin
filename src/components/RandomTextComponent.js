@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import styles from '../styles/Catalog.module.css'; // Importing the CSS module
 
 const RandomTextComponent = () => {
   // Array of random texts with associated links
@@ -34,7 +35,7 @@ const RandomTextComponent = () => {
   const [randomText] = useState(getRandomText());
 
   return (
-    <div className="mx-3 bg-[#1a1a1f] px-5 py-3 rounded-lg text-bold flex flex-row items-center">
+    <div className="mx-3 px-5 py-3 rounded-lg text-bold flex flex-row items-center" style={{ backgroundColor: 'transparent' }}>
       <svg
         width="25px"
         height="25px"
@@ -54,7 +55,7 @@ const RandomTextComponent = () => {
       <p className="text-[11px] text-[#bfc6d0] lg:max-w-[65%] line-clamp-3">
         <a className="text-blue-500 hover:text-blue-600" href={randomText.link}>
           {randomText.image ? (
-            <img src={randomText.image} alt="Support me on Ko-fi" className="kofi-banner" />
+            <img src={randomText.image} alt="Support me on Ko-fi" className={styles.kofiBanner} />
           ) : (
             randomText.text
           )}
