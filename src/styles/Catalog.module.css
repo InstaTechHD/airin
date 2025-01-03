@@ -284,7 +284,7 @@
 .scheduleCard {
     display: flex;
     flex-direction: row;
-    background-color: #1a1a1a;
+    background-color: #11111;
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
