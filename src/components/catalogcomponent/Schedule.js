@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import styles from '../../styles/Schedule.module.css';
 import { gql, request } from 'graphql-request';
 
-// Function to fetch the upcoming anime schedule from Anilist
 async function fetchSchedule() {
     const query = gql`
         query {
@@ -42,14 +41,11 @@ function Schedule() {
     useEffect(() => {
         fetchSchedule()
             .then(data => {
-                const sortedData = data
-                    .filter(item => item.startDate.year && item.startDate.month && item.startDate.day)
-                    .sort((a, b) => {
-                        const dateA = new Date(a.startDate.year, a.startDate.month - 1, a.startDate.day);
-                        const dateB = new Date(b.startDate.year, b.startDate.month - 1, b.startDate.day);
-                        return dateB - dateA;
-                    })
-                    .slice(0, 5);  // Limit to 5 upcoming anime
+                const sortedData = data.sort((a, b) => {
+                    const dateA = new Date(a.startDate.year, a.startDate.month - 1, a.startDate.day);
+                    const dateB = new Date(b.startDate.year, b.startDate.month - 1, b.startDate.day);
+                    return dateA - dateB;
+                }).slice(0, 5);  // Limit to 5 upcoming anime
                 setSchedule(sortedData);
                 setLoading(false);
             })
