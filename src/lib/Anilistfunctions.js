@@ -192,3 +192,15 @@ export const UpcomingAnilist = async () => {
         return [];
     }
 };
+// New functions
+export async function fetchAniListUserData(session) {
+  // Fetch user data from AniList using the session token
+}
+
+export async function fetchComments(animeId, episodeNumber, filter) {
+  // Fetch comments from your database/API
+}
+
+export async function postComment(animeId, episodeNumber, comment, isSpoiler, session) {
+  // Post a new comment to your database/API
+}
