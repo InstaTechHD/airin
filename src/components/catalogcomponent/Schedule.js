@@ -75,10 +75,10 @@ function Schedule() {
                 {schedule.map((item, index) => {
                     const timeRemaining = getTimeRemaining(item.aired.from);
                     return (
-                        <a
+                        <div
                             key={index}
-                            href={`/anime/${item.mal_id}`}
                             className={styles.scheduleItem}
+                            onClick={() => window.location.href = `/anime/${item.mal_id}`}
                         >
                             <div className={styles.scheduleItemContent}>
                                 <img
@@ -96,7 +96,7 @@ function Schedule() {
                                     </p>
                                 </div>
                             </div>
-                        </a>
+                        </div>
                     );
                 })}
             </div>
