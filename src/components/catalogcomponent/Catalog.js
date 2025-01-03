@@ -5,6 +5,7 @@ import { Accordion, AccordionItem, Select, SelectItem, RadioGroup, Radio, Input 
 import { seasonOptions, genreOptions, tagsOptions, formatOptions, yearOptions, sortbyOptions, airingOptions } from './options';
 import { Combobox, Transition } from '@headlessui/react'
 import Searchcard from './Searchcard';
+import Schedule from './Schedule'; // Import the Schedule component
 
 function Catalog({ searchParams }) {
     const { year, season, format, genre, search, sortby, airing } = searchParams;
@@ -85,6 +86,7 @@ function Catalog({ searchParams }) {
 
     return (
         <div className={styles.catalog}>
+        <Schedule /> {/* Add the Schedule component */}
             <div className={styles.catalogtop}>
                 <div className={styles.searchmobil}>
                     <div className={styles.search}>
