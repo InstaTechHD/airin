@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { AnimeInfoAnilist } from '@/lib/Anilistfunctions';
 import NextAiringDate from "@/components/videoplayer/NextAiringDate";
