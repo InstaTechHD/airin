@@ -89,7 +89,7 @@ function Schedule() {
 
     return (
         <div className={styles.schedule}>
-            <VerticalList data={schedule} id="Top 100 Anime" />
+            <VerticalList data={schedule} id="Schedule" />
         </div>
     );
 }
