@@ -48,9 +48,10 @@ export const authOptions = {
               `,
             }),
           }).then((res) => res.json());
+          
+          console.log('AniList user data:', data); // Log AniList user data
 
           const userLists = data.Viewer?.mediaListOptions.animeList.customLists;
-
           let customLists = userLists || [];
 
           if (!userLists?.includes("Watched Via Airin")) {
@@ -114,9 +115,13 @@ export const authOptions = {
   },
   callbacks: {
     async jwt({ token, user }) {
+      console.log('JWT callback - token:', token); // Log JWT token
+      console.log('JWT callback - user:', user); // Log user data
       return { ...token, ...user };
     },
     async session({ session, token }) {
+      console.log('Session callback - session:', session); // Log session data
+      console.log('Session callback - token:', token); // Log token data
       session.user = token;
       return session;
     },
