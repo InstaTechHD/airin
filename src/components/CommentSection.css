@@ -10,11 +10,26 @@
   margin-bottom: 10px;
 }
 
+.filter {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
 .filter-dropdown {
   padding: 5px;
   border: 1px solid #ccc;
+  background: transparent;
+  appearance: none;
+  -webkit-appearance: none;
   border-radius: 9px;
-  background-color: #f9f9f9;
+  color: inherit;
+}
+
+.dropdown-icon {
+  position: absolute;
+  right: 10px;
+  pointer-events: none;
 }
 
 .user-info {
@@ -30,13 +45,16 @@
   margin-right: 10px;
 }
 
-.login-button {
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  border-radius: 9px;
-  cursor: pointer;
+.login-placeholder {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.profile-icon {
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
 }
 
 .comment {
@@ -95,4 +113,9 @@
   border: none;
   border-radius: 9px;
   cursor: pointer;
+}
+
+.comments-container {
+  max-height: 300px; /* Adjust the height as needed */
+  overflow-y: auto;
 }
