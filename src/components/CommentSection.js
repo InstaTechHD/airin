@@ -3,32 +3,42 @@
 import React, { useState, useEffect } from 'react';
 import PostComment from './PostComment';
 import { fetchAniListUserData, fetchComments, postComment } from '@/lib/Anilistfunctions';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // Import FontAwesome
-import { faComment } from '@fortawesome/free-solid-svg-icons'; // Import the comment icon
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faComment, faChevronDown, faUserCircle } from '@fortawesome/free-solid-svg-icons'; // Import icons
 import './CommentSection.css'; // Import the CSS file
 
-const CommentSection = ({ animeId, episodeNumber, session }) => {
+const CommentSection = ({ animeId, episodeNumber, session, animeName }) => {
   const [comments, setComments] = useState([]);
   const [filter, setFilter] = useState('latest');
   const [userData, setUserData] = useState(null);
+  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (session) {
       fetchAniListUserData(session).then(setUserData);
     }
-    fetchComments(animeId, episodeNumber, filter).then(setComments);
-  }, [animeId, episodeNumber, filter, session]);
+    fetchComments(animeId, episodeNumber, filter, page).then(newComments => {
+      setComments(prevComments => [...prevComments, ...newComments]);
+      setLoading(false);
+    });
+  }, [animeId, episodeNumber, filter, page, session]);
 
   const handlePost = (comment, isSpoiler) => {
     if (!session) {
       // Prompt login if not logged in
       alert("Please log in with AniList to post a comment.");
-      // Redirect to AniList login (adjust URL as necessary)
-      window.location.href = "/api/auth/login";
     } else {
       postComment(animeId, episodeNumber, comment, isSpoiler, session).then(newComment => {
         setComments([newComment, ...comments]);
       });
+    }
+  };
+
+  const handleScroll = (e) => {
+    if (e.target.scrollTop + e.target.clientHeight >= e.target.scrollHeight - 10 && !loading) {
+      setLoading(true);
+      setPage(prevPage => prevPage + 1);
     }
   };
 
@@ -41,11 +51,12 @@ const CommentSection = ({ animeId, episodeNumber, session }) => {
         </h3>
         <span>EP {episodeNumber}</span>
         <div className="filter">
-          <select onChange={(e) => setFilter(e.target.value)} value={filter} className="filter-dropdown">
+          <select onChange={(e) => { setFilter(e.target.value); setComments([]); setPage(1); }} value={filter} className="filter-dropdown">
             <option value="latest">Latest</option>
             <option value="top">Top</option>
             <option value="oldest">Oldest</option>
           </select>
+          <FontAwesomeIcon icon={faChevronDown} className="dropdown-icon" />
         </div>
       </div>
       {session ? (
@@ -54,20 +65,24 @@ const CommentSection = ({ animeId, episodeNumber, session }) => {
           <span>{userData?.name}</span>
         </div>
       ) : (
-        <button onClick={() => window.location.href = "/api/auth/login"} className="login-button">
-          Login to comment
-        </button>
+        <div className="login-placeholder">
+          <FontAwesomeIcon icon={faUserCircle} className="profile-icon" />
+          <span>Comment on {animeName}</span>
+        </div>
       )}
       <PostComment onPost={handlePost} />
-      {comments.map((comment, index) => (
-        <div key={index} className="comment" style={{ borderRadius: '9px' }}>
-          <p className={comment.isSpoiler ? 'spoiler-blur' : ''}>
-            {comment.text}
-          </p>
-          <button className="reply-button">Reply</button>
-          <button className="react-button">React</button>
-        </div>
-      ))}
+      <div className="comments-container" onScroll={handleScroll}>
+        {comments.map((comment, index) => (
+          <div key={index} className="comment" style={{ borderRadius: '9px' }}>
+            <p className={comment.isSpoiler ? 'spoiler-blur' : ''}>
+              {comment.text}
+            </p>
+            <button className="reply-button">Reply</button>
+            <button className="react-button">React</button>
+          </div>
+        ))}
+        {loading && <div>Loading...</div>}
+      </div>
     </div>
   );
 };
