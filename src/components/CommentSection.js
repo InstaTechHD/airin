@@ -3,6 +3,8 @@
 import React, { useState, useEffect } from 'react';
 import PostComment from './PostComment';
 import { fetchAniListUserData, fetchComments, postComment } from '@/lib/Anilistfunctions';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // Import FontAwesome
+import { faComment } from '@fortawesome/free-solid-svg-icons'; // Import the comment icon
 import './CommentSection.css'; // Import the CSS file
 
 const CommentSection = ({ animeId, episodeNumber, session }) => {
@@ -33,7 +35,10 @@ const CommentSection = ({ animeId, episodeNumber, session }) => {
   return (
     <div className="comment-section">
       <div className="header">
-        <h3>Comments ({comments.length})</h3>
+        <h3>
+          <FontAwesomeIcon icon={faComment} /> {/* Add the comment icon */}
+          Comments ({comments.length})
+        </h3>
         <span>EP {episodeNumber}</span>
         <div className="filter">
           <select onChange={(e) => setFilter(e.target.value)} value={filter} className="filter-dropdown">
