@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import "./CommentSection.css"; // Import the CSS file
 import "./PostComment.css";
 
 const PostComment = ({ onPost }) => {
