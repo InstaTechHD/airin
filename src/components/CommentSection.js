@@ -25,10 +25,13 @@ const CommentSection = ({ animeId, episodeNumber, session, animeName }) => {
   const fetchCommentsData = async () => {
     try {
       setLoading(true);
+      console.log(`Fetching comments for filter: ${filter}, page: ${page}`);
       const newComments = await fetchComments(animeId, episodeNumber, filter, page);
+      console.log('Fetched comments:', newComments);
       setComments(prevComments => [...prevComments, ...newComments]);
       setLoading(false);
     } catch (error) {
+      console.error('Error fetching comments:', error);
       setError('Failed to fetch comments. Please try again later.');
       setLoading(false);
     }
@@ -36,9 +39,9 @@ const CommentSection = ({ animeId, episodeNumber, session, animeName }) => {
 
   const handleFilterChange = (e) => {
     setFilter(e.target.value);
-    setComments([]);
-    setPage(1);
-    setError(null);
+    setComments([]); // Reset comments when filter changes
+    setPage(1); // Reset page when filter changes
+    setError(null); // Clear any previous error
   };
 
   const handlePost = (comment, isSpoiler) => {
