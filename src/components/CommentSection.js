@@ -4,8 +4,8 @@ import React, { useState, useEffect } from "react";
 import PostComment from "./PostComment";
 import { fetchAniListUserData, fetchComments, postComment } from "@/lib/Anilistfunctions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faComment, faChevronDown, faUserCircle } from "@fortawesome/free-solid-svg-icons"; // Import icons
-import "./CommentSection.css"; // Import the CSS file
+import { faComment, faChevronDown, faUserCircle } from "@fortawesome/free-solid-svg-icons";
+import "./CommentSection.css";
 
 const CommentSection = ({ animeId, episodeNumber, session, animeName }) => {
   const [comments, setComments] = useState([]);
@@ -21,24 +21,18 @@ const CommentSection = ({ animeId, episodeNumber, session, animeName }) => {
         .then(setUserData)
         .catch((err) => {
           console.error("Error fetching user data:", err);
-          setError("Failed to fetch user data. Please try again later.");
+          setError("Failed to fetch user data.");
         });
     }
     fetchCommentsData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [animeId, episodeNumber, filter, page, session]);
 
   const fetchCommentsData = async () => {
     try {
       setLoading(true);
-      setError(null); // Clear any previous error
       console.log(`Fetching comments for filter: ${filter}, page: ${page}`);
       const newComments = await fetchComments(animeId, episodeNumber, filter, page);
       console.log("Fetched comments:", newComments);
-      if (newComments.length === 0) {
-        setLoading(false);
-        return; // No more comments to load
-      }
       setComments((prevComments) => [...prevComments, ...newComments]);
     } catch (err) {
       console.error("Error fetching comments:", err);
@@ -50,9 +44,9 @@ const CommentSection = ({ animeId, episodeNumber, session, animeName }) => {
 
   const handleFilterChange = (e) => {
     setFilter(e.target.value);
-    setComments([]); // Reset comments when filter changes
-    setPage(1); // Reset page when filter changes
-    setError(null); // Clear any previous error
+    setComments([]);
+    setPage(1);
+    setError(null);
   };
 
   const handlePost = async (comment, isSpoiler) => {
@@ -61,8 +55,10 @@ const CommentSection = ({ animeId, episodeNumber, session, animeName }) => {
       return;
     }
     try {
+      console.log("Posting comment:", { comment, isSpoiler });
       const newComment = await postComment(animeId, episodeNumber, comment, isSpoiler, session);
-      setComments([newComment, ...comments]);
+      console.log("Comment posted successfully:", newComment);
+      setComments((prevComments) => [newComment, ...prevComments]);
     } catch (err) {
       console.error("Error posting comment:", err);
       setError("Failed to post comment. Please try again later.");
@@ -70,7 +66,7 @@ const CommentSection = ({ animeId, episodeNumber, session, animeName }) => {
   };
 
   const handleScroll = (e) => {
-    if (e.target.scrollTop + e.target.clientHeight >= e.target.scrollHeight - 10 && !loading && !error) {
+    if (e.target.scrollTop + e.target.clientHeight >= e.target.scrollHeight - 10 && !loading) {
       setPage((prevPage) => prevPage + 1);
     }
   };
@@ -93,12 +89,8 @@ const CommentSection = ({ animeId, episodeNumber, session, animeName }) => {
       </div>
       {session ? (
         <div className="user-info">
-          {userData?.avatar ? (
-            <img src={userData.avatar} alt="User Avatar" className="avatar" />
-          ) : (
-            <FontAwesomeIcon icon={faUserCircle} className="profile-icon" />
-          )}
-          <span>{userData?.name || "User"}</span>
+          <img src={userData?.avatar} alt="User Avatar" className="avatar" />
+          <span>{userData?.name}</span>
         </div>
       ) : (
         <div className="login-placeholder">
@@ -109,8 +101,8 @@ const CommentSection = ({ animeId, episodeNumber, session, animeName }) => {
       <PostComment onPost={handlePost} />
       <div className="comments-container" onScroll={handleScroll}>
         {error && <div className="error-message">{error}</div>}
-        {comments.map((comment) => (
-          <div key={comment.id} className="comment" style={{ borderRadius: "9px" }}>
+        {comments.map((comment, index) => (
+          <div key={index} className="comment" style={{ borderRadius: "9px" }}>
             <p className={comment.isSpoiler ? "spoiler-blur" : ""}>{comment.text}</p>
             <button className="reply-button">Reply</button>
             <button className="react-button">React</button>
