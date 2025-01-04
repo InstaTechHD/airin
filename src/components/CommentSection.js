@@ -13,16 +13,33 @@ const CommentSection = ({ animeId, episodeNumber, session, animeName }) => {
   const [userData, setUserData] = useState(null);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null); // Add error state
 
   useEffect(() => {
     if (session) {
       fetchAniListUserData(session).then(setUserData);
     }
-    fetchComments(animeId, episodeNumber, filter, page).then(newComments => {
+    fetchCommentsData();
+  }, [animeId, episodeNumber, filter, page, session]);
+
+  const fetchCommentsData = async () => {
+    try {
+      setLoading(true);
+      const newComments = await fetchComments(animeId, episodeNumber, filter, page);
       setComments(prevComments => [...prevComments, ...newComments]);
       setLoading(false);
-    });
-  }, [animeId, episodeNumber, filter, page, session]);
+    } catch (error) {
+      setError('Failed to fetch comments. Please try again later.');
+      setLoading(false);
+    }
+  };
+
+  const handleFilterChange = (e) => {
+    setFilter(e.target.value);
+    setComments([]);
+    setPage(1);
+    setError(null);
+  };
 
   const handlePost = (comment, isSpoiler) => {
     if (!session) {
@@ -37,7 +54,6 @@ const CommentSection = ({ animeId, episodeNumber, session, animeName }) => {
 
   const handleScroll = (e) => {
     if (e.target.scrollTop + e.target.clientHeight >= e.target.scrollHeight - 10 && !loading) {
-      setLoading(true);
       setPage(prevPage => prevPage + 1);
     }
   };
@@ -51,7 +67,7 @@ const CommentSection = ({ animeId, episodeNumber, session, animeName }) => {
         </h3>
         <span>EP {episodeNumber}</span>
         <div className="filter">
-          <select onChange={(e) => { setFilter(e.target.value); setComments([]); setPage(1); }} value={filter} className="filter-dropdown">
+          <select onChange={handleFilterChange} value={filter} className="filter-dropdown">
             <option value="latest">Latest</option>
             <option value="top">Top</option>
             <option value="oldest">Oldest</option>
@@ -72,6 +88,7 @@ const CommentSection = ({ animeId, episodeNumber, session, animeName }) => {
       )}
       <PostComment onPost={handlePost} />
       <div className="comments-container" onScroll={handleScroll}>
+        {error && <div className="error-message">{error}</div>}
         {comments.map((comment, index) => (
           <div key={index} className="comment" style={{ borderRadius: '9px' }}>
             <p className={comment.isSpoiler ? 'spoiler-blur' : ''}>
