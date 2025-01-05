@@ -4,6 +4,7 @@ import { ANIME } from "@consumet/extensions";
 import { AnimeInfoAnilist } from '@/lib/Anilistfunctions'
 import { findSimilarTitles } from '@/lib/stringSimilarity';
 
+
 const gogo = new ANIME.Gogoanime();
 const hianime = new ANIME.Zoro();
 
@@ -29,6 +30,7 @@ async function getInfo(id) {
             }
         }
         if (cachedData) {
+            // console.log("using cached info")
             return JSON.parse(cachedData);
         } else {
             const data = await AnimeInfoAnilist(id);
@@ -48,6 +50,7 @@ async function mapGogo(title) {
     let rom = await gogo.search(title?.romaji);
     let english_search = eng?.results || [];
     let romaji_search = rom?.results || [];
+    // Combine both results and remove duplicates
     const combined = [...english_search, ...romaji_search];
 
     const uniqueResults = Array.from(new Set(combined.map(item => JSON.stringify(item))))
@@ -91,6 +94,7 @@ async function mapZoro(title) {
         }
     }, []);
 
+    // Sort based on similarity (assuming similarity is a property of the objects)
     uniqueCombined.sort((a, b) => b.similarity - a.similarity);
 
     const zoro = {};
