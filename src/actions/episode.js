@@ -10,6 +10,7 @@ const zoro = new ANIME.Zoro();
 export async function fetchGogoEpisodes(id) {
   try {
     const data = await gogo.fetchAnimeInfo(id);
+
     return data?.episodes || [];
   } catch (error) {
     console.error("Error fetching gogoanime:", error.message);
@@ -20,6 +21,7 @@ export async function fetchGogoEpisodes(id) {
 export async function fetchZoroEpisodes(id) {
   try {
     const data = await zoro.fetchAnimeInfo(id);
+
     return data?.episodes || [];
   } catch (error) {
     console.error("Error fetching zoro:", error.message);
@@ -35,7 +37,7 @@ async function fetchEpisodeMeta(id, available = false) {
     const res = await fetch(
       `https://api.ani.zip/mappings?anilist_id=${id}`
     );
-    const data = await res.json()
+const data = await res.json()
     const episodesArray = Object.values(data?.episodes);
 
     if (!episodesArray) {
@@ -217,6 +219,7 @@ export const getEpisodes = async (id, status, refresh = false) => {
     return fetchdata;
   }
 };
+
 
 function transformEpisodeId(episodeId) {
   const regex = /^([^$]*)\$episode\$([^$]*)/;
