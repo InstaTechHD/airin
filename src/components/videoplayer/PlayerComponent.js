@@ -27,7 +27,6 @@ function PlayerComponent({ id, epId, provider, epNum, subdub, data, session, sav
             try {
                 const response = await getAnimeSources(id, provider, epId, epNum, subdub);
 
-                // console.log(response)
                 if (!response?.sources?.length > 0) {
                     toast.error("Failed to load episode. Please try again later.");
                     setError(true);
@@ -43,7 +42,6 @@ function PlayerComponent({ id, epId, provider, epNum, subdub, data, session, sav
                     kind: i?.kind || (i?.lang === "Thumbnails" ? "thumbnails" : "subtitles"),
                     default: i?.default || (i?.lang === "English"),
                 }));
-                
 
                 setSubtitles(reFormSubtitles?.filter((s) => s.kind !== 'thumbnails'));
                 setThumbnails(reFormSubtitles?.filter((s) => s.kind === 'thumbnails'));
@@ -91,7 +89,6 @@ function PlayerComponent({ id, epId, provider, epNum, subdub, data, session, sav
 
                 useNowPlaying.setState({ nowPlaying: episode });
                 setSkipTimes(skiptime);
-                // console.log(skipData);
                 setLoading(false);
             } catch (error) {
                 console.error('Error fetching data:', error);
