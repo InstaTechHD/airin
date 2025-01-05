@@ -62,4 +62,3 @@ export const deletFeedback = async (id) => {
     }
 };
 
-
