@@ -2,6 +2,8 @@
 import { ANIME } from "@consumet/extensions";
 
 const gogo = new ANIME.Gogoanime();
+const zoro = new ANIME.Zoro();
+const zenime = new ANIME.Zenime(); // Add Zenime API
 
 export async function getGogoSources(id) {
     try {
@@ -36,6 +38,20 @@ export async function getZoroSources(id, provider, episodeid, epnum, subtype) {
         return null;
     }
 }
+
+export async function getZenimeSources(id) { // Add Zenime source fetching function
+    try {
+        const data = await zenime.fetchEpisodeSources(id);
+
+        if (!data) return null;
+
+        return data;
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
+}
+
 export async function getAnimeSources(id, provider, epid, epnum, subtype) {
     try {
         if (provider === "gogoanime") {
@@ -44,6 +60,10 @@ export async function getAnimeSources(id, provider, epid, epnum, subtype) {
         }
         if (provider === "zoro") {
             const data = await getZoroSources(id, provider, epid, epnum, subtype)
+            return data;
+        }
+        if (provider === "zenime") { // Add Zenime provider
+            const data = await getZenimeSources(epid);
             return data;
         }
     } catch (error) {
